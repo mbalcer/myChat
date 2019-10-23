@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {Message} from "./model/message";
-import {User} from "./model/user";
+import * as Stomp from 'stompjs';
+import * as SockJS from 'sockjs-client';
 
 @Component({
   selector: 'app-root',
@@ -8,15 +8,34 @@ import {User} from "./model/user";
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit{
-  messages: Message[] = [];
+  private serverUrl = "http://localhost:8080/chat";
+  private stompClient;
+
+  messages: string[] = [];
   user: string;
   yourMessage: string;
 
-  constructor () {}
+  constructor () {
+    this.webSocketConnect();
+  }
 
   ngOnInit() {}
 
-  sendMessage() {
+  webSocketConnect(){
+    let ws = new SockJS(this.serverUrl);
+    this.stompClient = Stomp.over(ws);
+    let client = this.stompClient;
+    let that = this;
+    client.connect({}, function(frame) {
+      client.subscribe("/topic/messages", function(message) {
+        that.messages.push(message.body);
+      });
+    });
+  }
 
+
+  sendMessage() {
+    this.stompClient.send("/app/chat" , {}, this.yourMessage);
+    this.yourMessage = "";
   }
 }

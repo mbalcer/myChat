@@ -1,7 +1,8 @@
 <div class="logo">Chat</div>
-<div class="chat-body" id="chat-body">
-  <p>This chat is empty</p>
+<div class="chat-body" id="chat-body" *ngFor="let m of messages">
+  <p>{{m}}</p>
 </div>
+<p *ngIf="messages.length === 0">This chat is empty</p>
 <div class="login">
   Your login:
   <input type="text" id="login" name="login" [(ngModel)]="user">
@@ -9,5 +10,5 @@
 <div class="message">
   Message:
   <input type="text" id="your-message" name="your-message" [(ngModel)]="yourMessage">
-  <input type="button" value="Send" (click)="sendMessage()">
+  <input type="button" value="Send" (click)="sendMessage()" [disabled]="!yourMessage || !user">
 </div>
