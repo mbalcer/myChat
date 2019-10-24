@@ -1,6 +1,6 @@
 <div class="logo">Chat</div>
 <div class="chat-body" id="chat-body" *ngFor="let m of messages">
-  <p>{{m}}</p>
+  <p>{{m.user.login}}: {{m.message}}</p>
 </div>
 <p *ngIf="messages.length === 0">This chat is empty</p>
 <div class="login">

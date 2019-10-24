@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
+import {Message} from "./model/message";
+import {User} from "./model/user";
 
 @Component({
   selector: 'app-root',
@@ -11,7 +13,7 @@ export class AppComponent implements OnInit{
   private serverUrl = "http://localhost:8080/chat";
   private stompClient;
 
-  messages: string[] = [];
+  messages: Message[] = [];
   user: string;
   yourMessage: string;
 
@@ -28,14 +30,32 @@ export class AppComponent implements OnInit{
     let that = this;
     client.connect({}, function(frame) {
       client.subscribe("/topic/messages", function(message) {
-        that.messages.push(message.body);
+        that.showMessage(JSON.parse(message.body).user, JSON.parse(message.body).message, JSON.parse(message.body).dateTime)
       });
     });
   }
 
+  showMessage(user, message, dateTime) {
+    let newMessage : Message = {
+      user: user,
+      message: message,
+      dateTime: dateTime
+    };
+    this.messages.push(newMessage);
+  }
 
   sendMessage() {
-    this.stompClient.send("/app/chat" , {}, this.yourMessage);
+    let newUser : User = {
+      id: null,
+      login: this.user,
+      password: null
+    };
+    let messageToSend : Message = {
+      user: newUser,
+      message: this.yourMessage,
+      dateTime: null
+    };
+    this.stompClient.send("/app/chat" , {}, JSON.stringify(messageToSend));
     this.yourMessage = "";
   }
 }
