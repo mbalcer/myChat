@@ -5,11 +5,13 @@ import { FormsModule } from "@angular/forms";
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderWebComponent } from './header-web/header-web.component';
+import { ChatComponent } from './chat/chat.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderWebComponent
+    HeaderWebComponent,
+    ChatComponent
   ],
   imports: [
     BrowserModule,
