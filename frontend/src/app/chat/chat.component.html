@@ -1,13 +1,14 @@
-<div class="chat-body" id="chat-body" *ngFor="let m of messages">
-  <p>{{m.user.login}}: {{m.message}}</p>
-</div>
-<p *ngIf="messages.length === 0">This chat is empty</p>
-<div class="login">
-  Your login:
-  <input type="text" id="login" name="login" [(ngModel)]="user">
-</div>
-<div class="message">
-  Message:
-  <input type="text" id="your-message" name="your-message" [(ngModel)]="yourMessage">
-  <input type="button" value="Send" (click)="sendMessage()" [disabled]="!yourMessage || !user">
+<div class="chat">
+  <div class="chat-body" id="chat-body">
+    <p *ngFor="let m of messages">{{m.user.login}}: {{m.message}}</p>
+    <p *ngIf="messages.length === 0">This chat is empty</p>
+  </div>
+  <div class="message">
+    Message:
+    <input type="text" id="your-message" name="your-message" [(ngModel)]="yourMessage">
+    <button class="btn-send" (click)="sendMessage()" [disabled]="!yourMessage">
+      <i class="fa fa-chevron-right"></i>
+    </button>
+    <!--<input class="fa fa-arrow-right" type="button" (click)="sendMessage()" [disabled]="!yourMessage || !user">-->
+  </div>
 </div>
