@@ -1,5 +1,5 @@
 <div class="chat">
-  <div class="chat-body" id="chat-body">
+  <div class="chat-body" #chatBody [scrollTop]="chatBody.scrollHeight">
     <p *ngFor="let m of messages">{{m.user.login}}: {{m.message}}</p>
     <p *ngIf="messages.length === 0">This chat is empty</p>
   </div>

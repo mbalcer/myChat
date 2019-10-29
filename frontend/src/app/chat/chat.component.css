@@ -5,8 +5,10 @@
 
 .chat-body {
   height: 60vh;
+  width: 100%;
   border: 1px solid #000000;
   padding: 10px;
+  overflow: auto;
 }
 
 .login {
@@ -30,4 +32,5 @@
   cursor: pointer;
   outline: inherit;
   font-size: 32px;
+  padding: 10px;
 }
