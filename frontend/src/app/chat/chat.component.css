@@ -34,3 +34,16 @@
   font-size: 32px;
   padding: 10px;
 }
+
+
+.login-message {
+  font-weight: bold;
+}
+
+.time-message {
+  color: #aaaaaa;
+}
+
+.text-message {
+  display: flex;
+}
