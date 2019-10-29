@@ -4,7 +4,6 @@ import * as SockJS from 'sockjs-client';
 import {Message} from "../model/message";
 import {User} from "../model/user";
 
-
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
@@ -15,14 +14,27 @@ export class ChatComponent implements OnInit {
   private stompClient;
 
   messages: Message[] = [];
-  user: string;
+  user: User;
   yourMessage: string;
 
   constructor() {
     this.webSocketConnect();
+    this.randomGuestUser();
   }
 
   ngOnInit() {
+  }
+
+  randomGuestUser() {
+    let login = "guest";
+    for (let i=0; i<5; i++)
+      login += Math.floor(Math.random() * 10);
+
+    this.user = {
+      id: null,
+      login: login,
+      password: null
+    };
   }
 
   webSocketConnect(){
@@ -32,7 +44,7 @@ export class ChatComponent implements OnInit {
     let that = this;
     client.connect({}, function(frame) {
       client.subscribe("/topic/messages", function(message) {
-        that.showMessage(JSON.parse(message.body).user, JSON.parse(message.body).message, JSON.parse(message.body).dateTime)
+        that.showMessage(JSON.parse(message.body).user, JSON.parse(message.body).message, JSON.parse(message.body).dateTime);
       });
     });
   }
@@ -47,13 +59,8 @@ export class ChatComponent implements OnInit {
   }
 
   sendMessage() {
-    let newUser : User = {
-      id: null,
-      login: this.user,
-      password: null
-    };
     let messageToSend : Message = {
-      user: newUser,
+      user: this.user,
       message: this.yourMessage,
       dateTime: null
     };
