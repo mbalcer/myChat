@@ -3,6 +3,7 @@ import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
 import {Message} from "../model/message";
 import {User} from "../model/user";
+import {formatDate} from "@angular/common";
 
 @Component({
   selector: 'app-chat',
@@ -53,7 +54,7 @@ export class ChatComponent implements OnInit {
     let newMessage : Message = {
       user: user,
       message: message,
-      dateTime: dateTime
+      dateTime: formatDate(dateTime, 'dd.MM HH:mm', 'en')
     };
     this.messages.push(newMessage);
   }
