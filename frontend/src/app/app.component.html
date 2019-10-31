@@ -1,2 +1,3 @@
 <app-header-web></app-header-web>
-<app-chat></app-chat>
+<app-chat *ngIf="user != null"></app-chat>
+<app-login-panel *ngIf="user == null"></app-login-panel>
