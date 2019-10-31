@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-login-panel',
@@ -12,4 +13,7 @@ export class LoginPanelComponent implements OnInit {
   ngOnInit() {
   }
 
+  togglePanel() {
+    $('form').animate({height: "toggle", opacity: "toggle"}, "slow");
+  }
 }
