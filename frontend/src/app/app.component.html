@@ -1,3 +1,3 @@
 <app-header-web></app-header-web>
 <app-chat *ngIf="user != null"></app-chat>
-<app-login-panel *ngIf="user == null"></app-login-panel>
+<app-login-panel *ngIf="user == null" (userLogged)="loginUser($event)"></app-login-panel>

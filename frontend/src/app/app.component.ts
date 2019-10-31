@@ -12,4 +12,8 @@ export class AppComponent implements OnInit{
   constructor () {}
 
   ngOnInit() {}
+
+  loginUser(user : User) {
+    this.user = user;
+  }
 }

@@ -20,22 +20,9 @@ export class ChatComponent implements OnInit {
 
   constructor() {
     this.webSocketConnect();
-    this.randomGuestUser();
   }
 
   ngOnInit() {
-  }
-
-  randomGuestUser() {
-    let login = "guest";
-    for (let i=0; i<5; i++)
-      login += Math.floor(Math.random() * 10);
-
-    this.user = {
-      id: null,
-      login: login,
-      password: null
-    };
   }
 
   webSocketConnect(){
