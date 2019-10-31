@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
 import {Message} from "../model/message";
@@ -15,7 +15,7 @@ export class ChatComponent implements OnInit {
   private stompClient;
 
   messages: Message[] = [];
-  user: User;
+  @Input() user: User;
   yourMessage: string;
 
   constructor() {
