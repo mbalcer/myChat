@@ -1,6 +1,7 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import * as $ from 'jquery';
 import {User} from "../model/user";
+import {UserService} from "../service/user.service";
 
 @Component({
   selector: 'app-login-panel',
@@ -11,7 +12,13 @@ export class LoginPanelComponent implements OnInit {
 
   @Output() userLogged: EventEmitter<User> = new EventEmitter();
 
-  constructor() { }
+  userToLogin: UserLoginViewModel = {
+    username: '',
+    password: ''
+  };
+
+  constructor(private userService: UserService) {
+  }
 
   ngOnInit() {
   }
@@ -37,4 +44,25 @@ export class LoginPanelComponent implements OnInit {
   togglePanel() {
     $('form').animate({height: "toggle", opacity: "toggle"}, "slow");
   }
+
+  signIn() {
+    this.userService.getUserByLogin(this.userToLogin.username).subscribe(
+      n => {
+        let getUser = n;
+        if (getUser.login === this.userToLogin.username && getUser.password === this.userToLogin.password) {
+          this.loginUser(getUser);
+        }
+      },
+      error => {
+        alert("An error has occurred");
+      }
+    );
+
+
+  }
+}
+
+export interface UserLoginViewModel {
+  username: string;
+  password: string;
 }
