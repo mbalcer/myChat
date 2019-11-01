@@ -46,18 +46,28 @@ export class LoginPanelComponent implements OnInit {
   }
 
   signIn() {
-    this.userService.getUserByLogin(this.userToLogin.username).subscribe(
-      n => {
-        let getUser = n;
-        if (getUser.login === this.userToLogin.username && getUser.password === this.userToLogin.password) {
-          this.loginUser(getUser);
+    if (this.userToLogin.username == "") {
+      $('#errorLogin').html("Login is required");
+      $('.login-form input').css("border", "1px solid #e74c3c");
+    } else {
+      this.userService.getUserByLogin(this.userToLogin.username).subscribe(
+        n => {
+          let getUser = n;
+          if (getUser == null) {
+            $('#errorLogin').html("The user with the given username does not exist");
+            $('.login-form input').css("border", "1px solid #e74c3c");
+          } else if (getUser.login === this.userToLogin.username && getUser.password === this.userToLogin.password)
+            this.loginUser(getUser);
+          else {
+            $('#errorLogin').html("Wrong password");
+            $('.login-form input').css("border", "1px solid #e74c3c");
+          }
+        },
+        error => {
+          alert("An error has occurred");
         }
-      },
-      error => {
-        alert("An error has occurred");
-      }
-    );
-
+      );
+    }
 
   }
 }
