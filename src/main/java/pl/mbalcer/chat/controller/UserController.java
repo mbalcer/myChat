@@ -7,6 +7,7 @@ import pl.mbalcer.chat.repository.UserRepository;
 
 @RestController
 @RequestMapping("/users")
+@CrossOrigin
 public class UserController {
     @Autowired
     private UserRepository userRepository;
