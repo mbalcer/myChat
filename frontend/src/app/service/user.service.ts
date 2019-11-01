@@ -9,11 +9,16 @@ import {Observable} from "rxjs";
 export class UserService {
   private MAIN_URL = "http://localhost:8080/users";
   private POST_USER_URL = `${this.MAIN_URL}`;
+  private GET_USER_URL = `${this.MAIN_URL}/byLogin/`;
 
   constructor(private http: HttpClient) {
   }
 
-  postUser(user: User): Observable<any> {
-    return this.http.post(this.POST_USER_URL, user);
+  postUser(user: User): Observable<User> {
+    return this.http.post<User>(this.POST_USER_URL, user);
+  }
+
+  getUserByLogin(login: string): Observable<User> {
+    return this.http.get<User>(this.GET_USER_URL + login);
   }
 }
