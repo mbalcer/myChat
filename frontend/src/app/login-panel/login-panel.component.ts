@@ -16,6 +16,11 @@ export class LoginPanelComponent implements OnInit {
     username: '',
     password: ''
   };
+  userToRegister: User = {
+    id: null,
+    login: '',
+    password: ''
+  };
 
   constructor(private userService: UserService) {
   }
@@ -69,6 +74,17 @@ export class LoginPanelComponent implements OnInit {
       );
     }
 
+  }
+
+  signUp() {
+    this.userService.postUser(this.userToRegister).subscribe(
+      n => {
+
+      },
+      error => {
+        alert("An error has occurred");
+      }
+    )
   }
 }
 
