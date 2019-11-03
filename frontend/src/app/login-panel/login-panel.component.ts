@@ -77,9 +77,24 @@ export class LoginPanelComponent implements OnInit {
   }
 
   signUp() {
+    this.userService.getUserByLogin(this.userToRegister.login).subscribe(
+      n => {
+        if (n == null)
+          this.saveUser();
+        else
+          $('#errorRegister').removeClass("success").addClass("error").html("The user with this login already exists");
+      },
+      error => {
+        alert("An error has occurred");
+      }
+    );
+  }
+
+  saveUser() {
     this.userService.postUser(this.userToRegister).subscribe(
       n => {
-
+        $('#errorRegister').removeClass("error").addClass("success").html("You have been successfully registered");
+        $('.register-form input').val('');
       },
       error => {
         alert("An error has occurred");

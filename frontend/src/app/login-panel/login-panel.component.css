@@ -50,6 +50,10 @@
   display: none;
 }
 
-.form .error-login {
+.form .error {
   color: #e74c3c;
+}
+
+.form .success {
+  color: #2ecc71;
 }
