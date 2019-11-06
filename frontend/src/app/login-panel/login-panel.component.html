@@ -1,9 +1,31 @@
 <div class="login-page">
   <div class="form">
 
-    <form class="register-form" (ngSubmit)="signUp()">
-      <input type="text" placeholder="username" name="register-username" [(ngModel)]="userToRegister.login"/>
-      <input type="password" placeholder="password" name="register-password" [(ngModel)]="userToRegister.password"/>
+    <form class="register-form" (ngSubmit)="registerForm.form.valid && signUp()" #registerForm="ngForm">
+      <input type="text"
+             placeholder="username"
+             name="register-username"
+             [(ngModel)]="userToRegister.login"
+             #registerUsername="ngModel"
+             [ngClass]="{ 'is-invalid': registerForm.submitted && registerUsername.invalid }"
+             required minlength="6" maxlength="20"
+      />
+      <p class="message error invalid" *ngIf="registerForm.submitted && registerUsername.invalid">
+        <span *ngIf="registerUsername.errors?.required">Username is required</span>
+        <span *ngIf="registerUsername.errors?.minlength">Username must min 6 letters</span>
+      </p>
+      <input type="password"
+             placeholder="password"
+             name="register-password"
+             [(ngModel)]="userToRegister.password"
+             #registerPassword="ngModel"
+             [ngClass]="{ 'is-invalid': registerForm.submitted && registerPassword.invalid }"
+             required minlength="8" maxlength="40"
+      />
+      <p class="message error invalid" *ngIf="registerForm.submitted && registerPassword.invalid">
+        <span *ngIf="registerPassword.errors?.required">Password is required</span>
+        <span *ngIf="registerPassword.errors?.minlength">Password must min 8 letters</span>
+      </p>
       <input type="password" placeholder="repeat password" name="register-re-password"/>
       <input type="text" placeholder="email address" name="register-email"/>
       <button>create</button>
