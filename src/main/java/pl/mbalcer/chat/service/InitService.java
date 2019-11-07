@@ -14,7 +14,7 @@ public class InitService {
 
     @PostConstruct
     public void init() {
-        User u1 = new User(1l, "Admin", "admin123");
+        User u1 = new User(1l, "Admin", "admin123", "admin@mychat.pl", "#00FFFF");
 
         userRepository.save(u1);
     }
