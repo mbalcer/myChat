@@ -26,7 +26,19 @@
         <span *ngIf="registerPassword.errors?.required">Password is required</span>
         <span *ngIf="registerPassword.errors?.minlength">Password must min 8 letters</span>
       </p>
-      <input type="password" placeholder="repeat password" name="register-re-password"/>
+      <input type="password"
+             placeholder="confirm password"
+             name="register-confirm-password"
+             [(ngModel)]="userToRegister.confirmPassword"
+             #registerConfirmPassword="ngModel"
+             [ngClass]="{ 'is-invalid': registerForm.submitted && registerConfirmPassword.invalid }"
+             required pattern="{{registerPassword.value}}"
+      />
+      <p class="message error invalid" *ngIf="registerForm.submitted && registerConfirmPassword.invalid">
+        <span *ngIf="registerConfirmPassword.errors?.required">Confirm password is required</span>
+        <span *ngIf="registerConfirmPassword.errors?.pattern">Password & Confirm Password must be the same</span>
+      </p>
+
       <input type="text" placeholder="email address" name="register-email"/>
       <button>create</button>
       <p class="message error" id="errorRegister"></p>

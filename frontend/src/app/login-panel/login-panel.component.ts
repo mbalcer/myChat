@@ -16,10 +16,10 @@ export class LoginPanelComponent implements OnInit {
     username: '',
     password: ''
   };
-  userToRegister: User = {
-    id: null,
+  userToRegister: UserRegisterViewModel = {
     login: '',
-    password: ''
+    password: '',
+    confirmPassword: ''
   };
 
   constructor(private userService: UserService) {
@@ -79,8 +79,15 @@ export class LoginPanelComponent implements OnInit {
   signUp() {
     this.userService.getUserByLogin(this.userToRegister.login).subscribe(
       n => {
-        if (n == null)
-          this.saveUser();
+        if (n == null) {
+          let saveUser: User = {
+            id: null,
+            login: this.userToRegister.login,
+            password: this.userToRegister.password
+          }
+
+          this.saveUser(saveUser);
+        }
         else
           $('#errorRegister').removeClass("success").addClass("error").html("The user with this login already exists");
       },
@@ -90,8 +97,8 @@ export class LoginPanelComponent implements OnInit {
     );
   }
 
-  saveUser() {
-    this.userService.postUser(this.userToRegister).subscribe(
+  saveUser(user) {
+    this.userService.postUser(user).subscribe(
       n => {
         $('#errorRegister').removeClass("error").addClass("success").html("You have been successfully registered");
         $('.register-form input').val('');
@@ -106,4 +113,10 @@ export class LoginPanelComponent implements OnInit {
 export interface UserLoginViewModel {
   username: string;
   password: string;
+}
+
+export interface UserRegisterViewModel {
+  login: string,
+  password: string,
+  confirmPassword: string
 }
