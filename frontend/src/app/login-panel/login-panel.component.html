@@ -38,8 +38,19 @@
         <span *ngIf="registerConfirmPassword.errors?.required">Confirm password is required</span>
         <span *ngIf="registerConfirmPassword.errors?.pattern">Password & Confirm Password must be the same</span>
       </p>
+      <input type="text"
+             placeholder="email address"
+             name="register-email"
+             [(ngModel)]="userToRegister.email"
+             #registerEmail="ngModel"
+             [ngClass]="{ 'is-invalid': registerForm.submitted && registerEmail.invalid}"
+             required email
+      />
+      <p class="message error invalid" *ngIf="registerForm.submitted && registerEmail.invalid">
+        <span *ngIf="registerEmail.errors?.required">Email is required</span>
+        <span *ngIf="registerEmail.errors?.email">Field is not a valid email</span>
+      </p>
 
-      <input type="text" placeholder="email address" name="register-email" [(ngModel)]="userToRegister.email"/>
       <button>create</button>
       <p class="message error" id="errorRegister"></p>
       <p class="message">Already registered? <a href="#" (click)="togglePanel()">Sign In</a></p>
