@@ -19,7 +19,8 @@ export class LoginPanelComponent implements OnInit {
   userToRegister: UserRegisterViewModel = {
     login: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    email: ''
   };
 
   constructor(private userService: UserService) {
@@ -89,20 +90,25 @@ export class LoginPanelComponent implements OnInit {
 
   signUp() {
     this.userService.getUserByLogin(this.userToRegister.login).subscribe(
-      n => {
-        if (n == null) {
-          let saveUser: User = {
-            id: null,
-            login: this.userToRegister.login,
-            password: this.userToRegister.password,
-            email: null,
-            color: this.getRandomColor()
-          }
+      l => {
+        this.userService.getUserByEmail(this.userToRegister.email).subscribe(
+          e => {
+            if (l == null && e == null) {
+              let saveUser: User = {
+                id: null,
+                login: this.userToRegister.login,
+                password: this.userToRegister.password,
+                email: this.userToRegister.email,
+                color: this.getRandomColor()
+              };
 
-          this.saveUser(saveUser);
-        }
-        else
-          $('#errorRegister').removeClass("success").addClass("error").html("The user with this login already exists");
+              this.saveUser(saveUser);
+            } else
+              $('#errorRegister').removeClass("success").addClass("error").html("The user with this login or email already exists");
+          }, error => {
+            alert("An error has occurred");
+          }
+        )
       },
       error => {
         alert("An error has occurred");
@@ -129,7 +135,8 @@ export interface UserLoginViewModel {
 }
 
 export interface UserRegisterViewModel {
-  login: string,
-  password: string,
-  confirmPassword: string
+  login: string;
+  password: string;
+  confirmPassword: string;
+  email: string;
 }

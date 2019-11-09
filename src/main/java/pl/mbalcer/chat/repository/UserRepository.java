@@ -7,4 +7,6 @@ import pl.mbalcer.chat.model.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
     User findByLogin(String login);
+
+    User findByEmail(String email);
 }

@@ -39,7 +39,7 @@
         <span *ngIf="registerConfirmPassword.errors?.pattern">Password & Confirm Password must be the same</span>
       </p>
 
-      <input type="text" placeholder="email address" name="register-email"/>
+      <input type="text" placeholder="email address" name="register-email" [(ngModel)]="userToRegister.email"/>
       <button>create</button>
       <p class="message error" id="errorRegister"></p>
       <p class="message">Already registered? <a href="#" (click)="togglePanel()">Sign In</a></p>
