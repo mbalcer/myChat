@@ -39,7 +39,6 @@ export class LoginPanelComponent implements OnInit {
       login += Math.floor(Math.random() * 10);
 
     let guestUser : User = {
-      id: null,
       login: login,
       password: null,
       email: null,
@@ -95,7 +94,6 @@ export class LoginPanelComponent implements OnInit {
           e => {
             if (l == null && e == null) {
               let saveUser: User = {
-                id: null,
                 login: this.userToRegister.login,
                 password: this.userToRegister.password,
                 email: this.userToRegister.email,
