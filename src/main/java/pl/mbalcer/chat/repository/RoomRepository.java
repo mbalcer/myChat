@@ -6,4 +6,5 @@ import pl.mbalcer.chat.model.Room;
 
 @Repository
 public interface RoomRepository extends JpaRepository<Room, Long> {
+    Room getRoomByName(String name);
 }
