@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {User} from "../../model/user";
 import {RoomsService} from "../../service/rooms.service";
 
@@ -12,6 +12,7 @@ export class RoomsComponent implements OnInit {
   login: string;
 
   @Input() user: User;
+  @Output() room: EventEmitter<string> = new EventEmitter();
 
   constructor(private roomService: RoomsService) {
     this.rooms.push("All");
@@ -33,6 +34,6 @@ export class RoomsComponent implements OnInit {
   }
 
   changeRoom(room: string) {
-
+    this.room.emit(room);
   }
 }

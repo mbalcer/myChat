@@ -1,5 +1,5 @@
 <div class="chat">
-  <app-rooms [user]="user"></app-rooms>
+  <app-rooms [user]="user" (room)="updateRoom($event)"></app-rooms>
   <div class="chat-body" #chatBody [scrollTop]="chatBody.scrollHeight">
     <p *ngFor="let m of messages">
       <span class="login-message" [ngStyle]="{'color': m.user.color}">{{m.user.login}} </span> <span

@@ -1,5 +1,6 @@
 package pl.mbalcer.chat.controller;
 
+import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
@@ -10,10 +11,9 @@ import java.time.LocalDateTime;
 @Controller
 public class ChatController {
 
-    @MessageMapping("/chat")
-    @SendTo("/topic/messages")
-    public Message getMessage(Message message) {
-        System.out.println(message.getMessage());
+    @MessageMapping("/chat/{room}")
+    @SendTo("/topic/{room}")
+    public Message getMessage(@DestinationVariable String room, Message message) {
         message.setDateTime(LocalDateTime.now());
         return message;
     }

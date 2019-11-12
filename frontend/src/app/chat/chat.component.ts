@@ -17,21 +17,23 @@ export class ChatComponent implements OnInit {
   messages: Message[] = [];
   @Input() user: User;
   yourMessage: string;
+  room: string;
 
   constructor() {
-    this.webSocketConnect();
+    this.room = "All";
+    this.webSocketConnect(this.room);
   }
 
   ngOnInit() {
   }
 
-  webSocketConnect(){
+  webSocketConnect(room) {
     let ws = new SockJS(this.serverUrl);
     this.stompClient = Stomp.over(ws);
     let client = this.stompClient;
     let that = this;
     client.connect({}, function(frame) {
-      client.subscribe("/topic/messages", function(message) {
+      client.subscribe("/topic/" + room, function (message) {
         that.showMessage(JSON.parse(message.body).user, JSON.parse(message.body).message, JSON.parse(message.body).dateTime);
       });
     });
@@ -52,7 +54,13 @@ export class ChatComponent implements OnInit {
       message: this.yourMessage,
       dateTime: null
     };
-    this.stompClient.send("/app/chat" , {}, JSON.stringify(messageToSend));
+    this.stompClient.send("/app/chat/" + this.room, {}, JSON.stringify(messageToSend));
     this.yourMessage = "";
+  }
+
+  updateRoom(room: string) {
+    this.room = room;
+    this.messages.splice(0, this.messages.length);
+    this.webSocketConnect(this.room);
   }
 }
