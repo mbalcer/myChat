@@ -39,6 +39,10 @@ export class ChatComponent implements OnInit {
     });
   }
 
+  webSocketDisconnect(room) {
+    this.stompClient.disconnect("/topic/" + room);
+  }
+
   showMessage(user, message, dateTime) {
     let newMessage : Message = {
       user: user,
@@ -61,6 +65,7 @@ export class ChatComponent implements OnInit {
   updateRoom(room: string) {
     this.room = room;
     this.messages.splice(0, this.messages.length);
+    this.webSocketDisconnect(this.room);
     this.webSocketConnect(this.room);
   }
 }
