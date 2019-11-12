@@ -1,4 +1,5 @@
 <div class="chat">
+  <app-rooms></app-rooms>
   <div class="chat-body" #chatBody [scrollTop]="chatBody.scrollHeight">
     <p *ngFor="let m of messages">
       <span class="login-message" [ngStyle]="{'color': m.user.color}">{{m.user.login}} </span> <span
