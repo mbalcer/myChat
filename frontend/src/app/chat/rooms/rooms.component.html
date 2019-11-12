@@ -1,1 +1,3 @@
-<p>rooms works!</p>
+<div class="rooms">
+  <a *ngFor="let room of rooms" (click)="changeRoom(room)">{{room}}</a>
+</div>

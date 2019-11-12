@@ -6,11 +6,16 @@ import {Component, OnInit} from '@angular/core';
   styleUrls: ['./rooms.component.css']
 })
 export class RoomsComponent implements OnInit {
+  rooms: string[] = [];
 
   constructor() {
+    this.rooms.push("All");
   }
 
   ngOnInit() {
   }
 
+  changeRoom(room: string) {
+
+  }
 }

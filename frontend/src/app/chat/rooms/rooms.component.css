@@ -1,0 +1,13 @@
+.rooms {
+  display: flex;
+  flex-direction: row;
+}
+
+.rooms a {
+  cursor: pointer;
+  margin: 1em;
+}
+
+.rooms a:hover {
+  color: #2ecc71;
+}
