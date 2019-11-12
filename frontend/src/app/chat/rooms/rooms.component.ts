@@ -1,4 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {User} from "../../model/user";
+import {RoomsService} from "../../service/rooms.service";
 
 @Component({
   selector: 'app-rooms',
@@ -7,12 +9,27 @@ import {Component, OnInit} from '@angular/core';
 })
 export class RoomsComponent implements OnInit {
   rooms: string[] = [];
+  login: string;
 
-  constructor() {
+  @Input() user: User;
+
+  constructor(private roomService: RoomsService) {
     this.rooms.push("All");
   }
 
   ngOnInit() {
+    if (this.user != null)
+      this.getAllRoomsUser();
+  }
+
+  getAllRoomsUser() {
+    this.roomService.getRoomsByUser(this.user.login).subscribe(
+      n => {
+        this.rooms = this.rooms.concat(n);
+      }, error => {
+        alert("An error has occurred");
+      }
+    )
   }
 
   changeRoom(room: string) {

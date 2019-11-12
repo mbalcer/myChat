@@ -12,7 +12,7 @@ export class RoomsService {
   constructor(private http: HttpClient) {
   }
 
-  getRoomsByUser(user: string): Observable<String[]> {
-    return this.http.get<String[]>(this.GET_ROOMS_BY_USER + user);
+  getRoomsByUser(user: string): Observable<string[]> {
+    return this.http.get<string[]>(this.GET_ROOMS_BY_USER + user);
   }
 }
