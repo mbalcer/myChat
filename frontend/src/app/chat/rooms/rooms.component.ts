@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {User} from "../../model/user";
 import {RoomsService} from "../../service/rooms.service";
+import {Room} from "../../model/room";
 
 @Component({
   selector: 'app-rooms',
@@ -35,5 +36,20 @@ export class RoomsComponent implements OnInit {
 
   changeRoom(room: string) {
     this.room.emit(room);
+  }
+
+  addRoom() {
+    let newRoom: Room = {
+      name: "New room",
+      users: [this.user]
+    };
+
+    this.roomService.saveRoom(newRoom).subscribe(
+      n => {
+        this.rooms.push(n.name);
+      }, error => {
+        alert("An error has occurred");
+      }
+    )
   }
 }

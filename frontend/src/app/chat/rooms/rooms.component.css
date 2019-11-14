@@ -1,3 +1,8 @@
+.rooms-panel {
+  display: flex;
+  flex-direction: row;
+}
+
 .rooms {
   display: flex;
   flex-direction: row;
