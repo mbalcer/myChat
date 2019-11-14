@@ -5,7 +5,9 @@ import org.springframework.web.bind.annotation.*;
 import pl.mbalcer.chat.dto.RoomDTO;
 import pl.mbalcer.chat.mapper.RoomMapper;
 import pl.mbalcer.chat.model.Room;
+import pl.mbalcer.chat.model.User;
 import pl.mbalcer.chat.repository.RoomRepository;
+import pl.mbalcer.chat.repository.UserRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,6 +18,8 @@ import java.util.stream.Collectors;
 public class RoomController {
     @Autowired
     private RoomRepository roomRepository;
+    @Autowired
+    private UserRepository userRepository;
     @Autowired
     private RoomMapper roomMapper;
 
@@ -28,7 +32,13 @@ public class RoomController {
     @PostMapping
     public RoomDTO save(@RequestBody RoomDTO roomDTO) {
         Room saveRoom = roomMapper.convertToRoomEntity(roomDTO);
-        return roomMapper.convertToRoomDTO(roomRepository.save(saveRoom));
+        List<User> users = saveRoom.getUsers()
+                .stream()
+                .map(u -> userRepository.findByLogin(u.getLogin()))
+                .collect(Collectors.toList());
+        saveRoom.setUsers(users);
+        Room room = roomRepository.save(saveRoom);
+        return roomMapper.convertToRoomDTO(room);
     }
 
     @GetMapping("/byUser/{user}")
