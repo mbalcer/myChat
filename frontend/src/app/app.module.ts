@@ -9,6 +9,7 @@ import {ChatComponent} from './chat/chat.component';
 import {LoginPanelComponent} from './login-panel/login-panel.component';
 import {HttpClientModule} from "@angular/common/http";
 import {RoomsComponent} from './chat/rooms/rooms.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import {RoomsComponent} from './chat/rooms/rooms.component';
     BrowserModule,
     FormsModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
