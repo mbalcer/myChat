@@ -19,7 +19,8 @@ import {DemoMaterialModule} from "./material-module";
     HeaderWebComponent,
     ChatComponent,
     LoginPanelComponent,
-    RoomsComponent
+    RoomsComponent,
+    DialogAddRoom
   ],
   imports: [
     BrowserModule,
@@ -30,6 +31,7 @@ import {DemoMaterialModule} from "./material-module";
     DemoMaterialModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [RoomsComponent, DialogAddRoom],
 })
 export class AppModule { }

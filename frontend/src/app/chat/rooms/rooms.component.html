@@ -2,5 +2,5 @@
   <div class="rooms">
     <a *ngFor="let room of rooms" (click)="changeRoom(room)">{{room}}</a>
   </div>
-  <button class="btn-add" (click)="addRoom()" *ngIf="user.email!=null">Add room</button>
+  <button class="btn-add" (click)="openDialog()" *ngIf="user.email!=null">Add room</button>
 </div>
