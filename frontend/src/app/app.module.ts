@@ -8,8 +8,10 @@ import {HeaderWebComponent} from './header-web/header-web.component';
 import {ChatComponent} from './chat/chat.component';
 import {LoginPanelComponent} from './login-panel/login-panel.component';
 import {HttpClientModule} from "@angular/common/http";
-import {RoomsComponent} from './chat/rooms/rooms.component';
+import {DialogAddRoom, RoomsComponent} from './chat/rooms/rooms.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {DemoMaterialModule} from "./material-module";
+
 
 @NgModule({
   declarations: [
@@ -24,7 +26,8 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     FormsModule,
     AppRoutingModule,
     HttpClientModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    DemoMaterialModule
   ],
   providers: [],
   bootstrap: [AppComponent]
