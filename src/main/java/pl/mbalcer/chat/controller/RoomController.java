@@ -10,6 +10,7 @@ import pl.mbalcer.chat.repository.RoomRepository;
 import pl.mbalcer.chat.repository.UserRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -24,9 +25,12 @@ public class RoomController {
     private RoomMapper roomMapper;
 
     @GetMapping("/byName/{name}")
-    public RoomDTO getRoomByName(@PathVariable String name) {
-        Room room = roomRepository.getRoomByName(name);
-        return roomMapper.convertToRoomDTO(room);
+    public Optional<RoomDTO> getRoomByName(@PathVariable String name) {
+        Optional<Room> room = Optional.ofNullable(roomRepository.getRoomByName(name));
+        if (room.isPresent())
+            return Optional.ofNullable(roomMapper.convertToRoomDTO(room.get()));
+        else
+            return Optional.empty();
     }
 
     @PostMapping

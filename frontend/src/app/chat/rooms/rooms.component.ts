@@ -41,6 +41,19 @@ export class RoomsComponent implements OnInit {
   }
 
   addRoom() {
+    this.roomService.getRoomByName(this.createRoomName).subscribe(
+      n => {
+        if (n == null) {
+          this.saveRoom();
+        } else {
+          alert("Room about this name already exists");
+        }
+      }, error => {
+        alert("An error has occurred");
+      });
+  }
+
+  saveRoom() {
     let newRoom: Room = {
       name: this.createRoomName,
       users: [this.user]
@@ -51,8 +64,7 @@ export class RoomsComponent implements OnInit {
         this.rooms.push(n.name);
       }, error => {
         alert("An error has occurred");
-      }
-    )
+      });
   }
 
   openDialog(): void {
