@@ -2,7 +2,8 @@ import {Component, EventEmitter, Inject, Input, OnInit, Output} from '@angular/c
 import {User} from "../../model/user";
 import {RoomsService} from "../../service/rooms.service";
 import {Room} from "../../model/room";
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material";
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatIconRegistry} from "@angular/material";
+import {DomSanitizer} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-rooms',
@@ -17,8 +18,14 @@ export class RoomsComponent implements OnInit {
   @Input() user: User;
   @Output() room: EventEmitter<string> = new EventEmitter();
 
-  constructor(private roomService: RoomsService, public dialog: MatDialog) {
+  constructor(private roomService: RoomsService, public dialog: MatDialog, iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
     this.rooms.push("All");
+    iconRegistry.addSvgIcon(
+      'remove',
+      sanitizer.bypassSecurityTrustResourceUrl('assets/icons/remove.svg'));
+    iconRegistry.addSvgIcon(
+      'add',
+      sanitizer.bypassSecurityTrustResourceUrl('assets/icons/add.svg'));
   }
 
   ngOnInit() {
@@ -77,6 +84,10 @@ export class RoomsComponent implements OnInit {
       this.createRoomName = result;
       this.addRoom();
     });
+  }
+
+  leaveFromRoom() {
+
   }
 }
 

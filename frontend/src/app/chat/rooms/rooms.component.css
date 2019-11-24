@@ -1,3 +1,7 @@
+a {
+  cursor: pointer;
+}
+
 .rooms-panel {
   display: flex;
   flex-direction: column;
@@ -19,11 +23,44 @@
   overflow: auto;
 }
 
-.rooms a {
-  cursor: pointer;
-  margin: 1em;
+.box-search-and-add {
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
 }
 
-.rooms a:hover {
+.search-room {
+  border-radius: 3px;
+  border: none;
+  padding: 10px;
+  color: white;
+  background: #6A6C75;
+  width: 80%;
+  font-size: 14px;
+}
+
+.room-body {
+  display: flex;
+  flex-direction: row;
+  padding: 10px;
+}
+
+.room-name {
+  padding: 5px 10px;
+}
+
+a.room-name:hover {
   color: #2ecc71;
+}
+
+.leave-room:hover, .add-room:hover {
+  filter: grayscale(100%) contrast(100%);
+}
+
+.add-room {
+  padding: 10px;
+}
+
+.leave-room {
+  padding: 5px 10px;
 }

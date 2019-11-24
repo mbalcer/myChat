@@ -2,8 +2,19 @@
   <div class="room-title">
     Rooms
   </div>
-  <button class="btn-add" (click)="openDialog()" *ngIf="user.email!=null">Add room</button>
+  <span class="box-search-and-add">
+    <input type="text" class="search-room" placeholder="Search...">
+    <a class="add-room" (click)="openDialog()" *ngIf="user.email!=null" style="margin-left: auto">
+      <mat-icon svgIcon="add" aria-hidden="false" aria-label="Add room"></mat-icon>
+    </a>
+  </span>
+
   <div class="rooms">
-    <a *ngFor="let room of rooms" (click)="changeRoom(room)">{{room}}</a>
+    <span *ngFor="let room of rooms" class="room-body">
+      <a (click)="changeRoom(room)" class="room-name">{{room}}</a>
+      <a (click)="leaveFromRoom()" class="leave-room" style="margin-left: auto;">
+        <mat-icon svgIcon="remove" aria-hidden="false" aria-label="Leave from room"></mat-icon>
+      </a>
+    </span>
   </div>
 </div>
