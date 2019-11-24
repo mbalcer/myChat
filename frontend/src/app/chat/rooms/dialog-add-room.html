@@ -1,10 +1,24 @@
 <h1 mat-dialog-title>Create new room</h1>
 <div mat-dialog-content>
   <mat-form-field>
-    <input matInput [(ngModel)]="data.name">
+    <input matInput
+           [(ngModel)]="data.name"
+           name="roomName"
+           #roomName="ngModel"
+           [ngClass]="{ 'is-invalid': roomName.invalid }"
+           required minlength="4"
+    />
   </mat-form-field>
+  <p style="color: #e74c3c;
+            margin: 0;
+            text-align: left;
+            font-size: 12px;"
+     *ngIf="roomName.invalid">
+    <span *ngIf="roomName.errors?.required">Name is required</span>
+    <span *ngIf="roomName.errors?.minlength">Name must min 4 letters</span>
+  </p>
 </div>
 <div mat-dialog-actions>
   <button mat-button (click)="onNoClick()">No Thanks</button>
-  <button mat-button [mat-dialog-close]="data.name" cdkFocusInitial>Create</button>
+  <button mat-button [mat-dialog-close]="data.name" cdkFocusInitial [disabled]="!roomName.valid">Create</button>
 </div>
