@@ -1,6 +1,9 @@
 <div class="rooms-panel">
+  <div class="room-title">
+    Rooms
+  </div>
+  <button class="btn-add" (click)="openDialog()" *ngIf="user.email!=null">Add room</button>
   <div class="rooms">
     <a *ngFor="let room of rooms" (click)="changeRoom(room)">{{room}}</a>
   </div>
-  <button class="btn-add" (click)="openDialog()" *ngIf="user.email!=null">Add room</button>
 </div>

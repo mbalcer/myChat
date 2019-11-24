@@ -1,19 +1,30 @@
 <div class="chat">
-  <app-rooms [user]="user" (room)="updateRoom($event)"></app-rooms>
-  <div class="chat-body" #chatBody [scrollTop]="chatBody.scrollHeight">
-    <p *ngFor="let m of messages">
-      <span class="login-message" [ngStyle]="{'color': m.user.color}">{{m.user.login}} </span> <span
-      class="time-message">{{m.dateTime}}</span>
-      <span class="text-message">{{m.message}}</span>
-    </p>
-    <p *ngIf="messages.length === 0">This chat is empty</p>
-  </div>
-  <div class="message">
-    Message:
-    <input type="text" id="your-message" name="your-message" [(ngModel)]="yourMessage">
-    <button class="btn-send" (click)="sendMessage()" [disabled]="!yourMessage">
-      <i class="fa fa-chevron-right"></i>
-    </button>
-    <!--<input class="fa fa-arrow-right" type="button" (click)="sendMessage()" [disabled]="!yourMessage || !user">-->
+  <app-rooms [user]="user" (room)="updateRoom($event)" class="rooms"></app-rooms>
+  <div class="chat-right">
+    <div class="chat-title">
+      {{room}}
+    </div>
+    <div class="chat-body" #chatBody [scrollTop]="chatBody.scrollHeight">
+      <p *ngFor="let m of messages">
+        <span class="login-message" [ngStyle]="{'color': m.user.color}">{{m.user.login}} </span> <span
+        class="time-message">{{m.dateTime}}</span>
+        <span class="text-message">{{m.message}}</span>
+      </p>
+      <p *ngIf="messages.length === 0">This chat is empty</p>
+    </div>
+    <div class="message">
+      <mat-form-field class="full-width">
+        <mat-label>Message</mat-label>
+        <input matInput
+               id="your-message"
+               name="your-message"
+               [(ngModel)]="yourMessage"
+               class="your-message">
+      </mat-form-field>
+      <button mat-raised-button color="primary" style="float: right;" (click)="sendMessage()" [disabled]="!yourMessage">
+        Send
+      </button>
+      <!--<input class="fa fa-arrow-right" type="button" (click)="sendMessage()" [disabled]="!yourMessage || !user">-->
+    </div>
   </div>
 </div>
