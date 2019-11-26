@@ -3,62 +3,33 @@ package pl.mbalcer.chat.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pl.mbalcer.chat.dto.RoomDTO;
-import pl.mbalcer.chat.mapper.RoomMapper;
-import pl.mbalcer.chat.model.Room;
-import pl.mbalcer.chat.model.User;
-import pl.mbalcer.chat.repository.RoomRepository;
-import pl.mbalcer.chat.repository.UserRepository;
+import pl.mbalcer.chat.service.RoomService;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/rooms")
 @CrossOrigin
 public class RoomController {
+    private RoomService roomService;
+
     @Autowired
-    private RoomRepository roomRepository;
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private RoomMapper roomMapper;
+    public RoomController(RoomService roomService) {
+        this.roomService = roomService;
+    }
 
     @GetMapping("/byName/{name}")
-    public Optional<RoomDTO> getRoomByName(@PathVariable String name) {
-        Optional<Room> room = Optional.ofNullable(roomRepository.getRoomByName(name));
-        if (room.isPresent())
-            return Optional.ofNullable(roomMapper.convertToRoomDTO(room.get()));
-        else
-            return Optional.empty();
+    public RoomDTO getRoomByName(@PathVariable String name) {
+        return roomService.getRoomByName(name);
     }
 
     @PostMapping
     public RoomDTO save(@RequestBody RoomDTO roomDTO) {
-        Room saveRoom = roomMapper.convertToRoomEntity(roomDTO);
-        List<User> users = saveRoom.getUsers()
-                .stream()
-                .map(u -> userRepository.findByLogin(u.getLogin()))
-                .collect(Collectors.toList());
-        saveRoom.setUsers(users);
-        Room room = roomRepository.save(saveRoom);
-        return roomMapper.convertToRoomDTO(room);
+        return roomService.saveRoom(roomDTO);
     }
 
     @GetMapping("/byUser/{user}")
     public List<String> getRoomByUser(@PathVariable String user) {
-        List<Room> allRooms = roomRepository.findAll();
-        List<Room> userRooms = allRooms.stream()
-                .filter(r -> r.getUsers()
-                        .stream()
-                        .filter(u -> u.getLogin().equals(user))
-                        .findAny()
-                        .orElse(null)
-                        != null)
-                .collect(Collectors.toList());
-
-        return userRooms.stream()
-                .map(r -> r.getName())
-                .collect(Collectors.toList());
+        return roomService.getRoomByUser(user);
     }
 }
