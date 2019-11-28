@@ -3,6 +3,7 @@ package pl.mbalcer.chat.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pl.mbalcer.chat.dto.RoomDTO;
+import pl.mbalcer.chat.dto.UserDTO;
 import pl.mbalcer.chat.service.RoomService;
 
 import java.util.List;
@@ -31,5 +32,15 @@ public class RoomController {
     @GetMapping("/byUser/{user}")
     public List<String> getRoomByUser(@PathVariable String user) {
         return roomService.getRoomByUser(user);
+    }
+
+    @PutMapping("/add/{nameRoom}")
+    public void addUserToRoom(@PathVariable String nameRoom, @RequestBody UserDTO userDTO) {
+        roomService.addUserToRoom(userDTO.getLogin(), nameRoom);
+    }
+
+    @PutMapping("/remove/{nameRoom}")
+    public void removeUserFromRoom(@PathVariable String nameRoom, @RequestBody UserDTO userDTO) {
+        roomService.removeUserFromRoom(userDTO.getLogin(), nameRoom);
     }
 }
