@@ -23,4 +23,18 @@ public class Room {
             joinColumns = @JoinColumn(name = "room_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<User> users;
+
+    public Room(String name) {
+        this.name = name;
+    }
+
+    public void addUser(User user) {
+        this.users.add(user);
+        user.getRooms().add(this);
+    }
+
+    public void removeUser(User user) {
+        this.users.remove(user);
+        user.getRooms().remove(this);
+    }
 }

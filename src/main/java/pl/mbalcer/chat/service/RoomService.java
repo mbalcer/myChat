@@ -61,4 +61,20 @@ public class RoomService {
                 .map(r -> r.getName())
                 .collect(Collectors.toList());
     }
+
+    public void addUserToRoom(String login, String nameRoom) {
+        User user = userRepository.findByLogin(login);
+        Room room = roomRepository.getRoomByName(nameRoom);
+
+        room.addUser(user);
+        roomRepository.save(room);
+    }
+
+    public void removeUserFromRoom(String login, String nameRoom) {
+        User user = userRepository.findByLogin(login);
+        Room room = roomRepository.getRoomByName(nameRoom);
+
+        room.removeUser(user);
+        roomRepository.save(room);
+    }
 }
