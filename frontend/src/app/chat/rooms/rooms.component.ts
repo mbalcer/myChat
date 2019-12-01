@@ -86,8 +86,17 @@ export class RoomsComponent implements OnInit {
     });
   }
 
-  leaveFromRoom() {
-
+  leaveFromRoom(room: string) {
+    if (confirm("Are you sure that you want leave from this room?")) {
+      this.roomService.removeUserFromRoom(room, this.user).subscribe(
+        n => {
+          let indexOfRoom = this.rooms.indexOf(room);
+          this.rooms.splice(indexOfRoom, 1);
+        }, error => {
+          alert("An error has occurred");
+        }
+      );
+    }
   }
 }
 

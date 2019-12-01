@@ -30,11 +30,11 @@ export class RoomsService {
     return this.http.get<string>(this.GET_ROOM_BY_NAME_URL + name);
   }
 
-  addUserToRoom(room: Room, user: User): Observable<any> {
-    return this.http.put<any>(this.ADD_USER_TO_ROOM_URL + room.name, user);
+  addUserToRoom(room: string, user: User): Observable<any> {
+    return this.http.put<any>(this.ADD_USER_TO_ROOM_URL + room, user);
   }
 
-  removeUserFromRoom(room: Room, user: User): Observable<any> {
-    return this.http.put<any>(this.REMOVE_USER_FROM_ROOM_URL + room.name, user);
+  removeUserFromRoom(room: string, user: User): Observable<any> {
+    return this.http.put<any>(this.REMOVE_USER_FROM_ROOM_URL + room, user);
   }
 }

@@ -12,7 +12,7 @@
   <div class="rooms">
     <span *ngFor="let room of rooms" class="room-body">
       <a (click)="changeRoom(room)" class="room-name">{{room}}</a>
-      <a (click)="leaveFromRoom()" class="leave-room" style="margin-left: auto;">
+      <a (click)="leaveFromRoom(room)" class="leave-room" style="margin-left: auto;">
         <mat-icon svgIcon="remove" aria-hidden="false" aria-label="Leave from room"></mat-icon>
       </a>
     </span>
