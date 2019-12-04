@@ -74,7 +74,11 @@ public class RoomService {
         User user = userRepository.findByLogin(login);
         Room room = roomRepository.getRoomByName(nameRoom);
 
-        room.removeUser(user);
-        roomRepository.save(room);
+        if (room.getUsers().size() == 1) {
+            roomRepository.delete(room);
+        } else {
+            room.removeUser(user);
+            roomRepository.save(room);
+        }
     }
 }
