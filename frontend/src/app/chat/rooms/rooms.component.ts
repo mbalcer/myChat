@@ -1,9 +1,10 @@
-import {Component, EventEmitter, Inject, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {User} from "../../model/user";
 import {RoomsService} from "../../service/rooms.service";
 import {Room} from "../../model/room";
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatIconRegistry} from "@angular/material";
+import {MatDialog, MatIconRegistry} from "@angular/material";
 import {DomSanitizer} from "@angular/platform-browser";
+import {DialogAddRoom} from "./dialogs/dialog-add-room/dialog-add-room";
 
 @Component({
   selector: 'app-rooms',
@@ -74,7 +75,7 @@ export class RoomsComponent implements OnInit {
       });
   }
 
-  openDialog(): void {
+  openDialogToAddRoom(): void {
     const dialogRef = this.dialog.open(DialogAddRoom, {
       width: '250px',
       data: {name: this.createRoomName}
@@ -98,25 +99,4 @@ export class RoomsComponent implements OnInit {
       );
     }
   }
-}
-
-@Component({
-  selector: 'dialog-add-room',
-  templateUrl: 'dialog-add-room.html',
-})
-export class DialogAddRoom {
-
-  constructor(
-    public dialogRef: MatDialogRef<DialogAddRoom>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData) {
-  }
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-
-}
-
-export interface DialogData {
-  name: string;
 }

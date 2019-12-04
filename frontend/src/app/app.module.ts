@@ -8,7 +8,8 @@ import {HeaderWebComponent} from './login-panel/header-web/header-web.component'
 import {ChatComponent} from './chat/chat.component';
 import {LoginPanelComponent} from './login-panel/login-panel.component';
 import {HttpClientModule} from "@angular/common/http";
-import {DialogAddRoom, RoomsComponent} from './chat/rooms/rooms.component';
+import {RoomsComponent} from './chat/rooms/rooms.component';
+import {DialogAddRoom} from "./chat/rooms/dialogs/dialog-add-room/dialog-add-room";
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {DemoMaterialModule} from "./material-module";
 

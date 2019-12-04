@@ -4,7 +4,7 @@
   </div>
   <span class="box-search-and-add">
     <input type="text" class="search-room" placeholder="Search...">
-    <a class="add-room" (click)="openDialog()" *ngIf="user.email!=null" style="margin-left: auto">
+    <a class="add-room" (click)="openDialogToAddRoom()" *ngIf="user.email!=null" style="margin-left: auto">
       <mat-icon svgIcon="add" aria-hidden="false" aria-label="Add room"></mat-icon>
     </a>
   </span>
