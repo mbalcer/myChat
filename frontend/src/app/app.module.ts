@@ -12,6 +12,7 @@ import {RoomsComponent} from './chat/rooms/rooms.component';
 import {DialogAddRoom} from "./chat/rooms/dialogs/dialog-add-room/dialog-add-room";
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {DemoMaterialModule} from "./material-module";
+import {DialogAddUserToRoom} from './chat/rooms/dialogs/dialog-add-user-to-room/dialog-add-user-to-room';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import {DemoMaterialModule} from "./material-module";
     ChatComponent,
     LoginPanelComponent,
     RoomsComponent,
-    DialogAddRoom
+    DialogAddRoom,
+    DialogAddUserToRoom
   ],
   imports: [
     BrowserModule,
@@ -33,6 +35,6 @@ import {DemoMaterialModule} from "./material-module";
   ],
   providers: [],
   bootstrap: [AppComponent],
-  entryComponents: [RoomsComponent, DialogAddRoom],
+  entryComponents: [RoomsComponent, DialogAddRoom, DialogAddUserToRoom],
 })
 export class AppModule { }

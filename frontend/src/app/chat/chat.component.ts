@@ -4,6 +4,8 @@ import * as SockJS from 'sockjs-client';
 import {Message} from "../model/message";
 import {User} from "../model/user";
 import {formatDate} from "@angular/common";
+import {MatDialog} from "@angular/material";
+import {DialogAddUserToRoom} from "./rooms/dialogs/dialog-add-user-to-room/dialog-add-user-to-room";
 
 @Component({
   selector: 'app-chat',
@@ -19,7 +21,7 @@ export class ChatComponent implements OnInit {
   yourMessage: string;
   room: string;
 
-  constructor() {
+  constructor(public dialog: MatDialog) {
     this.room = "All";
     this.webSocketConnect(this.room);
   }
@@ -67,5 +69,18 @@ export class ChatComponent implements OnInit {
     this.messages.splice(0, this.messages.length);
     this.webSocketDisconnect(this.room);
     this.webSocketConnect(this.room);
+  }
+
+  openDialogToAddUserToRoom(room: string) {
+    const dialogRef = this.dialog.open(DialogAddUserToRoom, {
+      width: '400px',
+      data: {room: room}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result != null) {
+        console.log("test");
+      }
+    });
   }
 }
