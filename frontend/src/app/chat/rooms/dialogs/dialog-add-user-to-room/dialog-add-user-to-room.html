@@ -3,11 +3,18 @@
   <mat-form-field>
     <input matInput
            name="user"
-           [(ngModel)]="user.login"
+           [(ngModel)]="userLogin"
            placeholder="user"
+           (keyup)="invalidUser = false"
     />
   </mat-form-field>
   <button mat-raised-button color="primary" (click)="addUserToRoom()">Add user</button>
+  <p style="color: #e74c3c;
+          margin: 0;
+          text-align: left;
+          font-size: 12px;" *ngIf="invalidUser">
+    The user you want to add does not exist
+  </p>
   <p class="added-users" *ngFor="let user of data.addedUsers">
     {{user.login}}
   </p>
