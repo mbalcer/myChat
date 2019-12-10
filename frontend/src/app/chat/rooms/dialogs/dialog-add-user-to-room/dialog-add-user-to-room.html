@@ -8,7 +8,7 @@
            (keyup)="invalidUser = false"
     />
   </mat-form-field>
-  <button mat-raised-button color="primary" (click)="addUserToRoom()">Add user</button>
+  <button mat-raised-button color="primary" (click)="addUserToRoom()" style="margin-left: 1em;">Add</button>
   <p style="color: #e74c3c;
           margin: 0;
           text-align: left;
@@ -21,5 +21,5 @@
 </div>
 <div mat-dialog-actions>
   <button mat-button (click)="onNoClick()">No Thanks</button>
-  <button mat-button [mat-dialog-close]="data.addedUsers" cdkFocusInitial>Added all users</button>
+  <button mat-button [mat-dialog-close]="data.addedUsers" cdkFocusInitial>Add all users</button>
 </div>

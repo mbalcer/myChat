@@ -6,6 +6,7 @@ import {User} from "../model/user";
 import {formatDate} from "@angular/common";
 import {MatDialog} from "@angular/material";
 import {DialogAddUserToRoom} from "./rooms/dialogs/dialog-add-user-to-room/dialog-add-user-to-room";
+import {RoomsService} from "../service/rooms.service";
 
 @Component({
   selector: 'app-chat',
@@ -21,7 +22,7 @@ export class ChatComponent implements OnInit {
   yourMessage: string;
   room: string;
 
-  constructor(public dialog: MatDialog) {
+  constructor(public dialog: MatDialog, private roomService: RoomsService) {
     this.room = "All";
     this.webSocketConnect(this.room);
   }
@@ -79,7 +80,10 @@ export class ChatComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result != null) {
-        console.log("test");
+        for (let u of result) {
+          this.roomService.addUserToRoom(room, u).subscribe(n => {
+          });
+        }
       }
     });
   }
