@@ -82,8 +82,10 @@ export class RoomsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.createRoomName = result;
-      this.addRoom();
+      if (result != null) {
+        this.createRoomName = result;
+        this.addRoom();
+      }
     });
   }
 
