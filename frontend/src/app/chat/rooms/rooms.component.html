@@ -3,14 +3,14 @@
     Rooms
   </div>
   <span class="box-search-and-add">
-    <input type="text" class="search-room" placeholder="Search...">
+    <input type="text" class="search-room" placeholder="Search..." [(ngModel)]="searchText">
     <a class="add-room" (click)="openDialogToAddRoom()" *ngIf="user.email!=null" style="margin-left: auto">
       <mat-icon svgIcon="add" aria-hidden="false" aria-label="Add room"></mat-icon>
     </a>
   </span>
 
   <div class="rooms">
-    <span *ngFor="let room of rooms" class="room-body">
+    <span *ngFor="let room of rooms | searchRoom:searchText" class="room-body">
       <a (click)="changeRoom(room)" class="room-name">{{room}}</a>
       <a (click)="leaveFromRoom(room)" class="leave-room" style="margin-left: auto;" *ngIf="room!='All'">
         <mat-icon svgIcon="remove" aria-hidden="false" aria-label="Leave from room"></mat-icon>

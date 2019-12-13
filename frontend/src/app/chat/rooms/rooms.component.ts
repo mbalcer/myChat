@@ -15,6 +15,7 @@ export class RoomsComponent implements OnInit {
   rooms: string[] = [];
   login: string;
   createRoomName: string;
+  searchText: string;
 
   @Input() user: User;
   @Output() room: EventEmitter<string> = new EventEmitter();
