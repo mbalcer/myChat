@@ -33,10 +33,25 @@ a {
   border-radius: 3px;
   border: none;
   padding: 10px;
-  color: white;
+  color: #FFFFFF;
   background: #6A6C75;
   width: 80%;
   font-size: 14px;
+}
+
+.search-room::placeholder {
+  color: #CCCCCC;
+}
+
+.search-room:focus {
+  outline: 1px solid #2ecc71;
+}
+
+.search-icon {
+  font-size: 28px;
+  position: relative;
+  left: -30px;
+  top: 8px;
 }
 
 .room-body {

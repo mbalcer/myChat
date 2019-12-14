@@ -3,7 +3,8 @@
     Rooms
   </div>
   <span class="box-search-and-add">
-    <input type="text" class="search-room" placeholder="Search..." [(ngModel)]="searchText">
+    <input type="text" class="search-room" placeholder="Search..." [(ngModel)]="searchText"> <mat-icon
+    class="search-icon">search</mat-icon>
     <a class="add-room" (click)="openDialogToAddRoom()" *ngIf="user.email!=null" style="margin-left: auto">
       <mat-icon svgIcon="add" aria-hidden="false" aria-label="Add room"></mat-icon>
     </a>
