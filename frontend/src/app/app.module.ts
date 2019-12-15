@@ -14,6 +14,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {DemoMaterialModule} from "./material-module";
 import {DialogAddUserToRoom} from './chat/rooms/dialogs/dialog-add-user-to-room/dialog-add-user-to-room';
 import {SearchRoomPipe} from './pipes/search-room.pipe';
+import {InfoPanelComponent} from './chat/info-panel/info-panel.component';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import {SearchRoomPipe} from './pipes/search-room.pipe';
     RoomsComponent,
     DialogAddRoom,
     DialogAddUserToRoom,
-    SearchRoomPipe
+    SearchRoomPipe,
+    InfoPanelComponent
   ],
   imports: [
     BrowserModule,

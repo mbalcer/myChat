@@ -1,40 +1,45 @@
-<div class="chat">
-  <app-rooms [user]="user" (room)="updateRoom($event)" class="rooms"></app-rooms>
-  <div class="chat-right">
-    <div class="chat-title">
-      {{room}}
-      <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Room menu" *ngIf="room != 'All'"
-              style="float: right;">
-        <mat-icon>more_vert</mat-icon>
-      </button>
-      <mat-menu #menu="matMenu">
-        <button mat-menu-item (click)="openDialogToAddUserToRoom(room)">
-          <mat-icon>add</mat-icon>
-          <span>Add user to room</span>
+<div class="container-chat">
+  <app-info-panel></app-info-panel>
+  <div class="chat">
+    <app-rooms [user]="user" (room)="updateRoom($event)" class="rooms"></app-rooms>
+    <div class="chat-right">
+      <div class="chat-title">
+        {{room}}
+        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Room menu" *ngIf="room != 'All'"
+                style="float: right;">
+          <mat-icon>more_vert</mat-icon>
         </button>
-      </mat-menu>
-    </div>
-    <div class="chat-body" #chatBody [scrollTop]="chatBody.scrollHeight">
-      <p *ngFor="let m of messages">
-        <span class="login-message" [ngStyle]="{'color': m.user.color}">{{m.user.login}} </span> <span
-        class="time-message">{{m.dateTime}}</span>
-        <span class="text-message">{{m.message}}</span>
-      </p>
-      <p *ngIf="messages.length === 0">This chat is empty</p>
-    </div>
-    <div class="message">
-      <mat-form-field class="full-width">
-        <mat-label>Message</mat-label>
-        <input matInput
-               id="your-message"
-               name="your-message"
-               [(ngModel)]="yourMessage"
-               class="your-message">
-      </mat-form-field>
-      <button mat-raised-button color="primary" style="float: right;" (click)="sendMessage()" [disabled]="!yourMessage">
-        Send
-      </button>
-      <!--<input class="fa fa-arrow-right" type="button" (click)="sendMessage()" [disabled]="!yourMessage || !user">-->
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="openDialogToAddUserToRoom(room)">
+            <mat-icon>add</mat-icon>
+            <span>Add user to room</span>
+          </button>
+        </mat-menu>
+      </div>
+      <div class="chat-body" #chatBody [scrollTop]="chatBody.scrollHeight">
+        <p *ngFor="let m of messages">
+          <span class="login-message" [ngStyle]="{'color': m.user.color}">{{m.user.login}} </span> <span
+          class="time-message">{{m.dateTime}}</span>
+          <span class="text-message">{{m.message}}</span>
+        </p>
+        <p *ngIf="messages.length === 0">This chat is empty</p>
+      </div>
+      <div class="message">
+        <mat-form-field class="full-width">
+          <mat-label>Message</mat-label>
+          <input matInput
+                 id="your-message"
+                 name="your-message"
+                 [(ngModel)]="yourMessage"
+                 class="your-message">
+        </mat-form-field>
+        <button mat-raised-button color="primary" style="float: right;" (click)="sendMessage()"
+                [disabled]="!yourMessage">
+          Send
+        </button>
+        <!--<input class="fa fa-arrow-right" type="button" (click)="sendMessage()" [disabled]="!yourMessage || !user">-->
+      </div>
     </div>
   </div>
+
 </div>
