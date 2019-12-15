@@ -1,0 +1,18 @@
+.info-panel {
+  display: flex;
+  flex-direction: row;
+  padding: 1em 0;
+}
+
+.icon-person {
+  transform: scale(1.5);
+  margin: 7px 1em 0 1em;
+}
+
+.user-info {
+  padding: 1em 0;
+}
+
+.btn-sign-out {
+  float: right;
+}
