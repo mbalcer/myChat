@@ -3,7 +3,7 @@
     <mat-icon>person</mat-icon>
   </button>
   <div class="user-info">
-    Welcome {{user.login}}
+    Welcome <span [ngStyle]="{'color': user.color}">{{user.login}}</span>
   </div>
   <button mat-raised-button color="warn" class="btn-sign-out">
     Sign Out

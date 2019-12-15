@@ -2,17 +2,24 @@
   display: flex;
   flex-direction: row;
   padding: 1em 0;
+  background-color: #444753;
+  border-bottom: 1px solid #FFFFFF;
+  position: relative;
 }
 
 .icon-person {
   transform: scale(1.5);
   margin: 7px 1em 0 1em;
+  color: #FFFFFF;
 }
 
 .user-info {
   padding: 1em 0;
+  color: #FFFFFF;
 }
 
 .btn-sign-out {
-  float: right;
+  position: absolute;
+  right: 0;
+  top: 2em;
 }
