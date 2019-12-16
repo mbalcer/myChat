@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {User} from "../../model/user";
 
 @Component({
@@ -7,15 +7,9 @@ import {User} from "../../model/user";
   styleUrls: ['./info-panel.component.css']
 })
 export class InfoPanelComponent implements OnInit {
-  user: User;
+  @Input() user: User;
 
   constructor() {
-    this.user = {
-      login: "Mateusz",
-      password: null,
-      email: null,
-      color: null
-    }
   }
 
   ngOnInit() {

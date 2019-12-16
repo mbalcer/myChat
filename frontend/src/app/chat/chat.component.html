@@ -1,5 +1,5 @@
 <div class="container-chat">
-  <app-info-panel></app-info-panel>
+  <app-info-panel [user]="user"></app-info-panel>
   <div class="chat">
     <app-rooms [user]="user" (room)="updateRoom($event)" class="rooms"></app-rooms>
     <div class="chat-right">
