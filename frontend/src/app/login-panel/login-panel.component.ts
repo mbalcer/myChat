@@ -3,6 +3,7 @@ import * as $ from 'jquery';
 import {User} from "../model/user";
 import {UserService} from "../service/user.service";
 import {Router} from "@angular/router";
+import {TokenService} from "../service/token.service";
 
 @Component({
   selector: 'app-login-panel',
@@ -22,13 +23,14 @@ export class LoginPanelComponent implements OnInit {
     email: ''
   };
 
-  constructor(private userService: UserService, private router: Router) {
+  constructor(private userService: UserService, private tokenService: TokenService, private router: Router) {
   }
 
   ngOnInit() {
   }
 
   navigateToChat(user: User) {
+    this.tokenService.setToken(user.login);
     this.router.navigateByUrl("/chat");
   }
 
