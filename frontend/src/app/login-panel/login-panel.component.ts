@@ -1,7 +1,8 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import * as $ from 'jquery';
 import {User} from "../model/user";
 import {UserService} from "../service/user.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-login-panel',
@@ -9,8 +10,6 @@ import {UserService} from "../service/user.service";
   styleUrls: ['./login-panel.component.css']
 })
 export class LoginPanelComponent implements OnInit {
-
-  @Output() userLogged: EventEmitter<User> = new EventEmitter();
 
   userToLogin: UserLoginViewModel = {
     username: '',
@@ -23,14 +22,14 @@ export class LoginPanelComponent implements OnInit {
     email: ''
   };
 
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService, private router: Router) {
   }
 
   ngOnInit() {
   }
 
-  loginUser(user : User) {
-      this.userLogged.emit(user);
+  navigateToChat(user: User) {
+    this.router.navigateByUrl("/chat");
   }
 
   randomGuestUser() {
@@ -44,7 +43,7 @@ export class LoginPanelComponent implements OnInit {
       email: null,
       color: "#000000"
     };
-    this.loginUser(guestUser);
+    this.navigateToChat(guestUser);
   }
 
   getRandomColor() {
@@ -73,7 +72,7 @@ export class LoginPanelComponent implements OnInit {
             $('#errorLogin').html("The user with the given username does not exist");
             $('.login-form input').css("border", "1px solid #e74c3c");
           } else if (getUser.login === this.userToLogin.username && getUser.password === this.userToLogin.password)
-            this.loginUser(getUser);
+            this.navigateToChat(getUser);
           else {
             $('#errorLogin').html("Wrong password");
             $('.login-form input').css("border", "1px solid #e74c3c");

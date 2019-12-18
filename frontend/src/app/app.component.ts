@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import {User} from "./model/user";
+import {Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -7,13 +6,9 @@ import {User} from "./model/user";
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit{
-  user : User;
 
   constructor () {}
 
   ngOnInit() {}
-
-  loginUser(user : User) {
-    this.user = user;
-  }
 }
+
