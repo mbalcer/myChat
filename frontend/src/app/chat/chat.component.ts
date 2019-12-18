@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
 import {Message} from "../model/message";
@@ -7,6 +7,8 @@ import {formatDate} from "@angular/common";
 import {MatDialog} from "@angular/material";
 import {DialogAddUserToRoom} from "./rooms/dialogs/dialog-add-user-to-room/dialog-add-user-to-room";
 import {RoomsService} from "../service/rooms.service";
+import {UserService} from "../service/user.service";
+import {TokenService} from "../service/token.service";
 
 @Component({
   selector: 'app-chat',
@@ -18,11 +20,14 @@ export class ChatComponent implements OnInit {
   private stompClient;
 
   messages: Message[] = [];
-  @Input() user: User;
+  user: User;
   yourMessage: string;
   room: string;
 
-  constructor(public dialog: MatDialog, private roomService: RoomsService) {
+  constructor(public dialog: MatDialog, private roomService: RoomsService, private userService: UserService, private tokenService: TokenService) {
+    this.userService.getUserByLogin(this.tokenService.getLogin()).subscribe(n => {
+      this.user = n;
+    });
     this.room = "All";
     this.webSocketConnect(this.room);
   }

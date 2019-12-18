@@ -17,4 +17,8 @@ export class TokenService {
   isLogged() {
     return localStorage.getItem(TOKEN) != null;
   }
+
+  getLogin(): string {
+    return localStorage.getItem(TOKEN);
+  }
 }

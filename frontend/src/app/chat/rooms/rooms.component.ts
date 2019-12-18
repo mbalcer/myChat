@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {AfterViewChecked, Component, EventEmitter, Input, Output} from '@angular/core';
 import {User} from "../../model/user";
 import {RoomsService} from "../../service/rooms.service";
 import {Room} from "../../model/room";
@@ -11,11 +11,12 @@ import {DialogAddRoom} from "./dialogs/dialog-add-room/dialog-add-room";
   templateUrl: './rooms.component.html',
   styleUrls: ['./rooms.component.css']
 })
-export class RoomsComponent implements OnInit {
+export class RoomsComponent implements AfterViewChecked {
   rooms: string[] = [];
   login: string;
   createRoomName: string;
   searchText: string;
+  initAllRooms: boolean = false;
 
   @Input() user: User;
   @Output() room: EventEmitter<string> = new EventEmitter();
@@ -30,9 +31,11 @@ export class RoomsComponent implements OnInit {
       sanitizer.bypassSecurityTrustResourceUrl('assets/icons/add.svg'));
   }
 
-  ngOnInit() {
-    if (this.user != null)
+  ngAfterViewChecked(): void {
+    if (!this.initAllRooms) {
       this.getAllRoomsUser();
+      this.initAllRooms = true;
+    }
   }
 
   getAllRoomsUser() {
