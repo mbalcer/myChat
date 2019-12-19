@@ -5,7 +5,7 @@
   <div class="user-info">
     Welcome <span [ngStyle]="{'color': user.color}">{{user.login}}</span>
   </div>
-  <button mat-raised-button color="warn" class="btn-sign-out">
+  <button mat-raised-button color="warn" class="btn-sign-out" (click)="signOut()">
     Sign Out
   </button>
 </div>

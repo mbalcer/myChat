@@ -1,5 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {User} from "../../model/user";
+import {TokenService} from "../../service/token.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-info-panel',
@@ -9,10 +11,14 @@ import {User} from "../../model/user";
 export class InfoPanelComponent implements OnInit {
   @Input() user: User;
 
-  constructor() {
+  constructor(private tokenService: TokenService, private router: Router) {
   }
 
   ngOnInit() {
   }
 
+  signOut() {
+    this.tokenService.removeToken();
+    this.router.navigateByUrl("");
+  }
 }
