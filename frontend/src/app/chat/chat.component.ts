@@ -9,6 +9,7 @@ import {DialogAddUserToRoom} from "./rooms/dialogs/dialog-add-user-to-room/dialo
 import {RoomsService} from "../service/rooms.service";
 import {UserService} from "../service/user.service";
 import {TokenService} from "../service/token.service";
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-chat',
@@ -91,5 +92,10 @@ export class ChatComponent implements OnInit {
         }
       }
     });
+  }
+
+  enterSend($event: KeyboardEvent) {
+    if ($event.code == 'Enter')
+      $("#sendButton").click();
   }
 }

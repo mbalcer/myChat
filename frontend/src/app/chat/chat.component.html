@@ -31,13 +31,13 @@
                  id="your-message"
                  name="your-message"
                  [(ngModel)]="yourMessage"
-                 class="your-message">
+                 class="your-message"
+                 (keyup)="enterSend($event)">
         </mat-form-field>
-        <button mat-raised-button color="primary" style="float: right;" (click)="sendMessage()"
+        <button id="sendButton" mat-raised-button color="primary" style="float: right;" (click)="sendMessage()"
                 [disabled]="!yourMessage">
           Send
         </button>
-        <!--<input class="fa fa-arrow-right" type="button" (click)="sendMessage()" [disabled]="!yourMessage || !user">-->
       </div>
     </div>
   </div>
