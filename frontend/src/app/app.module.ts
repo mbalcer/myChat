@@ -15,20 +15,7 @@ import {DemoMaterialModule} from "./material-module";
 import {DialogAddUserToRoom} from './chat/rooms/dialogs/dialog-add-user-to-room/dialog-add-user-to-room';
 import {SearchRoomPipe} from './pipes/search-room.pipe';
 import {InfoPanelComponent} from './chat/info-panel/info-panel.component';
-import {RouterModule, Routes} from "@angular/router";
 import {NeedAuthGuard} from "./service/need-auth-guard";
-
-const appRoutes: Routes = [
-  {
-    path: 'chat',
-    component: ChatComponent,
-    canActivate: [NeedAuthGuard] // <---- connected Route with guard
-  },
-  {
-    path: '',
-    component: LoginPanelComponent
-  }
-];
 
 @NgModule({
   declarations: [
@@ -48,8 +35,7 @@ const appRoutes: Routes = [
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    DemoMaterialModule,
-    RouterModule.forRoot(appRoutes)
+    DemoMaterialModule
   ],
   providers: [NeedAuthGuard],
   bootstrap: [AppComponent],

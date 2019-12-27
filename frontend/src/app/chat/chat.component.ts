@@ -27,9 +27,18 @@ export class ChatComponent implements OnInit {
   room: string;
 
   constructor(public dialog: MatDialog, private roomService: RoomsService, private userService: UserService, private tokenService: TokenService) {
-    this.userService.getUserByLogin(this.tokenService.getLogin()).subscribe(n => {
-      this.user = n;
-    });
+    if(this.tokenService.getLogin().includes("guest")) {
+      this.user = {
+        login: this.tokenService.getLogin(),
+        password: null,
+        email: null,
+        color: "#000000"
+      };
+    } else {
+      this.userService.getUserByLogin(this.tokenService.getLogin()).subscribe(n => {
+        this.user = n;
+      });
+    }
     this.room = "All";
     this.webSocketConnect(this.room);
   }

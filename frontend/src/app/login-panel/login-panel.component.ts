@@ -24,6 +24,8 @@ export class LoginPanelComponent implements OnInit {
   };
 
   constructor(private userService: UserService, private tokenService: TokenService, private router: Router) {
+    if (this.tokenService.isLogged())
+      this.router.navigateByUrl("/chat");
   }
 
   ngOnInit() {
@@ -43,7 +45,7 @@ export class LoginPanelComponent implements OnInit {
       login: login,
       password: null,
       email: null,
-      color: "#000000"
+      color: null
     };
     this.navigateToChat(guestUser);
   }
