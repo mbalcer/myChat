@@ -19,6 +19,7 @@ export class RoomsComponent implements AfterViewChecked, OnDestroy, OnInit {
   searchText: string;
   initAllRooms: boolean = false;
   subCheckRooms: Subscription;
+  currentRoom: string = "All";
 
   @Input() user: User;
   @Output() room: EventEmitter<string> = new EventEmitter();
@@ -66,6 +67,7 @@ export class RoomsComponent implements AfterViewChecked, OnDestroy, OnInit {
   }
 
   changeRoom(room: string) {
+    this.currentRoom = room;
     this.room.emit(room);
   }
 
@@ -116,6 +118,8 @@ export class RoomsComponent implements AfterViewChecked, OnDestroy, OnInit {
         n => {
           let indexOfRoom = this.rooms.indexOf(room);
           this.rooms.splice(indexOfRoom, 1);
+          if (this.currentRoom == room)
+            this.changeRoom("All");
         }, error => {
           alert("An error has occurred");
         }
