@@ -28,6 +28,7 @@ export class DialogAddUserToRoom {
       if (n != null) {
         let user: User = n;
         this.data.addedUsers.push(user);
+        this.userLogin = "";
       } else {
         this.invalidUser = true;
       }

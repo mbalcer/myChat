@@ -82,7 +82,7 @@ export class RoomsComponent implements AfterViewChecked {
   openDialogToAddRoom(): void {
     const dialogRef = this.dialog.open(DialogAddRoom, {
       width: '250px',
-      data: {name: this.createRoomName}
+      data: {name: ''}
     });
 
     dialogRef.afterClosed().subscribe(result => {
