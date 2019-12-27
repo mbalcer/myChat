@@ -63,11 +63,14 @@ public class RoomService {
     }
 
     public void addUserToRoom(String login, String nameRoom) {
-        User user = userRepository.findByLogin(login);
-        Room room = roomRepository.getRoomByName(nameRoom);
+        if (getRoomByUser(login).stream().noneMatch(r -> r.equals(nameRoom))) {
+            System.out.println("true");
+            User user = userRepository.findByLogin(login);
+            Room room = roomRepository.getRoomByName(nameRoom);
 
-        room.addUser(user);
-        roomRepository.save(room);
+            room.addUser(user);
+            roomRepository.save(room);
+        }
     }
 
     public void removeUserFromRoom(String login, String nameRoom) {

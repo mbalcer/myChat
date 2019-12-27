@@ -26,8 +26,10 @@ export class DialogAddUserToRoom {
   addUserToRoom() {
     this.userService.getUserByLogin(this.userLogin).subscribe(n => {
       if (n != null) {
-        let user: User = n;
-        this.data.addedUsers.push(user);
+        if (this.data.addedUsers.find(u => u.login === n.login) === undefined) {
+          let user: User = n;
+          this.data.addedUsers.push(user);
+        }
         this.userLogin = "";
       } else {
         this.invalidUser = true;
