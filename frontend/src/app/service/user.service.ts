@@ -2,15 +2,16 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {User} from "../model/user";
 import {Observable} from "rxjs";
+import {environment} from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  private MAIN_URL = "http://localhost:8080/users";
-  private POST_USER_URL = `${this.MAIN_URL}`;
-  private GET_USER_BY_LOGIN_URL = `${this.MAIN_URL}/byLogin/`;
-  private GET_USER_BY_EMAIL_URL = `${this.MAIN_URL}/byEmail/`;
+  private USER_URL = environment.mainURL + "/users";
+  private POST_USER_URL = `${this.USER_URL}`;
+  private GET_USER_BY_LOGIN_URL = `${this.USER_URL}/byLogin/`;
+  private GET_USER_BY_EMAIL_URL = `${this.USER_URL}/byEmail/`;
 
   constructor(private http: HttpClient) {
   }

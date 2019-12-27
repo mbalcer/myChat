@@ -3,17 +3,18 @@ import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Room} from "../model/room";
 import {User} from "../model/user";
+import {environment} from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class RoomsService {
-  private MAIN_URL = "http://localhost:8080/rooms";
-  private POST_ROOM_URL = `${this.MAIN_URL}`;
-  private GET_ROOMS_BY_USER_URL = `${this.MAIN_URL}/byUser/`;
-  private GET_ROOM_BY_NAME_URL = `${this.MAIN_URL}/byName/`;
-  private ADD_USER_TO_ROOM_URL = `${this.MAIN_URL}/add/`;
-  private REMOVE_USER_FROM_ROOM_URL = `${this.MAIN_URL}/remove/`;
+  private ROOM_URL = environment.mainURL + "/rooms";
+  private POST_ROOM_URL = `${this.ROOM_URL}`;
+  private GET_ROOMS_BY_USER_URL = `${this.ROOM_URL}/byUser/`;
+  private GET_ROOM_BY_NAME_URL = `${this.ROOM_URL}/byName/`;
+  private ADD_USER_TO_ROOM_URL = `${this.ROOM_URL}/add/`;
+  private REMOVE_USER_FROM_ROOM_URL = `${this.ROOM_URL}/remove/`;
 
   constructor(private http: HttpClient) {
   }

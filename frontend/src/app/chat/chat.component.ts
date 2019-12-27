@@ -10,6 +10,7 @@ import {RoomsService} from "../service/rooms.service";
 import {UserService} from "../service/user.service";
 import {TokenService} from "../service/token.service";
 import * as $ from 'jquery';
+import {environment} from "../../environments/environment";
 
 @Component({
   selector: 'app-chat',
@@ -17,7 +18,7 @@ import * as $ from 'jquery';
   styleUrls: ['./chat.component.css']
 })
 export class ChatComponent implements OnInit {
-  private serverUrl = "http://localhost:8080/chat";
+  private serverUrl = environment.mainURL + "/chat";
   private stompClient;
 
   messages: Message[] = [];
