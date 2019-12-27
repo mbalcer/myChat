@@ -1,22 +1,24 @@
-import {AfterViewChecked, Component, EventEmitter, Input, Output} from '@angular/core';
+import {AfterViewChecked, Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {User} from "../../model/user";
 import {RoomsService} from "../../service/rooms.service";
 import {Room} from "../../model/room";
 import {MatDialog, MatIconRegistry} from "@angular/material";
 import {DomSanitizer} from "@angular/platform-browser";
 import {DialogAddRoom} from "./dialogs/dialog-add-room/dialog-add-room";
+import {Subscription, timer} from "rxjs";
 
 @Component({
   selector: 'app-rooms',
   templateUrl: './rooms.component.html',
   styleUrls: ['./rooms.component.css']
 })
-export class RoomsComponent implements AfterViewChecked {
+export class RoomsComponent implements AfterViewChecked, OnDestroy, OnInit {
   rooms: string[] = [];
   login: string;
   createRoomName: string;
   searchText: string;
   initAllRooms: boolean = false;
+  subCheckRooms: Subscription;
 
   @Input() user: User;
   @Output() room: EventEmitter<string> = new EventEmitter();
@@ -36,6 +38,21 @@ export class RoomsComponent implements AfterViewChecked {
       this.getAllRoomsUser();
       this.initAllRooms = true;
     }
+  }
+
+  ngOnInit(): void {
+    const ti = timer(2000, 20000);
+    this.subCheckRooms = ti.subscribe(t => {
+      this.roomService.getRoomsByUser(this.user.login).subscribe(n => {
+        let newRooms = n.filter(r => !(this.rooms.includes(r)));
+        this.rooms = this.rooms.concat(newRooms);
+        console.log(newRooms);
+      });
+    });
+  }
+
+  ngOnDestroy() {
+    this.subCheckRooms.unsubscribe();
   }
 
   getAllRoomsUser() {
