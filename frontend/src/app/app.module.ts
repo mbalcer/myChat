@@ -16,6 +16,7 @@ import {DialogAddUserToRoom} from './chat/rooms/dialogs/dialog-add-user-to-room/
 import {SearchRoomPipe} from './pipes/search-room.pipe';
 import {InfoPanelComponent} from './chat/info-panel/info-panel.component';
 import {NeedAuthGuard} from "./service/need-auth-guard";
+import {UserProfileComponent} from './user-profile/user-profile.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import {NeedAuthGuard} from "./service/need-auth-guard";
     DialogAddRoom,
     DialogAddUserToRoom,
     SearchRoomPipe,
-    InfoPanelComponent
+    InfoPanelComponent,
+    UserProfileComponent
   ],
   imports: [
     BrowserModule,
