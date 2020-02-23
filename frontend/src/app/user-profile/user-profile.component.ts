@@ -15,6 +15,12 @@ export class UserProfileComponent implements OnInit {
     color: "#FF0000"
   };
 
+  changePassword: ChangePasswordModel = {
+    oldPassword: "",
+    newPassword: "",
+    confirmNewPassword: ""
+  }
+
   constructor() {
   }
 
@@ -22,9 +28,17 @@ export class UserProfileComponent implements OnInit {
   }
 
   signOut() {
-
   }
 
   changeColor() {
   }
+
+  savePassword() {
+  }
+}
+
+export interface ChangePasswordModel {
+  oldPassword: string,
+  newPassword: string,
+  confirmNewPassword: string
 }

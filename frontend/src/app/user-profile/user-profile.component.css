@@ -56,3 +56,27 @@ h3 {
 .change-color > button {
   margin-left: 1em;
 }
+
+.change-password {
+  margin: 0 0.5em;
+}
+
+.change-password > form > mat-form-field {
+  width: 30%;
+}
+
+.change-password > form > button {
+  width: 10%;
+}
+
+.change-password > form {
+  display: flex;
+  flex-direction: column;
+}
+
+.error {
+  color: #e74c3c;
+  margin: 0 0 1em 0;
+  text-align: left;
+  font-size: 12px;
+}

@@ -1,7 +1,7 @@
 <div class="container-user-profile col-lg-8 col-md-10 col-sm-12">
   <div class="info-panel">
     <div class="btn-back">
-      <button mat-raised-button color="primary" routerLink="/chat">
+      <button mat-raised-button routerLink="/chat">
         Back to chat
       </button>
     </div>
@@ -18,9 +18,64 @@
     <h3>Change color</h3>
     <div class="change-color">
       <input [(colorPicker)]="user.color" [style.background]="user.color" [cpAlphaChannel]="'disabled'">
-      <button mat-raised-button (click)="changeColor()">Change</button>
+      <button mat-raised-button color="primary" (click)="changeColor()">Save</button>
     </div>
   </div>
-  <div class="change-setting"></div>
-  <div class="change-setting"></div>
+  <div class="change-setting">
+    <h3>Change password</h3>
+    <div class="change-password">
+      <form #changePasswordForm="ngForm" (ngSubmit)="changePasswordForm.form.valid && savePassword()">
+        <mat-form-field>
+          <mat-label>Old password</mat-label>
+          <input matInput
+                 type="password"
+                 [(ngModel)]="changePassword.oldPassword"
+                 name="oldPassword"
+                 #oldPassword="ngModel"
+                 [ngClass]="{ 'is-invalid': changePasswordForm.submitted && oldPassword.invalid }"
+                 required minlength="8"
+          />
+        </mat-form-field>
+        <p class="error" *ngIf="oldPassword.invalid && oldPassword.touched || changePasswordForm.submitted">
+          <span *ngIf="oldPassword.errors?.required">Password is required</span>
+          <span *ngIf="oldPassword.errors?.minlength">Password must min 8 letters</span>
+        </p>
+        <mat-form-field>
+          <mat-label>New password</mat-label>
+          <input matInput
+                 type="password"
+                 [(ngModel)]="changePassword.newPassword"
+                 name="newPassword"
+                 #newPassword="ngModel"
+                 [ngClass]="{ 'is-invalid': changePasswordForm.submitted && newPassword.invalid }"
+                 required minlength="8" maxlength="40" pattern="^((?!{{oldPassword.value}}).)*$"
+          />
+        </mat-form-field>
+        <p class="error" *ngIf="newPassword.invalid && newPassword.touched || changePasswordForm.submitted">
+          <span *ngIf="newPassword.errors?.required">Password is required</span>
+          <span *ngIf="newPassword.errors?.minlength">Password must min 8 letters</span>
+          <span *ngIf="newPassword.errors?.pattern && !newPassword.errors?.minlength">New password must be other than old password</span>
+        </p>
+        <mat-form-field>
+          <mat-label>Confirm new password</mat-label>
+          <input matInput
+                 type="password"
+                 [(ngModel)]="changePassword.confirmNewPassword"
+                 name="confirmNewPassword"
+                 #confirmNewPassword="ngModel"
+                 [ngClass]="{ 'is-invalid': changePasswordForm.submitted && confirmNewPassword.invalid }"
+                 required pattern="{{newPassword.value}}"
+          />
+        </mat-form-field>
+        <p class="message error invalid"
+           *ngIf="confirmNewPassword.invalid && confirmNewPassword.touched || changePasswordForm.submitted">
+          <span *ngIf="confirmNewPassword.errors?.required">Confirm password is required</span>
+          <span *ngIf="confirmNewPassword.errors?.pattern">Password & Confirm Password must be the same</span>
+        </p>
+        <button mat-raised-button color="primary">
+          Save
+        </button>
+      </form>
+    </div>
+  </div>
 </div>
