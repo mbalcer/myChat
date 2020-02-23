@@ -17,6 +17,7 @@ import {SearchRoomPipe} from './pipes/search-room.pipe';
 import {InfoPanelComponent} from './chat/info-panel/info-panel.component';
 import {NeedAuthGuard} from "./service/need-auth-guard";
 import {UserProfileComponent} from './user-profile/user-profile.component';
+import {ColorPickerModule} from "ngx-color-picker";
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import {UserProfileComponent} from './user-profile/user-profile.component';
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    DemoMaterialModule
+    DemoMaterialModule,
+    ColorPickerModule
   ],
   providers: [NeedAuthGuard],
   bootstrap: [AppComponent],
