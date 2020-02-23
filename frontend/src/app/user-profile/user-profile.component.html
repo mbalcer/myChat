@@ -1,1 +1,26 @@
-<p>user-profile works!</p>
+<div class="container-user-profile col-lg-8 col-md-10 col-sm-12">
+  <div class="info-panel">
+    <div class="btn-back">
+      <button mat-raised-button color="primary" routerLink="/chat">
+        Back to chat
+      </button>
+    </div>
+    <div class="user-info">
+      Welcome <span [ngStyle]="{'color': user.color}">{{user.login}}</span>
+    </div>
+    <div class="btn-sign-out">
+      <button mat-raised-button color="warn" (click)="signOut()">
+        Sign Out
+      </button>
+    </div>
+  </div>
+  <div class="change-setting">
+    <h3>Change color</h3>
+    <div class="change-color">
+      <input [(colorPicker)]="user.color" [style.background]="user.color" [cpAlphaChannel]="'disabled'">
+      <button mat-raised-button (click)="changeColor()">Change</button>
+    </div>
+  </div>
+  <div class="change-setting"></div>
+  <div class="change-setting"></div>
+</div>
