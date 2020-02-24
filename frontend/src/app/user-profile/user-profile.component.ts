@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {User} from "../model/user";
 import {UserService} from "../service/user.service";
+import {TokenService} from "../service/token.service";
 
 @Component({
   selector: 'app-user-profile',
@@ -9,12 +10,7 @@ import {UserService} from "../service/user.service";
 })
 export class UserProfileComponent implements OnInit {
 
-  user: User = {
-    login: "Admin",
-    email: "",
-    password: "",
-    color: "#FF0000"
-  };
+  user: User;
 
   changePassword: ChangePasswordModel = {
     oldPassword: "",
@@ -22,7 +18,10 @@ export class UserProfileComponent implements OnInit {
     confirmNewPassword: ""
   }
 
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService, private tokenService: TokenService) {
+    this.userService.getUserByLogin(this.tokenService.getLogin()).subscribe(n => {
+      this.user = n;
+    });
   }
 
   ngOnInit() {
