@@ -1,6 +1,8 @@
 package pl.mbalcer.chat.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import pl.mbalcer.chat.dto.UserDTO;
 import pl.mbalcer.chat.mapper.UserMapper;
@@ -56,5 +58,17 @@ public class UserService {
         user.setColor(userDTO.getColor());
 
         return userMapper.convertToUserDTO(userRepository.save(user));
+    }
+
+    public ResponseEntity<UserDTO> changePassword(UserDTO userDTO, String newPassword) {
+        User user = getUserByLogin(userDTO.getLogin());
+        if (user.getPassword().equals(userDTO.getPassword())) {
+            user.setPassword(newPassword);
+            userRepository.save(user);
+            return new ResponseEntity<>(
+                    userMapper.convertToUserDTO(user),
+                    HttpStatus.OK);
+        } else
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
     }
 }

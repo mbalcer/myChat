@@ -13,6 +13,7 @@ export class UserService {
   private GET_USER_BY_LOGIN_URL = `${this.USER_URL}/byLogin/`;
   private GET_USER_BY_EMAIL_URL = `${this.USER_URL}/byEmail/`;
   private CHANGE_COLOR_URL = `${this.USER_URL}/color`;
+  private CHNAGE_PASSWORD_URL = `${this.USER_URL}/password/`;
 
   constructor(private http: HttpClient) {
   }
@@ -31,5 +32,9 @@ export class UserService {
 
   changeColor(user: User): Observable<User> {
     return this.http.put<User>(this.CHANGE_COLOR_URL, user);
+  }
+
+  changePassword(user: User, password: string) {
+    return this.http.put<User>(this.CHNAGE_PASSWORD_URL + password, user);
   }
 }

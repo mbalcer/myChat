@@ -1,6 +1,7 @@
 package pl.mbalcer.chat.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.mbalcer.chat.dto.UserDTO;
 import pl.mbalcer.chat.mapper.UserMapper;
@@ -44,5 +45,10 @@ public class UserController {
     @PutMapping("/color")
     public UserDTO changeColor(@RequestBody UserDTO user) {
         return userService.changeColor(user);
+    }
+
+    @PutMapping("/password/{newPassword}")
+    public ResponseEntity<UserDTO> changePassword(@PathVariable String newPassword, @RequestBody UserDTO user) {
+        return userService.changePassword(user, newPassword);
     }
 }

@@ -37,6 +37,12 @@ export class UserProfileComponent implements OnInit {
   }
 
   savePassword() {
+    this.user.password = this.changePassword.oldPassword;
+    this.userService.changePassword(this.user, this.changePassword.newPassword).subscribe(n => {
+      this.user = n;
+    }, error => {
+      console.log("Bad old password");
+    });
   }
 }
 
