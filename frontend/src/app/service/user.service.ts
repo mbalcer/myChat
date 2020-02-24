@@ -12,6 +12,7 @@ export class UserService {
   private POST_USER_URL = `${this.USER_URL}`;
   private GET_USER_BY_LOGIN_URL = `${this.USER_URL}/byLogin/`;
   private GET_USER_BY_EMAIL_URL = `${this.USER_URL}/byEmail/`;
+  private CHANGE_COLOR_URL = `${this.USER_URL}/color`;
 
   constructor(private http: HttpClient) {
   }
@@ -26,5 +27,9 @@ export class UserService {
 
   getUserByEmail(email: string): Observable<User> {
     return this.http.get<User>(this.GET_USER_BY_EMAIL_URL + email);
+  }
+
+  changeColor(user: User): Observable<User> {
+    return this.http.put<User>(this.CHANGE_COLOR_URL, user);
   }
 }

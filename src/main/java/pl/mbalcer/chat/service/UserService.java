@@ -23,10 +23,10 @@ public class UserService {
         this.userMapper = userMapper;
     }
 
-    public UserDTO getUserByLogin(String login) {
+    public User getUserByLogin(String login) {
         Optional<User> user = Optional.ofNullable(userRepository.findByLogin(login));
         if (user.isPresent())
-            return userMapper.convertToUserDTO(user.get());
+            return user.get();
         else
             return null;
     }
@@ -48,6 +48,13 @@ public class UserService {
 
     public UserDTO saveUser(UserDTO userDTO) {
         User user = userMapper.convertToUser(userDTO);
+        return userMapper.convertToUserDTO(userRepository.save(user));
+    }
+
+    public UserDTO changeColor(UserDTO userDTO) {
+        User user = getUserByLogin(userDTO.getLogin());
+        user.setColor(userDTO.getColor());
+
         return userMapper.convertToUserDTO(userRepository.save(user));
     }
 }

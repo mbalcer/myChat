@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {User} from "../model/user";
+import {UserService} from "../service/user.service";
 
 @Component({
   selector: 'app-user-profile',
@@ -21,7 +22,7 @@ export class UserProfileComponent implements OnInit {
     confirmNewPassword: ""
   }
 
-  constructor() {
+  constructor(private userService: UserService) {
   }
 
   ngOnInit() {
@@ -31,6 +32,9 @@ export class UserProfileComponent implements OnInit {
   }
 
   changeColor() {
+    this.userService.changeColor(this.user).subscribe(n => {
+      this.user = n;
+    });
   }
 
   savePassword() {
