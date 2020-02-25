@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {User} from "../model/user";
 import {UserService} from "../service/user.service";
-import {TokenService} from "../service/token.service";
 import * as $ from 'jquery';
+import {AuthenticateService} from "../service/authenticate.service";
 
 @Component({
   selector: 'app-user-profile',
@@ -17,10 +17,10 @@ export class UserProfileComponent implements OnInit {
     oldPassword: "",
     newPassword: "",
     confirmNewPassword: ""
-  }
+  };
 
-  constructor(private userService: UserService, private tokenService: TokenService) {
-    this.userService.getUserByLogin(this.tokenService.getLogin()).subscribe(n => {
+  constructor(private authenticateService: AuthenticateService, private userService: UserService) {
+    this.authenticateService.getUser().subscribe(n => {
       this.user = n;
     });
   }
@@ -29,6 +29,7 @@ export class UserProfileComponent implements OnInit {
   }
 
   signOut() {
+    this.authenticateService.signOut();
   }
 
   changeColor() {
