@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {User} from "../model/user";
 import {UserService} from "../service/user.service";
 import {TokenService} from "../service/token.service";
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-user-profile',
@@ -33,6 +34,8 @@ export class UserProfileComponent implements OnInit {
   changeColor() {
     this.userService.changeColor(this.user).subscribe(n => {
       this.user = n;
+      $('#changeColorMessage').html('The color has been changed correctly');
+      $('#changeColorMessage').removeClass('error').addClass('success');
     });
   }
 
@@ -40,8 +43,11 @@ export class UserProfileComponent implements OnInit {
     this.user.password = this.changePassword.oldPassword;
     this.userService.changePassword(this.user, this.changePassword.newPassword).subscribe(n => {
       this.user = n;
+      $('#changePasswordMessage').html('The password has been changed correctly');
+      $('#changePasswordMessage').removeClass('error').addClass('success');
     }, error => {
-      console.log("Bad old password");
+      $('#changePasswordMessage').html('The old password is incorrect');
+      $('#changePasswordMessage').removeClass('success').addClass('error');
     });
   }
 }

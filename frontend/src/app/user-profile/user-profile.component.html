@@ -18,8 +18,9 @@
     <h3>Change color</h3>
     <div class="change-color">
       <input [(colorPicker)]="user.color" [style.background]="user.color" [cpAlphaChannel]="'disabled'">
-      <button mat-raised-button color="primary" (click)="changeColor()">Save</button>
+      <button mat-raised-button color="primary" (click)="changeColor()">Save color</button>
     </div>
+    <p class="change-message" id="changeColorMessage"></p>
   </div>
   <div class="change-setting">
     <h3>Change password</h3>
@@ -36,7 +37,7 @@
                  required minlength="8"
           />
         </mat-form-field>
-        <p class="error" *ngIf="oldPassword.invalid && oldPassword.touched || changePasswordForm.submitted">
+        <p class="error message" *ngIf="oldPassword.invalid && oldPassword.touched || changePasswordForm.submitted">
           <span *ngIf="oldPassword.errors?.required">Password is required</span>
           <span *ngIf="oldPassword.errors?.minlength">Password must min 8 letters</span>
         </p>
@@ -51,7 +52,7 @@
                  required minlength="8" maxlength="40" pattern="^((?!{{oldPassword.value}}).)*$"
           />
         </mat-form-field>
-        <p class="error" *ngIf="newPassword.invalid && newPassword.touched || changePasswordForm.submitted">
+        <p class="error message" *ngIf="newPassword.invalid && newPassword.touched || changePasswordForm.submitted">
           <span *ngIf="newPassword.errors?.required">Password is required</span>
           <span *ngIf="newPassword.errors?.minlength">Password must min 8 letters</span>
           <span *ngIf="newPassword.errors?.pattern && !newPassword.errors?.minlength">New password must be other than old password</span>
@@ -67,15 +68,14 @@
                  required pattern="{{newPassword.value}}"
           />
         </mat-form-field>
-        <p class="message error invalid"
+        <p class="error message"
            *ngIf="confirmNewPassword.invalid && confirmNewPassword.touched || changePasswordForm.submitted">
           <span *ngIf="confirmNewPassword.errors?.required">Confirm password is required</span>
           <span *ngIf="confirmNewPassword.errors?.pattern">Password & Confirm Password must be the same</span>
         </p>
-        <button mat-raised-button color="primary">
-          Save
-        </button>
+        <button mat-raised-button color="primary">Save password</button>
       </form>
+      <p class="change-message" id="changePasswordMessage"></p>
     </div>
   </div>
 </div>
