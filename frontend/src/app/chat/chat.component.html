@@ -1,7 +1,8 @@
 <div class="container-chat col-lg-8 col-md-10 col-sm-12">
   <app-info-panel [user]="user"></app-info-panel>
   <div class="chat">
-    <app-rooms [user]="user" (room)="updateRoom($event)" class="rooms"></app-rooms>
+    <app-rooms [user]="user" (room)="updateRoom($event)" (openRoom)="webSocketConnect($event)"
+               class="rooms"></app-rooms>
     <div class="chat-right">
       <div class="chat-title">
         {{room}}

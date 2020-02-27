@@ -23,6 +23,7 @@ export class RoomsComponent implements AfterViewChecked, OnDestroy, OnInit {
 
   @Input() user: User;
   @Output() room: EventEmitter<string> = new EventEmitter();
+  @Output() openRoom: EventEmitter<string> = new EventEmitter();
 
   constructor(private roomService: RoomsService, public dialog: MatDialog, iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
     this.rooms.push("All");
@@ -47,7 +48,9 @@ export class RoomsComponent implements AfterViewChecked, OnDestroy, OnInit {
       this.roomService.getRoomsByUser(this.user.login).subscribe(n => {
         let newRooms = n.filter(r => !(this.rooms.includes(r)));
         this.rooms = this.rooms.concat(newRooms);
-        console.log(newRooms);
+        for (let room of newRooms) {
+          this.openRoom.emit(room);
+        }
       });
     });
   }
@@ -96,6 +99,8 @@ export class RoomsComponent implements AfterViewChecked, OnDestroy, OnInit {
       }, error => {
         alert("An error has occurred");
       });
+
+    this.openRoom.emit(newRoom.name);
   }
 
   openDialogToAddRoom(): void {
