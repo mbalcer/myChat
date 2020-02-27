@@ -24,6 +24,7 @@ export class RoomsComponent implements AfterViewChecked, OnDestroy, OnInit {
   @Input() user: User;
   @Output() room: EventEmitter<string> = new EventEmitter();
   @Output() openRoom: EventEmitter<string> = new EventEmitter();
+  @Output() closeRoom: EventEmitter<string> = new EventEmitter();
 
   constructor(private roomService: RoomsService, public dialog: MatDialog, iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
     this.rooms.push("All");
@@ -129,6 +130,7 @@ export class RoomsComponent implements AfterViewChecked, OnDestroy, OnInit {
           alert("An error has occurred");
         }
       );
+      this.closeRoom.emit(room);
     }
   }
 }
