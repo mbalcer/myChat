@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 public class Message {
 
     private User user;
+    private String room;
     private LocalDateTime dateTime;
     private String message;
 

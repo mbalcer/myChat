@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewChecked, Component, OnInit} from '@angular/core';
 import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
 import {Message} from "../model/message";
@@ -11,22 +11,25 @@ import {UserService} from "../service/user.service";
 import {TokenService} from "../service/token.service";
 import * as $ from 'jquery';
 import {environment} from "../../environments/environment";
+import {HttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.css']
 })
-export class ChatComponent implements OnInit {
+export class ChatComponent implements OnInit, AfterViewChecked {
   private serverUrl = environment.mainURL + "/chat";
   private stompClient;
 
   messages: Message[] = [];
   user: User;
   yourMessage: string;
+  rooms: string[] = ['All'];
   room: string;
+  openAllRooms: boolean = false;
 
-  constructor(public dialog: MatDialog, private roomService: RoomsService, private userService: UserService, private tokenService: TokenService) {
+  constructor(public dialog: MatDialog, private roomService: RoomsService, private userService: UserService, private tokenService: TokenService, private http: HttpClient) {
     if(this.tokenService.getLogin().includes("guest")) {
       this.user = {
         login: this.tokenService.getLogin(),
@@ -40,10 +43,25 @@ export class ChatComponent implements OnInit {
       });
     }
     this.room = "All";
-    this.webSocketConnect(this.room);
   }
 
   ngOnInit() {
+  }
+
+  ngAfterViewChecked() {
+    if (this.openAllRooms == false) {
+      this.roomService.getRoomsByUser(this.user.login).subscribe(
+        n => {
+          this.rooms = this.rooms.concat(n);
+          for (let room  of this.rooms) {
+            this.webSocketConnect(room);
+          }
+        }, error => {
+          alert("An error has occurred");
+        }
+      );
+      this.openAllRooms = true;
+    }
   }
 
   webSocketConnect(room) {
@@ -53,7 +71,9 @@ export class ChatComponent implements OnInit {
     let that = this;
     client.connect({}, function(frame) {
       client.subscribe("/topic/" + room, function (message) {
-        that.showMessage(JSON.parse(message.body).user, JSON.parse(message.body).message, JSON.parse(message.body).dateTime);
+        if (JSON.parse(message.body).room == that.room) {
+          that.showMessage(JSON.parse(message.body).user, JSON.parse(message.body).message, JSON.parse(message.body).dateTime);
+        }
       });
     });
   }
@@ -65,6 +85,7 @@ export class ChatComponent implements OnInit {
   showMessage(user, message, dateTime) {
     let newMessage : Message = {
       user: user,
+      room: this.room,
       message: message,
       dateTime: formatDate(dateTime, 'dd.MM HH:mm', 'en')
     };
@@ -74,6 +95,7 @@ export class ChatComponent implements OnInit {
   sendMessage() {
     let messageToSend : Message = {
       user: this.user,
+      room: this.room,
       message: this.yourMessage,
       dateTime: null
     };
@@ -84,8 +106,9 @@ export class ChatComponent implements OnInit {
   updateRoom(room: string) {
     this.room = room;
     this.messages.splice(0, this.messages.length);
-    this.webSocketDisconnect(this.room);
-    this.webSocketConnect(this.room);
+    this.http.get<Message[]>("http://localhost:8080/api/chat/" + this.room).subscribe(n => {
+      this.messages = n;
+    });
   }
 
   openDialogToAddUserToRoom(room: string) {
