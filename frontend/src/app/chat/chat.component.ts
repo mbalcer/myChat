@@ -43,6 +43,7 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
       });
     }
     this.room = "All";
+    this.getAllMessages();
   }
 
   ngOnInit() {
@@ -122,7 +123,11 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
   updateRoom(room: string) {
     this.room = room;
     this.messages.splice(0, this.messages.length);
-    this.http.get<Message[]>("http://localhost:8080/api/chat/" + this.room).subscribe(n => {
+    this.getAllMessages();
+  }
+
+  getAllMessages() {
+    this.http.get<Message[]>(environment.mainURL + "/api/chat/" + this.room).subscribe(n => {
       this.messages = n;
     });
   }
