@@ -3,8 +3,8 @@
   <div class="chat">
     <app-rooms [user]="user"
                (room)="updateRoom($event)"
-               (openRoom)="webSocketConnect($event)"
-               (closeRoom)="webSocketDisconnect($event)"
+               (openRoom)="openRoom($event)"
+               (closeRoom)="closeRoom($event)"
                class="rooms"></app-rooms>
     <div class="chat-right">
       <div class="chat-title">

@@ -1,4 +1,4 @@
-import {AfterViewChecked, Component, OnInit} from '@angular/core';
+import {AfterViewChecked, Component, OnDestroy, OnInit} from '@angular/core';
 import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
 import {Message} from "../model/message";
@@ -18,7 +18,7 @@ import {HttpClient} from "@angular/common/http";
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.css']
 })
-export class ChatComponent implements OnInit, AfterViewChecked {
+export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
   private serverUrl = environment.mainURL + "/chat";
   private stompClient;
 
@@ -64,6 +64,12 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     }
   }
 
+  ngOnDestroy() {
+    for (let room of this.rooms) {
+      this.webSocketDisconnect(room);
+    }
+  }
+
   webSocketConnect(room) {
     let ws = new SockJS(this.serverUrl);
     this.stompClient = Stomp.over(ws);
@@ -80,6 +86,16 @@ export class ChatComponent implements OnInit, AfterViewChecked {
 
   webSocketDisconnect(room) {
     this.stompClient.disconnect("/topic/" + room);
+  }
+
+  openRoom(room) {
+    this.rooms.push(room);
+    this.webSocketConnect(room);
+  }
+
+  closeRoom(room) {
+    this.rooms.splice(this.rooms.indexOf(room), 1);
+    this.webSocketDisconnect(room);
   }
 
   showMessage(user, message, dateTime) {
