@@ -129,6 +129,9 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
   getAllMessages() {
     this.http.get<Message[]>(environment.mainURL + "/api/chat/" + this.room).subscribe(n => {
       this.messages = n;
+      for (let message of this.messages) {
+        message.dateTime = formatDate(message.dateTime, 'dd.MM HH:mm', 'en');
+      }
     });
   }
 
