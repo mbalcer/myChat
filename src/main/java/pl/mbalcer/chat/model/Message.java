@@ -14,6 +14,7 @@ public class Message {
     private User user;
     private String room;
     private LocalDateTime dateTime;
+    private MessageType type;
     private String message;
 
 }

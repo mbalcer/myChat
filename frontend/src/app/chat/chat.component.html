@@ -22,9 +22,11 @@
       </div>
       <div class="chat-body" #chatBody [scrollTop]="chatBody.scrollHeight">
         <p *ngFor="let m of messages">
-          <span class="login-message" [ngStyle]="{'color': m.user.color}">{{m.user.login}} </span> <span
-          class="time-message">{{m.dateTime}}</span>
-          <span class="text-message">{{m.message}}</span>
+          <span *ngIf="m.type == 'MESSAGE'">
+            <span class="login-message" [ngStyle]="{'color': m.user.color}">{{m.user.login}} </span>
+            <span class="time-message">{{m.dateTime}}</span>
+            <span class="text-message">{{m.message}}</span>
+          </span>
         </p>
         <p *ngIf="messages.length === 0">This chat is empty</p>
       </div>

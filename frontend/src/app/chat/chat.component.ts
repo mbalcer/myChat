@@ -79,7 +79,7 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
     client.connect({}, function(frame) {
       client.subscribe("/topic/" + room, function (message) {
         if (JSON.parse(message.body).room == that.room) {
-          that.showMessage(JSON.parse(message.body).user, JSON.parse(message.body).message, JSON.parse(message.body).dateTime);
+          that.showMessage(JSON.parse(message.body).user, JSON.parse(message.body).message, JSON.parse(message.body).dateTime, JSON.parse(message.body).type);
         }
       });
     });
@@ -99,11 +99,12 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
     this.webSocketDisconnect(room);
   }
 
-  showMessage(user, message, dateTime) {
+  showMessage(user, message, dateTime, type) {
     let newMessage : Message = {
       user: user,
       room: this.room,
       message: message,
+      type: type,
       dateTime: formatDate(dateTime, 'dd.MM HH:mm', 'en')
     };
     this.messages.push(newMessage);
@@ -114,6 +115,7 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
       user: this.user,
       room: this.room,
       message: this.yourMessage,
+      type: null,
       dateTime: null
     };
     this.stompClient.send("/app/chat/" + this.room, {}, JSON.stringify(messageToSend));

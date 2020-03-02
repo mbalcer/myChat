@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import pl.mbalcer.chat.model.Message;
+import pl.mbalcer.chat.model.MessageType;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ public class ChatController {
     @SendTo("/topic/{room}")
     public Message getMessage(@DestinationVariable String room, Message message) {
         message.setDateTime(LocalDateTime.now());
+        message.setType(MessageType.MESSAGE);
         historyOfMessage.add(message);
         return message;
     }
