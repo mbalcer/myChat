@@ -30,6 +30,9 @@
           <span *ngIf="m.type == 'SYSTEM'">
             <span class="system-message">{{m.message}}</span>
           </span>
+          <span *ngIf="m.type == 'HELP'">
+            <span class="alert-message">{{m.message}}</span>
+          </span>
         </p>
         <p *ngIf="messages.length === 0">This chat is empty</p>
       </div>

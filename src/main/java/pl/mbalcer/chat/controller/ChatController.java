@@ -3,6 +3,7 @@ package pl.mbalcer.chat.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,6 +29,7 @@ public class ChatController {
     }
 
     @MessageMapping("/chat/{room}")
+    @SendTo("/topic/{room}")
     public Message getMessage(@DestinationVariable String room, Message message) {
         message.setDateTime(LocalDateTime.now());
         message = this.commandService.checkMessage(message);
