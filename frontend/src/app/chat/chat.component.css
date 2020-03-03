@@ -65,3 +65,13 @@
 .text-message {
   display: flex;
 }
+
+.system-message {
+  font-size: 16px;
+  color: #2980b9;
+}
+
+.alert-message {
+  color: #e74c3c;
+  font-size: 16px;
+}
