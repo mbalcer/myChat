@@ -27,7 +27,7 @@
             <span class="time-message">{{m.dateTime}}</span>
             <span class="text-message">{{m.message}}</span>
           </span>
-          <span *ngIf="m.type == 'SYSTEM'">
+          <span *ngIf="m.type == 'SYSTEM' || m.type == 'CLEAR'">
             <span class="system-message">{{m.message}}</span>
           </span>
           <span *ngIf="m.type == 'HELP'">

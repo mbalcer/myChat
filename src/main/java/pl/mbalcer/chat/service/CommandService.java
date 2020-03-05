@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 public class CommandService {
     private final String PATTERN_TEST_CMD = "^\\/{1}test$";
     private final String PATTERN_HELP_CMD = "^\\/{1}help$";
+    private final String PATTERN_CLEAR_CMD = "^\\/{1}clear$";
 
     public Message checkMessage(Message message) {
         Pattern checkMessageIsCommand = Pattern.compile("^\\/{1}\\D{4,}");
@@ -18,6 +19,8 @@ public class CommandService {
                 message = testCmd(message);
             else if (matchRegex(PATTERN_HELP_CMD, message.getMessage()))
                 message = helpCmd(message);
+            else if (matchRegex(PATTERN_CLEAR_CMD, message.getMessage()))
+                message = clearCmd(message);
         } else {
             message.setType(MessageType.MESSAGE);
         }
@@ -39,6 +42,12 @@ public class CommandService {
         message.setMessage("Hi " + message.getUser().getLogin() + ". In this application you can writing with your friends and other people. " +
                 "On the left you have a list of room. You can add new room, add users to room and leave from its. " +
                 "If you want change color your username or change password you must click on person icon. Thanks for being with us.");
+        return message;
+    }
+
+    private Message clearCmd(Message message) {
+        message.setType(MessageType.CLEAR);
+        message.setMessage("Messages have been cleared");
         return message;
     }
 }
