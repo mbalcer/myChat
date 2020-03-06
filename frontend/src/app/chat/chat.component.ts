@@ -43,7 +43,6 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
       });
     }
     this.room = "All";
-    this.getAllMessages();
   }
 
   ngOnInit() {
@@ -62,6 +61,7 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
         }
       );
       this.openAllRooms = true;
+      this.getAllMessages();
     }
   }
 
@@ -136,7 +136,7 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
   }
 
   getAllMessages() {
-    this.http.get<Message[]>(environment.mainURL + "/api/chat/" + this.room).subscribe(n => {
+    this.http.get<Message[]>(environment.mainURL + "/api/chat/" + this.room + "/" + this.user.login).subscribe(n => {
       this.messages = n;
       for (let message of this.messages) {
         message.dateTime = formatDate(message.dateTime, 'dd.MM HH:mm', 'en');

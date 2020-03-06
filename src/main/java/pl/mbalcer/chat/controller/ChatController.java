@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import pl.mbalcer.chat.model.Message;
+import pl.mbalcer.chat.model.MessageType;
 import pl.mbalcer.chat.service.CommandService;
 
 import java.time.LocalDateTime;
@@ -37,8 +38,12 @@ public class ChatController {
         return message;
     }
 
-    @GetMapping("/api/chat/{room}")
-    public List<Message> getMessagesByRooms(@PathVariable String room) {
-        return historyOfMessage.stream().filter(r -> r.getRoom().equals(room)).collect(Collectors.toList());
+    @GetMapping("/api/chat/{room}/{login}")
+    public List<Message> getMessagesByRooms(@PathVariable String room, @PathVariable String login) {
+        return historyOfMessage.stream()
+                .filter(r -> r.getRoom().equals(room))
+                .filter(m -> (m.getType().equals(MessageType.MESSAGE)) ||
+                        ((m.getType().equals(MessageType.SYSTEM) || m.getType().equals(MessageType.HELP)) && m.getUser().getLogin().equals(login)))
+                .collect(Collectors.toList());
     }
 }
