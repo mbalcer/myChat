@@ -15,14 +15,17 @@ public class CommandService {
     private final String PATTERN_HELP_CMD = "^\\/{1}help$";
     private final String PATTERN_CLEAR_CMD = "^\\/{1}clear$";
     private final String PATTERN_CHANGE_COLOR_CMD = "^\\/{1}color\\s{1}#[0-9a-fA-F]{6}$";
+    private final String PATTERN_ADD_USER_CMD = "^\\/{1}add\\s{1}\\w{4,}$";
 
     private UserService userService;
     private UserMapper userMapper;
+    private RoomService roomService;
 
     @Autowired
-    public CommandService(UserService userService, UserMapper userMapper) {
+    public CommandService(UserService userService, UserMapper userMapper, RoomService roomService) {
         this.userService = userService;
         this.userMapper = userMapper;
+        this.roomService = roomService;
     }
 
     public Message checkMessage(Message message) {
@@ -36,6 +39,8 @@ public class CommandService {
                 message = clearCmd(message);
             else if (matchRegex(PATTERN_CHANGE_COLOR_CMD, message.getMessage()))
                 message = changeColorCmd(message);
+            else if (matchRegex(PATTERN_ADD_USER_CMD, message.getMessage()))
+                message = addUserCmd(message);
         } else {
             message.setType(MessageType.MESSAGE);
         }
@@ -74,6 +79,26 @@ public class CommandService {
 
         message.setType(MessageType.SYSTEM);
         message.setMessage("The color has been changed correctly");
+        return message;
+    }
+
+    private Message addUserCmd(Message message) {
+        if (message.getRoom().equals("All"))
+            return error(message, "You cannot add people to the room All");
+
+        String user = message.getMessage().split(" ")[1];
+        if (userService.getUserByLogin(user) == null)
+            return error(message, "No user with nickname: " + user);
+
+        roomService.addUserToRoom(user, message.getRoom());
+        message.setMessage("Added the user " + user + " to room " + message.getRoom());
+        message.setType(MessageType.SYSTEM);
+        return message;
+    }
+
+    private Message error(Message message, String errorMessage) {
+        message.setMessage(errorMessage);
+        message.setType(MessageType.ERROR);
         return message;
     }
 }
