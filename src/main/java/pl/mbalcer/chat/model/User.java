@@ -22,7 +22,7 @@ public class User {
     private String email;
     private String color;
 
-    @ManyToMany(mappedBy = "users")
+    @ManyToMany(mappedBy = "users", fetch = FetchType.EAGER)
     private List<Room> rooms;
 
     public User(String login, String password, String email, String color) {
