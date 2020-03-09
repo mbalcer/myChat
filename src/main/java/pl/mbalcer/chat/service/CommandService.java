@@ -16,6 +16,7 @@ public class CommandService {
     private final String PATTERN_CLEAR_CMD = "^\\/{1}clear$";
     private final String PATTERN_CHANGE_COLOR_CMD = "^\\/{1}color\\s{1}#[0-9a-fA-F]{6}$";
     private final String PATTERN_ADD_USER_CMD = "^\\/{1}add\\s{1}\\w{4,}$";
+    private final String PATTERN_ALERT_CMD = "^\\/{1}alert\\s{1}.{4,}$";
 
     private UserService userService;
     private UserMapper userMapper;
@@ -41,6 +42,8 @@ public class CommandService {
                 message = changeColorCmd(message);
             else if (matchRegex(PATTERN_ADD_USER_CMD, message.getMessage()))
                 message = addUserCmd(message);
+            else if (matchRegex(PATTERN_ALERT_CMD, message.getMessage()))
+                message = alertCmd(message);
         } else {
             message.setType(MessageType.MESSAGE);
         }
@@ -93,6 +96,12 @@ public class CommandService {
         roomService.addUserToRoom(user, message.getRoom());
         message.setMessage("Added the user " + user + " to room " + message.getRoom());
         message.setType(MessageType.SYSTEM);
+        return message;
+    }
+
+    private Message alertCmd(Message message) {
+        message.setMessage(message.getMessage().split(" ")[1]);
+        message.setType(MessageType.ALERT);
         return message;
     }
 

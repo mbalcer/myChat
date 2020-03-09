@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,10 +24,12 @@ public class ChatController {
 
     private List<Message> historyOfMessage = new ArrayList<>();
     private CommandService commandService;
+    private SimpMessagingTemplate simpMessagingTemplate;
 
     @Autowired
-    public ChatController(CommandService commandService) {
+    public ChatController(CommandService commandService, SimpMessagingTemplate simpMessagingTemplate) {
         this.commandService = commandService;
+        this.simpMessagingTemplate = simpMessagingTemplate;
     }
 
     @MessageMapping("/chat/{room}")
@@ -34,6 +37,11 @@ public class ChatController {
     public Message getMessage(@DestinationVariable String room, Message message) {
         message.setDateTime(LocalDateTime.now());
         message = this.commandService.checkMessage(message);
+        if (message.getType().equals(MessageType.ALERT)) {
+            Message copyMessage = new Message(message.getUser(), "All", message.getDateTime(), message.getType(), message.getMessage());
+            simpMessagingTemplate.convertAndSend("/topic/All", copyMessage);
+            historyOfMessage.add(copyMessage);
+        }
         historyOfMessage.add(message);
         return message;
     }

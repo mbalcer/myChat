@@ -30,7 +30,7 @@
           <span *ngIf="m.type == 'SYSTEM' || m.type == 'CLEAR'">
             <span class="system-message">{{m.message}}</span>
           </span>
-          <span *ngIf="m.type == 'HELP' || m.type == 'ERROR'">
+          <span *ngIf="m.type == 'HELP' || m.type == 'ERROR' || m.type == 'ALERT'">
             <span class="alert-message">{{m.message}}</span>
           </span>
         </p>

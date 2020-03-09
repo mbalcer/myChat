@@ -77,9 +77,9 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
     client.connect({}, function(frame) {
       client.subscribe("/topic/" + room, function (message) {
         if (JSON.parse(message.body).room == that.room) {
-          if (JSON.parse(message.body).type == 'MESSAGE') {
+          if (JSON.parse(message.body).type == 'MESSAGE' || JSON.parse(message.body).type == 'ALERT' || JSON.parse(message.body).type == 'ERROR') {
             that.showMessage(JSON.parse(message.body).user, JSON.parse(message.body).message, JSON.parse(message.body).dateTime, JSON.parse(message.body).type);
-          } else if ((JSON.parse(message.body).type == 'HELP' || JSON.parse(message.body).type == 'ERROR' || JSON.parse(message.body).type == 'SYSTEM') && JSON.parse(message.body).user.login == that.user.login) {
+          } else if ((JSON.parse(message.body).type == 'HELP' || JSON.parse(message.body).type == 'SYSTEM') && JSON.parse(message.body).user.login == that.user.login) {
             that.getUser();
             that.showMessage(JSON.parse(message.body).user, JSON.parse(message.body).message, JSON.parse(message.body).dateTime, JSON.parse(message.body).type);
           } else if (JSON.parse(message.body).type == 'CLEAR' && JSON.parse(message.body).user.login == that.user.login) {
