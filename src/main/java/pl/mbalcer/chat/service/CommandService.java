@@ -100,7 +100,8 @@ public class CommandService {
     }
 
     private Message alertCmd(Message message) {
-        message.setMessage(message.getMessage().split(" ")[1]);
+        String alertMessage = message.getMessage().substring(7);
+        message.setMessage(alertMessage);
         message.setType(MessageType.ALERT);
         return message;
     }

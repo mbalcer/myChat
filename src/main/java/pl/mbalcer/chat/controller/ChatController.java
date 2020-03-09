@@ -51,7 +51,8 @@ public class ChatController {
         return historyOfMessage.stream()
                 .filter(r -> r.getRoom().equals(room))
                 .filter(m -> (m.getType().equals(MessageType.MESSAGE)) ||
-                        ((m.getType().equals(MessageType.SYSTEM) || m.getType().equals(MessageType.HELP)) && m.getUser().getLogin().equals(login)))
+                        (m.getType().equals(MessageType.ALERT)) ||
+                        ((m.getType().equals(MessageType.SYSTEM) || m.getType().equals(MessageType.HELP) || m.getType().equals(MessageType.ERROR)) && m.getUser().getLogin().equals(login)))
                 .collect(Collectors.toList());
     }
 }
