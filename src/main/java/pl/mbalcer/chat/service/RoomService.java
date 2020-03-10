@@ -46,6 +46,13 @@ public class RoomService {
         return roomMapper.convertToRoomDTO(room);
     }
 
+    public List<String> getAllRooms() {
+        return roomRepository.findAll()
+                .stream()
+                .map(r -> r.getName())
+                .collect(Collectors.toList());
+    }
+
     public List<String> getRoomByUser(String user) {
         List<Room> allRooms = roomRepository.findAll();
         List<Room> userRooms = allRooms.stream()

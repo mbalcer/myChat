@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import pl.mbalcer.chat.model.Message;
 import pl.mbalcer.chat.model.MessageType;
 import pl.mbalcer.chat.service.CommandService;
+import pl.mbalcer.chat.service.RoomService;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -25,11 +26,13 @@ public class ChatController {
     private List<Message> historyOfMessage = new ArrayList<>();
     private CommandService commandService;
     private SimpMessagingTemplate simpMessagingTemplate;
+    private RoomService roomService;
 
     @Autowired
-    public ChatController(CommandService commandService, SimpMessagingTemplate simpMessagingTemplate) {
+    public ChatController(CommandService commandService, SimpMessagingTemplate simpMessagingTemplate, RoomService roomService) {
         this.commandService = commandService;
         this.simpMessagingTemplate = simpMessagingTemplate;
+        this.roomService = roomService;
     }
 
     @MessageMapping("/chat/{room}")
@@ -38,9 +41,15 @@ public class ChatController {
         message.setDateTime(LocalDateTime.now());
         message = this.commandService.checkMessage(message);
         if (message.getType().equals(MessageType.ALERT)) {
-            Message copyMessage = new Message(message.getUser(), "All", message.getDateTime(), message.getType(), message.getMessage());
-            simpMessagingTemplate.convertAndSend("/topic/All", copyMessage);
-            historyOfMessage.add(copyMessage);
+            List<String> allRooms = roomService.getAllRooms();
+            allRooms.add("All");
+            for (String nameRoom : allRooms) {
+                if (!nameRoom.equals(room)) {
+                    Message copyMessage = new Message(message.getUser(), nameRoom, message.getDateTime(), message.getType(), message.getMessage());
+                    simpMessagingTemplate.convertAndSend("/topic/" + nameRoom, copyMessage);
+                    historyOfMessage.add(copyMessage);
+                }
+            }
         }
         historyOfMessage.add(message);
         return message;
