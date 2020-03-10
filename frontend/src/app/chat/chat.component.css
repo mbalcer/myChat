@@ -15,13 +15,13 @@
 
 .chat-right {
   width: 65%;
-  height: 70vh;
+  height: calc(100vh - 90px);
   background-color: #F2F5F8;
 }
 
 .rooms {
   width: 35%;
-  height: 70vh;
+  height: calc(100vh - 90px);
   padding: 0;
 }
 
@@ -33,7 +33,7 @@
 }
 
 .chat-body {
-  height: 65%;
+  height: 70%;
   width: 100%;
   padding: 10px;
   overflow: auto;
