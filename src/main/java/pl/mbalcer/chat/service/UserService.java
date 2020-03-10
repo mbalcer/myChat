@@ -33,6 +33,14 @@ public class UserService {
             return null;
     }
 
+    public UserDTO getUserDTOByLogin(String login) {
+        Optional<User> user = Optional.ofNullable(userRepository.findByLogin(login));
+        if (user.isPresent())
+            return userMapper.convertToUserDTO(user.get());
+        else
+            return null;
+    }
+
     public UserDTO getUserByEmail(String email) {
         Optional<User> user = Optional.ofNullable(userRepository.findByEmail(email));
         if (user.isPresent())

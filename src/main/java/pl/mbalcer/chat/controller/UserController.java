@@ -24,7 +24,7 @@ public class UserController {
 
     @GetMapping("/byLogin/{login}")
     public UserDTO getUserByLogin(@PathVariable String login) {
-        return userMapper.convertToUserDTO(userService.getUserByLogin(login));
+        return userService.getUserDTOByLogin(login);
     }
 
     @GetMapping("/byEmail/{email}")
