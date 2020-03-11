@@ -6,6 +6,7 @@ import pl.mbalcer.chat.dto.UserDTO;
 import pl.mbalcer.chat.mapper.UserMapper;
 import pl.mbalcer.chat.model.Message;
 import pl.mbalcer.chat.model.MessageType;
+import pl.mbalcer.chat.model.Role;
 
 import java.util.regex.Pattern;
 
@@ -100,6 +101,8 @@ public class CommandService {
     }
 
     private Message alertCmd(Message message) {
+        if (!message.getUser().getRole().equals(Role.ADMIN))
+            return error(message, "This command is only for admin");
         String alertMessage = message.getMessage().substring(7);
         message.setMessage(alertMessage);
         message.setType(MessageType.ALERT);

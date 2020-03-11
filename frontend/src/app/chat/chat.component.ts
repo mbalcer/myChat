@@ -35,7 +35,8 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
         login: this.tokenService.getLogin(),
         password: null,
         email: null,
-        color: "#000000"
+        color: "#000000",
+        role: null
       };
     } else {
       this.getUser();

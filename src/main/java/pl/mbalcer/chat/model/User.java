@@ -35,4 +35,12 @@ public class User {
         this.color = color;
         this.role = Role.USER;
     }
+
+    public User(String login, String password, String email, String color, Role role) {
+        this.login = login;
+        this.password = password;
+        this.email = email;
+        this.color = color;
+        this.role = role;
+    }
 }
