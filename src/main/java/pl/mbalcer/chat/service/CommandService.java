@@ -7,6 +7,7 @@ import pl.mbalcer.chat.mapper.UserMapper;
 import pl.mbalcer.chat.model.Message;
 import pl.mbalcer.chat.model.MessageType;
 import pl.mbalcer.chat.model.Role;
+import pl.mbalcer.chat.model.User;
 
 import java.util.regex.Pattern;
 
@@ -18,6 +19,7 @@ public class CommandService {
     private final String PATTERN_CHANGE_COLOR_CMD = "^\\/{1}color\\s{1}#[0-9a-fA-F]{6}$";
     private final String PATTERN_ADD_USER_CMD = "^\\/{1}add\\s{1}\\w{4,}$";
     private final String PATTERN_ALERT_CMD = "^\\/{1}alert\\s{1}.{4,}$";
+    private final String PATTERN_ROLE_CMD = "^\\/{1}role\\s{1}\\w{4,}\\s{1}[0-1]{1}$";
 
     private UserService userService;
     private UserMapper userMapper;
@@ -45,6 +47,8 @@ public class CommandService {
                 message = addUserCmd(message);
             else if (matchRegex(PATTERN_ALERT_CMD, message.getMessage()))
                 message = alertCmd(message);
+            else if (matchRegex(PATTERN_ROLE_CMD, message.getMessage()))
+                message = roleCmd(message);
         } else {
             message.setType(MessageType.MESSAGE);
         }
@@ -106,6 +110,26 @@ public class CommandService {
         String alertMessage = message.getMessage().substring(7);
         message.setMessage(alertMessage);
         message.setType(MessageType.ALERT);
+        return message;
+    }
+
+    private Message roleCmd(Message message) {
+        if (!message.getUser().getRole().equals(Role.ADMIN))
+            return error(message, "This command is only for admin");
+
+        String[] splitMessage = message.getMessage().split(" ");
+        User user = userService.getUserByLogin(splitMessage[1]);
+        switch (Integer.parseInt(splitMessage[2])) {
+            case 0:
+                user = userService.changeRole(user, Role.USER);
+                break;
+            case 1:
+                user = userService.changeRole(user, Role.ADMIN);
+                break;
+        }
+
+        message.setType(MessageType.SYSTEM);
+        message.setMessage(user.getLogin() + " is now a " + user.getRole());
         return message;
     }
 

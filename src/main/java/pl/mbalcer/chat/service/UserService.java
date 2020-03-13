@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import pl.mbalcer.chat.dto.UserDTO;
 import pl.mbalcer.chat.mapper.UserMapper;
+import pl.mbalcer.chat.model.Role;
 import pl.mbalcer.chat.model.User;
 import pl.mbalcer.chat.repository.UserRepository;
 
@@ -78,5 +79,10 @@ public class UserService {
                     HttpStatus.OK);
         } else
             return new ResponseEntity<>(HttpStatus.CONFLICT);
+    }
+
+    public User changeRole(User user, Role role) {
+        user.setRole(role);
+        return userRepository.save(user);
     }
 }
