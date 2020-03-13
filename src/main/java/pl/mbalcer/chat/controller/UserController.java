@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.mbalcer.chat.dto.UserDTO;
-import pl.mbalcer.chat.mapper.UserMapper;
 import pl.mbalcer.chat.service.UserService;
 
 import java.util.List;
@@ -14,12 +13,10 @@ import java.util.List;
 @CrossOrigin
 public class UserController {
     private UserService userService;
-    private UserMapper userMapper;
 
     @Autowired
-    public UserController(UserService userService, UserMapper userMapper) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.userMapper = userMapper;
     }
 
     @GetMapping("/byLogin/{login}")

@@ -49,6 +49,8 @@ public class CommandService {
                 message = alertCmd(message);
             else if (matchRegex(PATTERN_ROLE_CMD, message.getMessage()))
                 message = roleCmd(message);
+            else
+                message = error(message, "This command is incorrect");
         } else {
             message.setType(MessageType.MESSAGE);
         }
