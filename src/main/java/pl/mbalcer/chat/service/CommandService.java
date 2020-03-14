@@ -13,14 +13,6 @@ import java.util.regex.Pattern;
 
 @Service
 public class CommandService {
-    private final String PATTERN_TEST_CMD = "^\\/{1}test$";
-    private final String PATTERN_HELP_CMD = "^\\/{1}help$";
-    private final String PATTERN_CLEAR_CMD = "^\\/{1}clear$";
-    private final String PATTERN_CHANGE_COLOR_CMD = "^\\/{1}color\\s{1}#[0-9a-fA-F]{6}$";
-    private final String PATTERN_ADD_USER_CMD = "^\\/{1}add\\s{1}\\w{4,}$";
-    private final String PATTERN_ALERT_CMD = "^\\/{1}alert\\s{1}.{4,}$";
-    private final String PATTERN_ROLE_CMD = "^\\/{1}role\\s{1}\\w{4,}\\s{1}[0-1]{1}$";
-
     private UserService userService;
     private UserMapper userMapper;
     private RoomService roomService;
@@ -35,19 +27,19 @@ public class CommandService {
     public Message checkMessage(Message message) {
         Pattern checkMessageIsCommand = Pattern.compile("^\\/{1}.{4,}");
         if (checkMessageIsCommand.matcher(message.getMessage()).matches()) {
-            if (matchRegex(PATTERN_TEST_CMD, message.getMessage()))
+            if (matchRegex(CommandPattern.TEST.getPattern(), message.getMessage()))
                 message = testCmd(message);
-            else if (matchRegex(PATTERN_HELP_CMD, message.getMessage()))
+            else if (matchRegex(CommandPattern.HELP.getPattern(), message.getMessage()))
                 message = helpCmd(message);
-            else if (matchRegex(PATTERN_CLEAR_CMD, message.getMessage()))
+            else if (matchRegex(CommandPattern.CLEAR.getPattern(), message.getMessage()))
                 message = clearCmd(message);
-            else if (matchRegex(PATTERN_CHANGE_COLOR_CMD, message.getMessage()))
+            else if (matchRegex(CommandPattern.CHANGE_COLOR.getPattern(), message.getMessage()))
                 message = changeColorCmd(message);
-            else if (matchRegex(PATTERN_ADD_USER_CMD, message.getMessage()))
+            else if (matchRegex(CommandPattern.ADD_USER.getPattern(), message.getMessage()))
                 message = addUserCmd(message);
-            else if (matchRegex(PATTERN_ALERT_CMD, message.getMessage()))
+            else if (matchRegex(CommandPattern.ALERT.getPattern(), message.getMessage()))
                 message = alertCmd(message);
-            else if (matchRegex(PATTERN_ROLE_CMD, message.getMessage()))
+            else if (matchRegex(CommandPattern.ROLE.getPattern(), message.getMessage()))
                 message = roleCmd(message);
             else
                 message = error(message, "This command is incorrect");
