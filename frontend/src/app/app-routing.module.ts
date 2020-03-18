@@ -4,6 +4,7 @@ import {ChatComponent} from "./chat/chat.component";
 import {NeedAuthGuard} from "./service/need-auth-guard";
 import {LoginPanelComponent} from "./login-panel/login-panel.component";
 import {UserProfileComponent} from "./user-profile/user-profile.component";
+import {BanComponent} from "./ban/ban.component";
 
 
 const routes: Routes = [
@@ -20,6 +21,10 @@ const routes: Routes = [
   {
     path: '',
     component: LoginPanelComponent
+  },
+  {
+    path: 'ban',
+    component: BanComponent
   }
 ];
 

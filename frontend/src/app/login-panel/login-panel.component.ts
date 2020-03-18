@@ -4,6 +4,7 @@ import {User} from "../model/user";
 import {UserService} from "../service/user.service";
 import {Router} from "@angular/router";
 import {TokenService} from "../service/token.service";
+import {BanService} from "../service/ban.service";
 
 @Component({
   selector: 'app-login-panel',
@@ -23,7 +24,7 @@ export class LoginPanelComponent implements OnInit {
     email: ''
   };
 
-  constructor(private userService: UserService, private tokenService: TokenService, private router: Router) {
+  constructor(private userService: UserService, private tokenService: TokenService, private router: Router, private banService: BanService) {
     if (this.tokenService.isLogged())
       this.router.navigateByUrl("/chat");
   }
@@ -34,6 +35,15 @@ export class LoginPanelComponent implements OnInit {
   navigateToChat(user: User) {
     this.tokenService.setToken(user.login);
     this.router.navigateByUrl("/chat");
+  }
+
+  checkBan(user: User) {
+    this.banService.getBanByUser(user).subscribe(n => {
+      if (n == null)
+        this.navigateToChat(user);
+      else
+        this.router.navigateByUrl("/ban");
+    });
   }
 
   randomGuestUser() {
@@ -77,7 +87,7 @@ export class LoginPanelComponent implements OnInit {
             $('#errorLogin').html("The user with the given username does not exist");
             $('.login-form input').css("border", "1px solid #e74c3c");
           } else if (getUser.login === this.userToLogin.username && getUser.password === this.userToLogin.password)
-            this.navigateToChat(getUser);
+            this.checkBan(getUser);
           else {
             $('#errorLogin').html("Wrong password");
             $('.login-form input').css("border", "1px solid #e74c3c");
