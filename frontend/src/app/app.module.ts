@@ -18,6 +18,7 @@ import {InfoPanelComponent} from './chat/info-panel/info-panel.component';
 import {NeedAuthGuard} from "./service/need-auth-guard";
 import {UserProfileComponent} from './user-profile/user-profile.component';
 import {ColorPickerModule} from "ngx-color-picker";
+import {BanComponent} from './ban/ban.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import {ColorPickerModule} from "ngx-color-picker";
     DialogAddUserToRoom,
     SearchRoomPipe,
     InfoPanelComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    BanComponent
   ],
   imports: [
     BrowserModule,
