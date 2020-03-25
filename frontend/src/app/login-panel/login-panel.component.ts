@@ -39,10 +39,10 @@ export class LoginPanelComponent implements OnInit {
 
   checkBan(user: User) {
     this.banService.getBanByUser(user).subscribe(n => {
-      if (n == null)
-        this.navigateToChat(user);
-      else
+      if (n != null && n.type == 'BAN')
         this.router.navigateByUrl("/ban");
+      else
+        this.navigateToChat(user);
     });
   }
 

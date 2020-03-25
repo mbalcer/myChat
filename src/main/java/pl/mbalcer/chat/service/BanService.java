@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import pl.mbalcer.chat.dto.BanDTO;
 import pl.mbalcer.chat.mapper.BanMapper;
 import pl.mbalcer.chat.model.Ban;
+import pl.mbalcer.chat.model.BanType;
+import pl.mbalcer.chat.model.User;
 import pl.mbalcer.chat.repository.BanRepository;
 
 import java.time.LocalDateTime;
@@ -39,5 +41,10 @@ public class BanService {
                 .filter(b -> b.getStart().isBefore(LocalDateTime.now()) && b.getEnd().isAfter(LocalDateTime.now()))
                 .findAny()
                 .map(banMapper::convertToBanDTO);
+    }
+
+    public Ban addBanForUser(User user, Long hours) {
+        Ban ban = new Ban(0l, LocalDateTime.now(), LocalDateTime.now().plusHours(hours.longValue()), BanType.BAN, user);
+        return saveBan(ban);
     }
 }

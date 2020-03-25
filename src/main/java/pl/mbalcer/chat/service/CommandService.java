@@ -4,11 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.mbalcer.chat.dto.UserDTO;
 import pl.mbalcer.chat.mapper.UserMapper;
-import pl.mbalcer.chat.model.Message;
-import pl.mbalcer.chat.model.MessageType;
-import pl.mbalcer.chat.model.Role;
-import pl.mbalcer.chat.model.User;
+import pl.mbalcer.chat.model.*;
 
+import java.time.format.DateTimeFormatter;
 import java.util.regex.Pattern;
 
 @Service
@@ -16,12 +14,14 @@ public class CommandService {
     private UserService userService;
     private UserMapper userMapper;
     private RoomService roomService;
+    private BanService banService;
 
     @Autowired
-    public CommandService(UserService userService, UserMapper userMapper, RoomService roomService) {
+    public CommandService(UserService userService, UserMapper userMapper, RoomService roomService, BanService banService) {
         this.userService = userService;
         this.userMapper = userMapper;
         this.roomService = roomService;
+        this.banService = banService;
     }
 
     public Message checkMessage(Message message) {
@@ -41,6 +41,8 @@ public class CommandService {
                 message = alertCmd(message);
             else if (matchRegex(CommandPattern.ROLE.getPattern(), message.getMessage()))
                 message = roleCmd(message);
+            else if (matchRegex(CommandPattern.BAN.getPattern(), message.getMessage()))
+                message = banCmd(message);
             else
                 message = error(message, "This command is incorrect");
         } else {
@@ -124,6 +126,19 @@ public class CommandService {
 
         message.setType(MessageType.SYSTEM);
         message.setMessage(user.getLogin() + " is now a " + user.getRole());
+        return message;
+    }
+
+    private Message banCmd(Message message) {
+        if (!message.getUser().getRole().equals(Role.ADMIN))
+            return error(message, "This command is only for admin");
+
+        String[] splitMessage = message.getMessage().split(" ");
+        User user = userService.getUserByLogin(splitMessage[1]);
+        Ban ban = banService.addBanForUser(user, Long.parseLong(splitMessage[2]));
+
+        message.setType(MessageType.ALERT);
+        message.setMessage(user.getLogin() + "  got banned until " + ban.getEnd().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
         return message;
     }
 

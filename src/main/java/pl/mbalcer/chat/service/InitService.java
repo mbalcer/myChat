@@ -30,7 +30,7 @@ public class InitService {
         Room room = new Room(1l, "room1", Arrays.asList(u1, u2));
         Room programming = new Room(2l, "Programming", Arrays.asList(u1));
 
-        Ban b1 = new Ban(1l, LocalDateTime.now(), LocalDateTime.now().plusHours(3), BanType.BAN, u2);
+        Ban b1 = new Ban(1l, LocalDateTime.now(), LocalDateTime.now().plusSeconds(30), BanType.BAN, u2);
 
         userRepository.save(u1);
         userRepository.save(u2);
