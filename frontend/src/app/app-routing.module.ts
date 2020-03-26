@@ -24,7 +24,8 @@ const routes: Routes = [
   },
   {
     path: 'ban',
-    component: BanComponent
+    component: BanComponent,
+    canActivate: [NeedAuthGuard]
   }
 ];
 

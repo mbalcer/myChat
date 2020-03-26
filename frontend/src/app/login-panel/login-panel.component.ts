@@ -32,17 +32,17 @@ export class LoginPanelComponent implements OnInit {
   ngOnInit() {
   }
 
-  navigateToChat(user: User) {
+  navigate(user: User, url: string) {
     this.tokenService.setToken(user.login);
-    this.router.navigateByUrl("/chat");
+    this.router.navigateByUrl(url);
   }
 
   checkBan(user: User) {
-    this.banService.getBanByUser(user).subscribe(n => {
+    this.banService.getBanByUser(user.login).subscribe(n => {
       if (n != null && n.type == 'BAN')
-        this.router.navigateByUrl("/ban");
+        this.navigate(user, "/ban");
       else
-        this.navigateToChat(user);
+        this.navigate(user, "/chat");
     });
   }
 
@@ -58,7 +58,7 @@ export class LoginPanelComponent implements OnInit {
       color: null,
       role: 'GUEST'
     };
-    this.navigateToChat(guestUser);
+    this.navigate(guestUser, "/chat");
   }
 
   getRandomColor() {

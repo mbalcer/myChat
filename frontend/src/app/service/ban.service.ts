@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 import {environment} from "../../environments/environment";
-import {User} from "../model/user";
 import {Observable} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {Ban} from "../model/ban";
@@ -15,7 +14,7 @@ export class BanService {
   constructor(private http: HttpClient) {
   }
 
-  getBanByUser(user: User): Observable<Ban> {
-    return this.http.get<Ban>(this.GET_BAN_BY_USER_URL + user.login);
+  getBanByUser(userLogin: string): Observable<Ban> {
+    return this.http.get<Ban>(this.GET_BAN_BY_USER_URL + userLogin);
   }
 }

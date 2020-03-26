@@ -137,7 +137,7 @@ public class CommandService {
         User user = userService.getUserByLogin(splitMessage[1]);
         Ban ban = banService.addBanForUser(user, Long.parseLong(splitMessage[2]));
 
-        message.setType(MessageType.ALERT);
+        message.setType(MessageType.SYSTEM);
         message.setMessage(user.getLogin() + "  got banned until " + ban.getEnd().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
         return message;
     }
