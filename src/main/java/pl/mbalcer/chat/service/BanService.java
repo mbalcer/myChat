@@ -1,6 +1,7 @@
 package pl.mbalcer.chat.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import pl.mbalcer.chat.dto.BanDTO;
 import pl.mbalcer.chat.mapper.BanMapper;
@@ -18,11 +19,13 @@ import java.util.stream.Collectors;
 public class BanService {
     private BanRepository banRepository;
     private BanMapper banMapper;
+    private SimpMessagingTemplate simpMessagingTemplate;
 
     @Autowired
-    public BanService(BanRepository banRepository, BanMapper banMapper) {
+    public BanService(BanRepository banRepository, BanMapper banMapper, SimpMessagingTemplate simpMessagingTemplate) {
         this.banRepository = banRepository;
         this.banMapper = banMapper;
+        this.simpMessagingTemplate = simpMessagingTemplate;
     }
 
     public Ban saveBan(Ban ban) {
@@ -45,6 +48,7 @@ public class BanService {
 
     public Ban addBanForUser(User user, Long hours) {
         Ban ban = new Ban(0l, LocalDateTime.now(), LocalDateTime.now().plusHours(hours.longValue()), BanType.BAN, user);
+        simpMessagingTemplate.convertAndSend("/ban/" + user.getLogin(), true);
         return saveBan(ban);
     }
 }

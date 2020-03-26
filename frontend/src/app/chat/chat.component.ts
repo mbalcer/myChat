@@ -12,6 +12,7 @@ import {TokenService} from "../service/token.service";
 import * as $ from 'jquery';
 import {environment} from "../../environments/environment";
 import {HttpClient} from "@angular/common/http";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-chat',
@@ -29,7 +30,7 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
   room: string;
   openAllRooms: boolean = false;
 
-  constructor(public dialog: MatDialog, private roomService: RoomsService, private userService: UserService, private tokenService: TokenService, private http: HttpClient) {
+  constructor(public dialog: MatDialog, private roomService: RoomsService, private userService: UserService, private tokenService: TokenService, private http: HttpClient, private router: Router) {
     if(this.tokenService.getLogin().includes("guest")) {
       this.user = {
         login: this.tokenService.getLogin(),
@@ -55,6 +56,7 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
           for (let room  of this.rooms) {
             this.webSocketConnect(room);
           }
+          this.banObserver();
         }, error => {
           alert("An error has occurred");
         }
@@ -68,6 +70,23 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
     for (let room of this.rooms) {
       this.webSocketDisconnect(room);
     }
+    this.banDisconnect();
+  }
+
+  banObserver() {
+    let ws = new SockJS(this.serverUrl);
+    this.stompClient = Stomp.over(ws);
+    let client = this.stompClient;
+    let that = this;
+    client.connect({}, function (frame) {
+      client.subscribe("/ban/" + that.user.login, function (message) {
+        that.router.navigateByUrl("/ban");
+      });
+    });
+  }
+
+  banDisconnect() {
+    this.stompClient.disconnect("/ban/" + this.user.login);
   }
 
   webSocketConnect(room) {
