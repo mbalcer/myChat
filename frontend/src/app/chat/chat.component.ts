@@ -1,4 +1,4 @@
-import {AfterViewChecked, Component, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
 import {Message} from "../model/message";
@@ -13,13 +13,14 @@ import * as $ from 'jquery';
 import {environment} from "../../environments/environment";
 import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
+import {BanService} from "../service/ban.service";
 
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.css']
 })
-export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
+export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
   private serverUrl = environment.mainURL + "/chat";
   private stompClient;
 
@@ -30,7 +31,8 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
   room: string;
   openAllRooms: boolean = false;
 
-  constructor(public dialog: MatDialog, private roomService: RoomsService, private userService: UserService, private tokenService: TokenService, private http: HttpClient, private router: Router) {
+  constructor(public dialog: MatDialog, private roomService: RoomsService, private userService: UserService, private tokenService: TokenService,
+              private http: HttpClient, private router: Router, private banService: BanService) {
     if(this.tokenService.getLogin().includes("guest")) {
       this.user = {
         login: this.tokenService.getLogin(),
@@ -48,7 +50,7 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
   ngOnInit() {
   }
 
-  ngAfterViewChecked() {
+  ngAfterViewInit() {
     if (this.openAllRooms == false) {
       this.roomService.getRoomsByUser(this.user.login).subscribe(
         n => {
@@ -57,20 +59,22 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
             this.webSocketConnect(room);
           }
           this.banObserver();
+          this.openAllRooms = true;
         }, error => {
           alert("An error has occurred");
         }
       );
-      this.openAllRooms = true;
       this.getAllMessages();
     }
   }
 
   ngOnDestroy() {
-    for (let room of this.rooms) {
-      this.webSocketDisconnect(room);
+    if (this.openAllRooms) {
+      for (let room of this.rooms) {
+        this.webSocketDisconnect(room);
+      }
+      this.banDisconnect();
     }
-    this.banDisconnect();
   }
 
   banObserver() {
@@ -156,7 +160,16 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
 
   getUser() {
     this.userService.getUserByLogin(this.tokenService.getLogin()).subscribe(n => {
+      this.checkBan(n);
       this.user = n;
+    });
+  }
+
+  checkBan(user: User) {
+    this.banService.getBanByUser(user.login).subscribe(n => {
+      if (n != null && n.type == 'BAN') {
+        this.router.navigateByUrl('/ban');
+      }
     });
   }
 

@@ -12,7 +12,12 @@ import {formatDate} from "@angular/common";
 })
 export class BanComponent implements OnInit {
   userLogin: string;
-  ban: Ban = null;
+  ban: Ban = {
+    start: '',
+    end: '',
+    type: '',
+    user: null
+  };
 
   constructor(private tokenService: TokenService, private banService: BanService, private router: Router) {
     this.userLogin = this.tokenService.getLogin();
