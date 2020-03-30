@@ -7,6 +7,7 @@ import pl.mbalcer.chat.mapper.UserMapper;
 import pl.mbalcer.chat.model.*;
 
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.regex.Pattern;
 
 @Service
@@ -43,6 +44,8 @@ public class CommandService {
                 message = roleCmd(message);
             else if (matchRegex(CommandPattern.BAN.getPattern(), message.getMessage()))
                 message = banCmd(message);
+            else if (matchRegex(CommandPattern.LIST_BAN.getPattern(), message.getMessage()))
+                message = listBanCmd(message);
             else
                 message = error(message, "This command is incorrect");
         } else {
@@ -139,6 +142,22 @@ public class CommandService {
 
         message.setType(MessageType.SYSTEM);
         message.setMessage(user.getLogin() + "  got banned until " + ban.getEnd().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+        return message;
+    }
+
+    private Message listBanCmd(Message message) {
+        List<Ban> banList = banService.getBansByUser(message.getUser().getLogin());
+        message.setType(MessageType.SYSTEM);
+        if (banList.isEmpty()) {
+            message.setMessage("You don't have any bans");
+        } else {
+            StringBuilder builder = new StringBuilder();
+            builder.append("Your bans: \n");
+            banList.stream()
+                    .forEach(b -> builder.append(b.getStart().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")) +
+                            " - " + b.getEnd().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")) + "\n"));
+            message.setMessage(builder.toString());
+        }
         return message;
     }
 
