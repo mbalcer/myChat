@@ -152,10 +152,10 @@ public class CommandService {
             message.setMessage("You don't have any bans");
         } else {
             StringBuilder builder = new StringBuilder();
-            builder.append("Your bans: \n");
+            builder.append("Your bans: <br>");
             banList.stream()
-                    .forEach(b -> builder.append(b.getStart().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")) +
-                            " - " + b.getEnd().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")) + "\n"));
+                    .forEach(b -> builder.append(b.getStart().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) +
+                            " - " + b.getEnd().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + ", Type: " + b.getType() + "<br>"));
             message.setMessage(builder.toString());
         }
         return message;
