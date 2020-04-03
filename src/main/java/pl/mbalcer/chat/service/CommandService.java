@@ -46,6 +46,8 @@ public class CommandService {
                 message = banCmd(message);
             else if (matchRegex(CommandPattern.LIST_BAN.getPattern(), message.getMessage()))
                 message = listBanCmd(message);
+            else if (matchRegex(CommandPattern.UNBAN.getPattern(), message.getMessage()))
+                message = unbanCmd(message);
             else
                 message = error(message, "This command is incorrect");
         } else {
@@ -157,6 +159,22 @@ public class CommandService {
                     .forEach(b -> builder.append(b.getStart().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) +
                             " - " + b.getEnd().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + ", Type: " + b.getType() + "<br>"));
             message.setMessage(builder.toString());
+        }
+        return message;
+    }
+
+    private Message unbanCmd(Message message) {
+        if (!message.getUser().getRole().equals(Role.ADMIN))
+            return error(message, "This command is only for admin");
+
+        User user = userService.getUserByLogin(message.getMessage().split(" ")[1]);
+        boolean b = banService.changeEndDate(user);
+        if (b) {
+            message.setType(MessageType.SYSTEM);
+            message.setMessage(user.getLogin() + " is unbanned");
+        } else {
+            message.setType(MessageType.ERROR);
+            message.setMessage("The operation has failed");
         }
         return message;
     }

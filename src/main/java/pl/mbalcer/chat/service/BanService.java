@@ -51,4 +51,14 @@ public class BanService {
         simpMessagingTemplate.convertAndSend("/ban/" + user.getLogin(), true);
         return saveBan(ban);
     }
+
+    public boolean changeEndDate(User user) {
+        Optional<Ban> banByUser = banRepository.findFirstBanByUserOrderByEndDesc(user);
+        if (banByUser.isPresent()) {
+            banByUser.get().setEnd(LocalDateTime.now());
+            banRepository.save(banByUser.get());
+            return true;
+        } else
+            return false;
+    }
 }
