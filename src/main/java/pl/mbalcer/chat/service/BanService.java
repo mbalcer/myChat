@@ -46,8 +46,8 @@ public class BanService {
                 .map(banMapper::convertToBanDTO);
     }
 
-    public Ban addBanForUser(User user, Long hours) {
-        Ban ban = new Ban(0l, LocalDateTime.now(), LocalDateTime.now().plusHours(hours.longValue()), BanType.BAN, user);
+    public Ban addBanForUser(User user, Long hours, BanType type) {
+        Ban ban = new Ban(0l, LocalDateTime.now(), LocalDateTime.now().plusHours(hours.longValue()), type, user);
         simpMessagingTemplate.convertAndSend("/ban/" + user.getLogin(), true);
         return saveBan(ban);
     }

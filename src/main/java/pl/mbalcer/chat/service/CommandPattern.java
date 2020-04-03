@@ -10,7 +10,8 @@ public enum CommandPattern {
     ROLE("^\\/{1}role\\s{1}\\w{4,}\\s{1}[0-1]{1}$"),
     BAN("^\\/{1}ban\\s{1}\\w{4,}\\s{1}\\d{1,3}$"),
     LIST_BAN("^\\/{1}bans$"),
-    UNBAN("^\\/{1}unban\\s{1}\\w{4,}");
+    UNBAN("^\\/{1}unban\\s{1}\\w{4,}$"),
+    MUTE("^\\/{1}mute\\s{1}\\w{4,}\\s{1}\\d{1,3}$");
 
     private String pattern;
 

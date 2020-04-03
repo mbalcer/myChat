@@ -43,11 +43,13 @@ public class CommandService {
             else if (matchRegex(CommandPattern.ROLE.getPattern(), message.getMessage()))
                 message = roleCmd(message);
             else if (matchRegex(CommandPattern.BAN.getPattern(), message.getMessage()))
-                message = banCmd(message);
+                message = banCmd(message, BanType.BAN);
             else if (matchRegex(CommandPattern.LIST_BAN.getPattern(), message.getMessage()))
                 message = listBanCmd(message);
             else if (matchRegex(CommandPattern.UNBAN.getPattern(), message.getMessage()))
                 message = unbanCmd(message);
+            else if (matchRegex(CommandPattern.MUTE.getPattern(), message.getMessage()))
+                message = banCmd(message, BanType.MUTE);
             else
                 message = error(message, "This command is incorrect");
         } else {
@@ -134,16 +136,16 @@ public class CommandService {
         return message;
     }
 
-    private Message banCmd(Message message) {
+    private Message banCmd(Message message, BanType type) {
         if (!message.getUser().getRole().equals(Role.ADMIN))
             return error(message, "This command is only for admin");
 
         String[] splitMessage = message.getMessage().split(" ");
         User user = userService.getUserByLogin(splitMessage[1]);
-        Ban ban = banService.addBanForUser(user, Long.parseLong(splitMessage[2]));
+        Ban ban = banService.addBanForUser(user, Long.parseLong(splitMessage[2]), type);
 
         message.setType(MessageType.SYSTEM);
-        message.setMessage(user.getLogin() + "  got banned until " + ban.getEnd().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+        message.setMessage(user.getLogin() + "  got " + (type == BanType.BAN ? "banned" : "muted") + " until " + ban.getEnd().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
         return message;
     }
 
