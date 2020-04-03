@@ -38,7 +38,8 @@
       </div>
       <div class="message">
         <mat-form-field class="full-width">
-          <mat-label>Message</mat-label>
+          <mat-label *ngIf="muted == null">Message</mat-label>
+          <mat-label *ngIf="muted != null">You are muted until {{muted.end}}</mat-label>
           <input matInput
                  id="your-message"
                  name="your-message"
@@ -47,7 +48,7 @@
                  (keyup)="enterSend($event)">
         </mat-form-field>
         <button id="sendButton" mat-raised-button color="primary" style="float: right;" (click)="sendMessage()"
-                [disabled]="!yourMessage">
+                [disabled]="!yourMessage || muted!=null">
           Send
         </button>
       </div>

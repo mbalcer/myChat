@@ -14,6 +14,7 @@ import {environment} from "../../environments/environment";
 import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {BanService} from "../service/ban.service";
+import {Ban} from "../model/ban";
 
 @Component({
   selector: 'app-chat',
@@ -30,6 +31,7 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
   rooms: string[] = ['All'];
   room: string;
   openAllRooms: boolean = false;
+  muted: Ban = null;
 
   constructor(public dialog: MatDialog, private roomService: RoomsService, private userService: UserService, private tokenService: TokenService,
               private http: HttpClient, private router: Router, private banService: BanService) {
@@ -167,10 +169,21 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
 
   checkBan(user: User) {
     this.banService.getBanByUser(user.login).subscribe(n => {
-      if (n != null && n.type == 'BAN') {
-        this.router.navigateByUrl('/ban');
+      if (n != null) {
+        if (n.type == 'BAN')
+          this.router.navigateByUrl('/ban');
+        else if (n.type == 'MUTE') {
+          this.muted = n;
+          this.muted.end = formatDate(n.end, 'dd.MM HH:mm', 'en');
+        }
       }
     });
+  }
+
+  checkMutedIsEnd() {
+    if (new Date(this.muted.end) <= new Date()) {
+      this.muted = null;
+    }
   }
 
   getAllMessages() {
@@ -201,5 +214,7 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
   enterSend($event: KeyboardEvent) {
     if ($event.code == 'Enter')
       $("#sendButton").click();
+    if (this.muted != null)
+      this.checkMutedIsEnd();
   }
 }
