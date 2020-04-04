@@ -86,7 +86,15 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
     let that = this;
     client.connect({}, function (frame) {
       client.subscribe("/ban/" + that.user.login, function (message) {
-        that.router.navigateByUrl("/ban");
+        if (JSON.parse(message.body).type == 'BAN')
+          that.router.navigateByUrl("/ban");
+        else
+          that.muted = {
+            start: JSON.parse(message.body).start,
+            end: formatDate(JSON.parse(message.body).end, 'dd.MM.yyyy HH:mm', 'en'),
+            type: JSON.parse(message.body).type,
+            user: JSON.parse(message.body).user
+          };
       });
     });
   }
@@ -174,7 +182,7 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
           this.router.navigateByUrl('/ban');
         else if (n.type == 'MUTE') {
           this.muted = n;
-          this.muted.end = formatDate(n.end, 'dd.MM HH:mm', 'en');
+          this.muted.end = formatDate(n.end, 'dd.MM.yyyy HH:mm', 'en');
         }
       }
     });
