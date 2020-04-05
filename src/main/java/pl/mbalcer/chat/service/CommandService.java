@@ -16,6 +16,7 @@ public class CommandService {
     private UserMapper userMapper;
     private RoomService roomService;
     private BanService banService;
+    private Message message;
 
     @Autowired
     public CommandService(UserService userService, UserMapper userMapper, RoomService roomService, BanService banService) {
@@ -26,63 +27,61 @@ public class CommandService {
     }
 
     public Message checkMessage(Message message) {
+        this.message = message;
         Pattern checkMessageIsCommand = Pattern.compile("^\\/{1}.{4,}");
         if (checkMessageIsCommand.matcher(message.getMessage()).matches()) {
-            if (matchRegex(CommandPattern.TEST.getPattern(), message.getMessage()))
-                message = testCmd(message);
-            else if (matchRegex(CommandPattern.HELP.getPattern(), message.getMessage()))
-                message = helpCmd(message);
-            else if (matchRegex(CommandPattern.CLEAR.getPattern(), message.getMessage()))
-                message = clearCmd(message);
-            else if (matchRegex(CommandPattern.CHANGE_COLOR.getPattern(), message.getMessage()))
-                message = changeColorCmd(message);
-            else if (matchRegex(CommandPattern.ADD_USER.getPattern(), message.getMessage()))
-                message = addUserCmd(message);
-            else if (matchRegex(CommandPattern.ALERT.getPattern(), message.getMessage()))
-                message = alertCmd(message);
-            else if (matchRegex(CommandPattern.ROLE.getPattern(), message.getMessage()))
-                message = roleCmd(message);
-            else if (matchRegex(CommandPattern.BAN.getPattern(), message.getMessage()))
-                message = banCmd(message, BanType.BAN);
-            else if (matchRegex(CommandPattern.LIST_BAN.getPattern(), message.getMessage()))
-                message = listBanCmd(message);
-            else if (matchRegex(CommandPattern.UNBAN.getPattern(), message.getMessage()))
-                message = unbanCmd(message);
-            else if (matchRegex(CommandPattern.MUTE.getPattern(), message.getMessage()))
-                message = banCmd(message, BanType.MUTE);
+            if (matchRegex(CommandPattern.TEST.getPattern()))
+                testCmd();
+            else if (matchRegex(CommandPattern.HELP.getPattern()))
+                helpCmd();
+            else if (matchRegex(CommandPattern.CLEAR.getPattern()))
+                clearCmd();
+            else if (matchRegex(CommandPattern.CHANGE_COLOR.getPattern()))
+                changeColorCmd();
+            else if (matchRegex(CommandPattern.ADD_USER.getPattern()))
+                addUserCmd();
+            else if (matchRegex(CommandPattern.ALERT.getPattern()))
+                alertCmd();
+            else if (matchRegex(CommandPattern.ROLE.getPattern()))
+                roleCmd();
+            else if (matchRegex(CommandPattern.BAN.getPattern()))
+                banCmd(BanType.BAN);
+            else if (matchRegex(CommandPattern.LIST_BAN.getPattern()))
+                listBanCmd();
+            else if (matchRegex(CommandPattern.UNBAN.getPattern()))
+                unbanCmd();
+            else if (matchRegex(CommandPattern.MUTE.getPattern()))
+                banCmd(BanType.MUTE);
             else
-                message = error(message, "This command is incorrect");
+                error("This command is incorrect");
         } else {
-            message.setType(MessageType.MESSAGE);
+            this.message.setType(MessageType.MESSAGE);
         }
-        return message;
+        return this.message;
     }
 
-    private boolean matchRegex(String regex, String text) {
-        return Pattern.compile(regex).matcher(text).matches();
+    private boolean matchRegex(String regex) {
+        return Pattern.compile(regex).matcher(message.getMessage()).matches();
     }
 
-    private Message testCmd(Message message) {
+    private void testCmd() {
         message.setType(MessageType.SYSTEM);
         message.setMessage("TEST COMMAND");
-        return message;
     }
 
-    private Message helpCmd(Message message) {
+    private void helpCmd() {
         message.setType(MessageType.HELP);
         message.setMessage("Hi " + message.getUser().getLogin() + ". In this application you can writing with your friends and other people. " +
                 "On the left you have a list of room. You can add new room, add users to room and leave from its. " +
                 "If you want change color your username or change password you must click on person icon. Thanks for being with us.");
-        return message;
     }
 
-    private Message clearCmd(Message message) {
+    private void clearCmd() {
         message.setType(MessageType.CLEAR);
         message.setMessage("Messages have been cleared");
-        return message;
     }
 
-    private Message changeColorCmd(Message message) {
+    private void changeColorCmd() {
         String color = message.getMessage().split(" ")[1];
         UserDTO user = userMapper.convertToUserDTO(message.getUser());
         user.setColor(color);
@@ -90,66 +89,63 @@ public class CommandService {
 
         message.setType(MessageType.SYSTEM);
         message.setMessage("The color has been changed correctly");
-        return message;
     }
 
-    private Message addUserCmd(Message message) {
+    private void addUserCmd() {
         if (message.getRoom().equals("All"))
-            return error(message, "You cannot add people to the room All");
-
-        String user = message.getMessage().split(" ")[1];
-        if (userService.getUserByLogin(user) == null)
-            return error(message, "No user with nickname: " + user);
-
-        roomService.addUserToRoom(user, message.getRoom());
-        message.setMessage("Added the user " + user + " to room " + message.getRoom());
-        message.setType(MessageType.SYSTEM);
-        return message;
-    }
-
-    private Message alertCmd(Message message) {
-        if (!message.getUser().getRole().equals(Role.ADMIN))
-            return error(message, "This command is only for admin");
-        String alertMessage = message.getMessage().substring(7);
-        message.setMessage(alertMessage);
-        message.setType(MessageType.ALERT);
-        return message;
-    }
-
-    private Message roleCmd(Message message) {
-        if (!message.getUser().getRole().equals(Role.ADMIN))
-            return error(message, "This command is only for admin");
-
-        String[] splitMessage = message.getMessage().split(" ");
-        User user = userService.getUserByLogin(splitMessage[1]);
-        switch (Integer.parseInt(splitMessage[2])) {
-            case 0:
-                user = userService.changeRole(user, Role.USER);
-                break;
-            case 1:
-                user = userService.changeRole(user, Role.ADMIN);
-                break;
+            error("You cannot add people to the room All");
+        else {
+            String user = message.getMessage().split(" ")[1];
+            if (userService.getUserByLogin(user) == null)
+                error("No user with nickname: " + user);
+            else {
+                roomService.addUserToRoom(user, message.getRoom());
+                message.setMessage("Added the user " + user + " to room " + message.getRoom());
+                message.setType(MessageType.SYSTEM);
+            }
         }
-
-        message.setType(MessageType.SYSTEM);
-        message.setMessage(user.getLogin() + " is now a " + user.getRole());
-        return message;
     }
 
-    private Message banCmd(Message message, BanType type) {
-        if (!message.getUser().getRole().equals(Role.ADMIN))
-            return error(message, "This command is only for admin");
-
-        String[] splitMessage = message.getMessage().split(" ");
-        User user = userService.getUserByLogin(splitMessage[1]);
-        Ban ban = banService.addBanForUser(user, Long.parseLong(splitMessage[2]), type);
-
-        message.setType(MessageType.SYSTEM);
-        message.setMessage(user.getLogin() + "  got " + (type == BanType.BAN ? "banned" : "muted") + " until " + ban.getEnd().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
-        return message;
+    private void alertCmd() {
+        if (!checkAdmin())
+            error("This command is only for admin");
+        else {
+            String alertMessage = message.getMessage().substring(7);
+            message.setMessage(alertMessage);
+            message.setType(MessageType.ALERT);
+        }
     }
 
-    private Message listBanCmd(Message message) {
+    private void roleCmd() {
+        if (!checkAdmin())
+            error("This command is only for admin");
+        else {
+            String[] splitMessage = message.getMessage().split(" ");
+            User user = userService.getUserByLogin(splitMessage[1]);
+            switch (Integer.parseInt(splitMessage[2])) {
+                case 0: user = userService.changeRole(user, Role.USER); break;
+                case 1: user = userService.changeRole(user, Role.ADMIN); break;
+            }
+
+            message.setType(MessageType.SYSTEM);
+            message.setMessage(user.getLogin() + " is now a " + user.getRole());
+        }
+    }
+
+    private void banCmd(BanType type) {
+        if (!checkAdmin())
+            error("This command is only for admin");
+        else {
+            String[] splitMessage = message.getMessage().split(" ");
+            User user = userService.getUserByLogin(splitMessage[1]);
+            Ban ban = banService.addBanForUser(user, Long.parseLong(splitMessage[2]), type);
+
+            message.setType(MessageType.SYSTEM);
+            message.setMessage(user.getLogin() + "  got " + (type == BanType.BAN ? "banned" : "muted") + " until " + ban.getEnd().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+        }
+    }
+
+    private void listBanCmd() {
         List<Ban> banList = banService.getBansByUser(message.getUser().getLogin());
         message.setType(MessageType.SYSTEM);
         if (banList.isEmpty()) {
@@ -162,28 +158,30 @@ public class CommandService {
                             " - " + b.getEnd().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + ", Type: " + b.getType() + "<br>"));
             message.setMessage(builder.toString());
         }
-        return message;
     }
 
-    private Message unbanCmd(Message message) {
-        if (!message.getUser().getRole().equals(Role.ADMIN))
-            return error(message, "This command is only for admin");
-
-        User user = userService.getUserByLogin(message.getMessage().split(" ")[1]);
-        boolean b = banService.changeEndDate(user);
-        if (b) {
-            message.setType(MessageType.SYSTEM);
-            message.setMessage(user.getLogin() + " is unbanned");
-        } else {
-            message.setType(MessageType.ERROR);
-            message.setMessage("The operation has failed");
+    private void unbanCmd() {
+        if (!checkAdmin())
+            error("This command is only for admin");
+        else {
+            User user = userService.getUserByLogin(message.getMessage().split(" ")[1]);
+            boolean b = banService.changeEndDate(user);
+            if (b) {
+                message.setType(MessageType.SYSTEM);
+                message.setMessage(user.getLogin() + " is unbanned");
+            } else {
+                message.setType(MessageType.ERROR);
+                message.setMessage("The operation has failed");
+            }
         }
-        return message;
     }
 
-    private Message error(Message message, String errorMessage) {
+    private void error(String errorMessage) {
         message.setMessage(errorMessage);
         message.setType(MessageType.ERROR);
-        return message;
+    }
+
+    private boolean checkAdmin() {
+        return message.getUser().getRole().equals(Role.ADMIN);
     }
 }

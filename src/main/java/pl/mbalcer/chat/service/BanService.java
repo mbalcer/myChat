@@ -57,6 +57,8 @@ public class BanService {
         if (banByUser.isPresent()) {
             banByUser.get().setEnd(LocalDateTime.now());
             banRepository.save(banByUser.get());
+            if (banByUser.get().getType().equals(BanType.MUTE))
+                simpMessagingTemplate.convertAndSend("/ban/" + user.getLogin(), banMapper.convertToBanDTO(banByUser.get()));
             return true;
         } else
             return false;
