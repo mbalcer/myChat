@@ -3,6 +3,7 @@ package pl.mbalcer.chat.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.List;
@@ -21,8 +22,10 @@ public class User {
     private String password;
     private String email;
     private String color;
+    private Role role;
 
-    @ManyToMany(mappedBy = "users")
+    @ToString.Exclude
+    @ManyToMany(mappedBy = "users", fetch = FetchType.EAGER)
     private List<Room> rooms;
 
     public User(String login, String password, String email, String color) {
@@ -30,5 +33,14 @@ public class User {
         this.password = password;
         this.email = email;
         this.color = color;
+        this.role = Role.USER;
+    }
+
+    public User(String login, String password, String email, String color, Role role) {
+        this.login = login;
+        this.password = password;
+        this.email = email;
+        this.color = color;
+        this.role = role;
     }
 }

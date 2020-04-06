@@ -4,6 +4,7 @@ import {User} from "../model/user";
 import {UserService} from "../service/user.service";
 import {Router} from "@angular/router";
 import {TokenService} from "../service/token.service";
+import {BanService} from "../service/ban.service";
 
 @Component({
   selector: 'app-login-panel',
@@ -23,7 +24,7 @@ export class LoginPanelComponent implements OnInit {
     email: ''
   };
 
-  constructor(private userService: UserService, private tokenService: TokenService, private router: Router) {
+  constructor(private userService: UserService, private tokenService: TokenService, private router: Router, private banService: BanService) {
     if (this.tokenService.isLogged())
       this.router.navigateByUrl("/chat");
   }
@@ -31,9 +32,18 @@ export class LoginPanelComponent implements OnInit {
   ngOnInit() {
   }
 
-  navigateToChat(user: User) {
+  navigate(user: User, url: string) {
     this.tokenService.setToken(user.login);
-    this.router.navigateByUrl("/chat");
+    this.router.navigateByUrl(url);
+  }
+
+  checkBan(user: User) {
+    this.banService.getBanByUser(user.login).subscribe(n => {
+      if (n != null && n.type == 'BAN')
+        this.navigate(user, "/ban");
+      else
+        this.navigate(user, "/chat");
+    });
   }
 
   randomGuestUser() {
@@ -45,9 +55,10 @@ export class LoginPanelComponent implements OnInit {
       login: login,
       password: null,
       email: null,
-      color: null
+      color: null,
+      role: 'GUEST'
     };
-    this.navigateToChat(guestUser);
+    this.navigate(guestUser, "/chat");
   }
 
   getRandomColor() {
@@ -76,7 +87,7 @@ export class LoginPanelComponent implements OnInit {
             $('#errorLogin').html("The user with the given username does not exist");
             $('.login-form input').css("border", "1px solid #e74c3c");
           } else if (getUser.login === this.userToLogin.username && getUser.password === this.userToLogin.password)
-            this.navigateToChat(getUser);
+            this.checkBan(getUser);
           else {
             $('#errorLogin').html("Wrong password");
             $('.login-form input').css("border", "1px solid #e74c3c");
@@ -100,7 +111,8 @@ export class LoginPanelComponent implements OnInit {
                 login: this.userToRegister.login,
                 password: this.userToRegister.password,
                 email: this.userToRegister.email,
-                color: this.getRandomColor()
+                color: this.getRandomColor(),
+                role: null
               };
 
               this.saveUser(saveUser);

@@ -22,15 +22,24 @@
       </div>
       <div class="chat-body" #chatBody [scrollTop]="chatBody.scrollHeight">
         <p *ngFor="let m of messages">
-          <span class="login-message" [ngStyle]="{'color': m.user.color}">{{m.user.login}} </span> <span
-          class="time-message">{{m.dateTime}}</span>
-          <span class="text-message">{{m.message}}</span>
+          <span *ngIf="m.type == 'MESSAGE'">
+            <span class="login-message" [ngStyle]="{'color': m.user.color}">{{m.user.login}} </span>
+            <span class="time-message">{{m.dateTime}}</span>
+            <span class="text-message">{{m.message}}</span>
+          </span>
+          <span *ngIf="m.type == 'SYSTEM' || m.type == 'CLEAR'">
+            <span class="system-message" [innerHTML]="m.message"></span>
+          </span>
+          <span *ngIf="m.type == 'HELP' || m.type == 'ERROR' || m.type == 'ALERT'">
+            <span class="alert-message">{{m.message}}</span>
+          </span>
         </p>
         <p *ngIf="messages.length === 0">This chat is empty</p>
       </div>
       <div class="message">
         <mat-form-field class="full-width">
-          <mat-label>Message</mat-label>
+          <mat-label *ngIf="muted == null">Message</mat-label>
+          <mat-label *ngIf="muted != null">You are muted until {{muted.end}}</mat-label>
           <input matInput
                  id="your-message"
                  name="your-message"
@@ -39,7 +48,7 @@
                  (keyup)="enterSend($event)">
         </mat-form-field>
         <button id="sendButton" mat-raised-button color="primary" style="float: right;" (click)="sendMessage()"
-                [disabled]="!yourMessage">
+                [disabled]="!yourMessage || muted!=null">
           Send
         </button>
       </div>

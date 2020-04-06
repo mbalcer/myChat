@@ -1,5 +1,6 @@
 package pl.mbalcer.chat.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -8,28 +9,28 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import pl.mbalcer.chat.model.Message;
+import pl.mbalcer.chat.service.ChatService;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin
 public class ChatController {
+    private ChatService chatService;
 
-    private List<Message> historyOfMessage = new ArrayList<>();
+    @Autowired
+    public ChatController(ChatService chatService) {
+        this.chatService = chatService;
+    }
 
     @MessageMapping("/chat/{room}")
     @SendTo("/topic/{room}")
     public Message getMessage(@DestinationVariable String room, Message message) {
-        message.setDateTime(LocalDateTime.now());
-        historyOfMessage.add(message);
-        return message;
+        return chatService.processMessage(message, room);
     }
 
-    @GetMapping("/api/chat/{room}")
-    public List<Message> getMessagesByRooms(@PathVariable String room) {
-        return historyOfMessage.stream().filter(r -> r.getRoom().equals(room)).collect(Collectors.toList());
+    @GetMapping("/api/chat/{room}/{login}")
+    public List<Message> getMessagesByRooms(@PathVariable String room, @PathVariable String login) {
+        return chatService.getMessagesByRoomAndLogin(room, login);
     }
 }

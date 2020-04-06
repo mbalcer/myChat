@@ -1,6 +1,7 @@
 export interface User {
-  login: string;
-  password: string;
-  email: string;
-  color: string;
+  login: string,
+  password: string,
+  email: string,
+  color: string,
+  role: string
 }

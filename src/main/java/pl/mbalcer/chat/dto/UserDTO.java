@@ -3,6 +3,7 @@ package pl.mbalcer.chat.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import pl.mbalcer.chat.model.Role;
 
 @Data
 @NoArgsConstructor
@@ -12,4 +13,5 @@ public class UserDTO {
     private String password;
     private String email;
     private String color;
+    private Role role;
 }
