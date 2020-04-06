@@ -6,6 +6,7 @@ public enum CommandPattern {
     CLEAR("^\\/{1}clear$"),
     CHANGE_COLOR("^\\/{1}color\\s{1}#[0-9a-fA-F]{6}$"),
     ADD_USER("^\\/{1}add\\s{1}\\w{4,}$"),
+    LEAVE_USER("^\\/{1}leave$"),
     ALERT("^\\/{1}alert\\s{1}.{4,}$"),
     ROLE("^\\/{1}role\\s{1}\\w{4,}\\s{1}[0-1]{1}$"),
     BAN("^\\/{1}ban\\s{1}\\w{4,}\\s{1}\\d{1,3}$"),

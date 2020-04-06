@@ -40,6 +40,8 @@ public class CommandService {
                 changeColorCmd();
             else if (matchRegex(CommandPattern.ADD_USER.getPattern()))
                 addUserCmd();
+            else if (matchRegex(CommandPattern.LEAVE_USER.getPattern()))
+                leaveUserCmd();
             else if (matchRegex(CommandPattern.ALERT.getPattern()))
                 alertCmd();
             else if (matchRegex(CommandPattern.ROLE.getPattern()))
@@ -101,6 +103,21 @@ public class CommandService {
             else {
                 roomService.addUserToRoom(user, message.getRoom());
                 message.setMessage("Added the user " + user + " to room " + message.getRoom());
+                message.setType(MessageType.SYSTEM);
+            }
+        }
+    }
+
+    private void leaveUserCmd() {
+        if (message.getRoom().equals("All"))
+            error("You cannot leaving from the room All");
+        else {
+            String user = message.getUser().getLogin();
+            if (userService.getUserByLogin(user) == null)
+                error("No user with nickname: " + user);
+            else {
+                roomService.removeUserFromRoom(user, message.getRoom());
+                message.setMessage("You leaved from this room");
                 message.setType(MessageType.SYSTEM);
             }
         }
