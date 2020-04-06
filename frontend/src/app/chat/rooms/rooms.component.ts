@@ -48,9 +48,20 @@ export class RoomsComponent implements AfterViewChecked, OnDestroy, OnInit {
     this.subCheckRooms = ti.subscribe(t => {
       this.roomService.getRoomsByUser(this.user.login).subscribe(n => {
         let newRooms = n.filter(r => !(this.rooms.includes(r)));
-        this.rooms = this.rooms.concat(newRooms);
-        for (let room of newRooms) {
-          this.openRoom.emit(room);
+        let removeRoom = this.rooms.filter(r => !(n.includes(r)) && r != 'All');
+        if(newRooms.length > 0) {
+          this.rooms = this.rooms.concat(newRooms);
+          for (let room of newRooms) {
+            this.openRoom.emit(room);
+          }
+        }
+        if(removeRoom.length > 0) {
+          for(let room of removeRoom) {
+            this.rooms.splice(this.rooms.indexOf(room), 1);
+            this.closeRoom.emit(room);
+            if (this.currentRoom == room)
+              this.changeRoom("All");
+          }
         }
       });
     });
