@@ -25,7 +25,7 @@
           <span *ngIf="m.type == 'MESSAGE'">
             <span class="login-message" [ngStyle]="{'color': m.user.color}">{{m.user.login}} </span>
             <span class="time-message">{{m.dateTime}}</span>
-            <span class="text-message">{{m.message}}</span>
+            <span class="text-message" [innerHTML]="m.message"></span>
           </span>
           <span *ngIf="m.type == 'SYSTEM' || m.type == 'CLEAR'">
             <span class="system-message" [innerHTML]="m.message"></span>
@@ -51,6 +51,7 @@
                 [disabled]="!yourMessage || muted!=null">
           Send
         </button>
+        <emoji-mart title="Pick your emoji…" emoji="point_up" (emojiSelect)="addEmoji($event)"></emoji-mart>
       </div>
     </div>
   </div>

@@ -4,7 +4,7 @@ import * as SockJS from 'sockjs-client';
 import {Message} from "../model/message";
 import {User} from "../model/user";
 import {formatDate} from "@angular/common";
-import {MatDialog} from "@angular/material";
+import {MatDialog, MatIconRegistry} from "@angular/material";
 import {DialogAddUserToRoom} from "./rooms/dialogs/dialog-add-user-to-room/dialog-add-user-to-room";
 import {RoomsService} from "../service/rooms.service";
 import {UserService} from "../service/user.service";
@@ -15,6 +15,7 @@ import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {BanService} from "../service/ban.service";
 import {Ban} from "../model/ban";
+import {DomSanitizer} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-chat',
@@ -27,7 +28,7 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
 
   messages: Message[] = [];
   user: User;
-  yourMessage: string;
+  yourMessage: string = "";
   rooms: string[] = ['All'];
   room: string;
   openAllRooms: boolean = false;
@@ -224,5 +225,11 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
       $("#sendButton").click();
     if (this.muted != null)
       this.checkMutedIsEnd();
+  }
+
+
+  addEmoji(emoji) {
+    console.log(emoji.emoji);
+    this.yourMessage += emoji.emoji.native;
   }
 }
