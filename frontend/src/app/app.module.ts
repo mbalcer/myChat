@@ -1,23 +1,24 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {FormsModule} from "@angular/forms";
+import {PickerModule} from "@ctrl/ngx-emoji-mart";
+import {ColorPickerModule} from "ngx-color-picker";
+import {HttpClientModule} from "@angular/common/http";
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {HeaderWebComponent} from './login-panel/header-web/header-web.component';
 import {ChatComponent} from './chat/chat.component';
 import {LoginPanelComponent} from './login-panel/login-panel.component';
-import {HttpClientModule} from "@angular/common/http";
 import {RoomsComponent} from './chat/rooms/rooms.component';
 import {DialogAddRoom} from "./chat/rooms/dialogs/dialog-add-room/dialog-add-room";
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {DemoMaterialModule} from "./material-module";
 import {DialogAddUserToRoom} from './chat/rooms/dialogs/dialog-add-user-to-room/dialog-add-user-to-room';
 import {SearchRoomPipe} from './pipes/search-room.pipe';
 import {InfoPanelComponent} from './chat/info-panel/info-panel.component';
 import {NeedAuthGuard} from "./service/need-auth-guard";
 import {UserProfileComponent} from './user-profile/user-profile.component';
-import {ColorPickerModule} from "ngx-color-picker";
 import {BanComponent} from './ban/ban.component';
 
 @NgModule({
@@ -41,7 +42,8 @@ import {BanComponent} from './ban/ban.component';
     HttpClientModule,
     BrowserAnimationsModule,
     DemoMaterialModule,
-    ColorPickerModule
+    ColorPickerModule,
+    PickerModule
   ],
   providers: [NeedAuthGuard],
   bootstrap: [AppComponent],

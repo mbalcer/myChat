@@ -21,6 +21,7 @@
     "@angular/platform-browser": "~8.2.0",
     "@angular/platform-browser-dynamic": "~8.2.0",
     "@angular/router": "~8.2.0",
+    "@ctrl/ngx-emoji-mart": "^1.0.6",
     "@stomp/ng2-stompjs": "^7.2.0",
     "bootstrap": "^4.3.1",
     "font-awesome": "^4.7.0",
