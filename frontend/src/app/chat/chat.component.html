@@ -47,11 +47,12 @@
                  class="your-message"
                  (keyup)="enterSend($event)">
         </mat-form-field>
+        <mat-icon svgIcon="smile" aria-hidden="false" aria-label="Emoji" class="emoji-icon" (click)="toggleEmojiPicker = !toggleEmojiPicker"></mat-icon>
         <button id="sendButton" mat-raised-button color="primary" style="float: right;" (click)="sendMessage()"
                 [disabled]="!yourMessage || muted!=null">
           Send
         </button>
-        <emoji-mart title="Pick your emoji…" emoji="point_up" (emojiSelect)="addEmoji($event)"></emoji-mart>
+        <emoji-mart title="Pick your emoji…" emoji="point_up" (emojiSelect)="addEmoji($event)" *ngIf="toggleEmojiPicker" class="emoji-picker"></emoji-mart>
       </div>
     </div>
   </div>

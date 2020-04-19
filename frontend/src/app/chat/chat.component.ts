@@ -33,9 +33,10 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
   room: string;
   openAllRooms: boolean = false;
   muted: Ban = null;
+  toggleEmojiPicker: boolean = false;
 
   constructor(public dialog: MatDialog, private roomService: RoomsService, private userService: UserService, private tokenService: TokenService,
-              private http: HttpClient, private router: Router, private banService: BanService) {
+              private http: HttpClient, private router: Router, private banService: BanService, iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
     if(this.tokenService.getLogin().includes("guest")) {
       this.user = {
         login: this.tokenService.getLogin(),
@@ -48,6 +49,7 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
       this.getUser();
     }
     this.room = "All";
+    iconRegistry.addSvgIcon('smile', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/smile.svg'));
   }
 
   ngOnInit() {
