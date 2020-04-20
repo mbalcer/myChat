@@ -231,7 +231,6 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
   addEmoji(emoji) {
-    console.log(emoji.emoji);
     this.yourMessage += emoji.emoji.native;
   }
 }
