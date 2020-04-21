@@ -22,18 +22,16 @@ export class RoomsComponent implements AfterViewChecked, OnDestroy, OnInit {
   currentRoom: string = "All";
 
   @Input() user: User;
+  @Input() notificationRoom;
   @Output() room: EventEmitter<string> = new EventEmitter();
   @Output() openRoom: EventEmitter<string> = new EventEmitter();
   @Output() closeRoom: EventEmitter<string> = new EventEmitter();
 
   constructor(private roomService: RoomsService, public dialog: MatDialog, iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
     this.rooms.push("All");
-    iconRegistry.addSvgIcon(
-      'remove',
-      sanitizer.bypassSecurityTrustResourceUrl('assets/icons/remove.svg'));
-    iconRegistry.addSvgIcon(
-      'add',
-      sanitizer.bypassSecurityTrustResourceUrl('assets/icons/add.svg'));
+    iconRegistry.addSvgIcon('remove', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/remove.svg'));
+    iconRegistry.addSvgIcon('add', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/add.svg'));
+    iconRegistry.addSvgIcon('notification', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/notification.svg'));
   }
 
   ngAfterViewChecked(): void {

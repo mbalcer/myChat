@@ -2,6 +2,7 @@
   <app-info-panel [user]="user"></app-info-panel>
   <div class="chat">
     <app-rooms [user]="user"
+               [notificationRoom]="notificationRoom"
                (room)="updateRoom($event)"
                (openRoom)="openRoom($event)"
                (closeRoom)="closeRoom($event)"

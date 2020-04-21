@@ -60,7 +60,7 @@ a {
   padding: 10px;
 }
 
-.room-name {
+.room-name, .room-notification {
   padding: 5px 10px;
 }
 

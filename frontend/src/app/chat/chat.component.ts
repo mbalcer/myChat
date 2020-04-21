@@ -34,6 +34,7 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
   openAllRooms: boolean = false;
   muted: Ban = null;
   toggleEmojiPicker: boolean = false;
+  notificationRoom = new Map();
 
   constructor(public dialog: MatDialog, private roomService: RoomsService, private userService: UserService, private tokenService: TokenService,
               private http: HttpClient, private router: Router, private banService: BanService, iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
@@ -62,6 +63,7 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
           this.rooms = this.rooms.concat(n);
           for (let room  of this.rooms) {
             this.webSocketConnect(room);
+            this.notificationRoom.set(room, false);
           }
           this.banObserver();
           this.openAllRooms = true;
@@ -122,6 +124,11 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
           } else if (JSON.parse(message.body).type == 'CLEAR' && JSON.parse(message.body).user.login == that.user.login) {
             that.messages.splice(0, that.messages.length);
             that.showMessage(JSON.parse(message.body).user, JSON.parse(message.body).message, JSON.parse(message.body).dateTime, JSON.parse(message.body).type);
+          }
+        } else {
+          if(JSON.parse(message.body).type == 'MESSAGE') {
+            that.notificationRoom.set(JSON.parse(message.body).room, true);
+            console.log(that.notificationRoom);
           }
         }
       });
