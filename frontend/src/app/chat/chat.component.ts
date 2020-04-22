@@ -16,6 +16,7 @@ import {Router} from "@angular/router";
 import {BanService} from "../service/ban.service";
 import {Ban} from "../model/ban";
 import {DomSanitizer} from "@angular/platform-browser";
+import {BrowserService} from "../service/browser.service";
 
 @Component({
   selector: 'app-chat',
@@ -176,6 +177,8 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
     this.room = room;
     this.messages.splice(0, this.messages.length);
     this.getAllMessages();
+    if(this.notificationRoom.get(room))
+      this.notificationRoom.set(room, false);
   }
 
   getUser() {
@@ -235,7 +238,6 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.muted != null)
       this.checkMutedIsEnd();
   }
-
 
   addEmoji(emoji) {
     this.yourMessage += emoji.emoji.native;
