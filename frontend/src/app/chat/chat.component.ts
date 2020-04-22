@@ -38,7 +38,8 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
   notificationRoom = new Map();
 
   constructor(public dialog: MatDialog, private roomService: RoomsService, private userService: UserService, private tokenService: TokenService,
-              private http: HttpClient, private router: Router, private banService: BanService, iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
+              private http: HttpClient, private router: Router, private banService: BanService, private iconRegistry: MatIconRegistry,
+              private sanitizer: DomSanitizer, private browserService: BrowserService) {
     if(this.tokenService.getLogin().includes("guest")) {
       this.user = {
         login: this.tokenService.getLogin(),
@@ -119,6 +120,7 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
         if (JSON.parse(message.body).room == that.room) {
           if (JSON.parse(message.body).type == 'MESSAGE' || JSON.parse(message.body).type == 'ALERT' || JSON.parse(message.body).type == 'ERROR') {
             that.showMessage(JSON.parse(message.body).user, JSON.parse(message.body).message, JSON.parse(message.body).dateTime, JSON.parse(message.body).type);
+            that.browserService.setNewMessage(true);
           } else if ((JSON.parse(message.body).type == 'HELP' || JSON.parse(message.body).type == 'SYSTEM') && JSON.parse(message.body).user.login == that.user.login) {
             that.getUser();
             that.showMessage(JSON.parse(message.body).user, JSON.parse(message.body).message, JSON.parse(message.body).dateTime, JSON.parse(message.body).type);
@@ -129,7 +131,7 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
         } else {
           if(JSON.parse(message.body).type == 'MESSAGE') {
             that.notificationRoom.set(JSON.parse(message.body).room, true);
-            console.log(that.notificationRoom);
+            that.browserService.setNewMessage(true);
           }
         }
       });
