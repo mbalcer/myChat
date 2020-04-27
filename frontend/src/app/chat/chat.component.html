@@ -1,4 +1,4 @@
-<div class="container-chat col-lg-8 col-md-10 col-sm-12">
+<div class="container-chat col-lg-12 col-md-12 col-sm-12">
   <app-info-panel [user]="user"></app-info-panel>
   <div class="chat">
     <app-rooms [user]="user"
@@ -56,6 +56,6 @@
         <emoji-mart title="Pick your emoji…" emoji="point_up" (emojiSelect)="addEmoji($event)" *ngIf="toggleEmojiPicker" class="emoji-picker"></emoji-mart>
       </div>
     </div>
+    <app-users-list class="users-list"></app-users-list>
   </div>
-
 </div>

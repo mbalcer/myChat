@@ -1,1 +1,9 @@
-<p>users-list works!</p>
+<div class="list-panel">
+  <div class="list-title">Users List</div>
+  <div class="users-list">
+    <span *ngFor="let user of users" class="simple-user">
+      <span class="color-ellipse" [ngStyle]="{'background-color': user.color}"></span>
+      <span>{{user.login}}</span>
+    </span>
+  </div>
+</div>

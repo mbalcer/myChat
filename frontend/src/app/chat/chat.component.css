@@ -14,13 +14,13 @@
 }
 
 .chat-right {
-  width: 65%;
+  width: 55%;
   height: calc(100vh - 90px);
   background-color: #F2F5F8;
 }
 
-.rooms {
-  width: 35%;
+.rooms, .users-list {
+  width: 22.5%;
   height: calc(100vh - 90px);
   padding: 0;
 }
