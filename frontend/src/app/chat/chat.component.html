@@ -56,6 +56,6 @@
         <emoji-mart title="Pick your emoji…" emoji="point_up" (emojiSelect)="addEmoji($event)" *ngIf="toggleEmojiPicker" class="emoji-picker"></emoji-mart>
       </div>
     </div>
-    <app-users-list class="users-list"></app-users-list>
+    <app-users-list class="users-list" [room]="room"></app-users-list>
   </div>
 </div>

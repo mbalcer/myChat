@@ -15,6 +15,7 @@ export class RoomsService {
   private GET_ROOM_BY_NAME_URL = `${this.ROOM_URL}/byName/`;
   private ADD_USER_TO_ROOM_URL = `${this.ROOM_URL}/add/`;
   private REMOVE_USER_FROM_ROOM_URL = `${this.ROOM_URL}/remove/`;
+  private GET_USERS_IN_ROOM_URL = `${this.ROOM_URL}/users-list/`;
 
   constructor(private http: HttpClient) {
   }
@@ -37,5 +38,9 @@ export class RoomsService {
 
   removeUserFromRoom(room: string, user: User): Observable<any> {
     return this.http.put<any>(this.REMOVE_USER_FROM_ROOM_URL + room, user);
+  }
+
+  getUsersList(room: string): Observable<User[]> {
+    return this.http.get<User[]>(this.GET_USERS_IN_ROOM_URL + room);
   }
 }

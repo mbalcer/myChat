@@ -1,23 +1,27 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {User} from "../../model/user";
+import {RoomsService} from "../../service/rooms.service";
 
 @Component({
   selector: 'app-users-list',
   templateUrl: './users-list.component.html',
   styleUrls: ['./users-list.component.css']
 })
-export class UsersListComponent implements OnInit {
+export class UsersListComponent implements OnChanges {
 
-  users: User[] = [
-    {login: "jan123", password: "", email: "", color: "#123456", role: "user"},
-    {login: "nowcio23", password: "", email: "", color: "#abcdef", role: "user"},
-    {login: "jgaregaw23", password: "", email: "", color: "#432689", role: "user"},
-    {login: "sucahrex", password: "", email: "", color: "#312853", role: "user"},
-  ];
+  users: User[] = [];
 
-  constructor() { }
+  @Input() room: string;
 
-  ngOnInit() {
+  constructor(private roomService: RoomsService) { }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.getUsersList();
   }
 
+  getUsersList() {
+    this.roomService.getUsersList(this.room).subscribe(n => {
+      this.users = n;
+    });
+  }
 }

@@ -3,7 +3,9 @@ package pl.mbalcer.chat.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.mbalcer.chat.dto.RoomDTO;
+import pl.mbalcer.chat.dto.UserDTO;
 import pl.mbalcer.chat.mapper.RoomMapper;
+import pl.mbalcer.chat.mapper.UserMapper;
 import pl.mbalcer.chat.model.Room;
 import pl.mbalcer.chat.model.User;
 import pl.mbalcer.chat.repository.RoomRepository;
@@ -19,12 +21,14 @@ public class RoomService {
     private RoomRepository roomRepository;
     private UserRepository userRepository;
     private RoomMapper roomMapper;
+    private UserMapper userMapper;
 
     @Autowired
-    public RoomService(RoomRepository roomRepository, UserRepository userRepository, RoomMapper roomMapper) {
+    public RoomService(RoomRepository roomRepository, UserRepository userRepository, RoomMapper roomMapper, UserMapper userMapper) {
         this.roomRepository = roomRepository;
         this.userRepository = userRepository;
         this.roomMapper = roomMapper;
+        this.userMapper = userMapper;
     }
 
     public RoomDTO getRoomByName(String name) {
@@ -66,6 +70,20 @@ public class RoomService {
 
         return userRooms.stream()
                 .map(r -> r.getName())
+                .collect(Collectors.toList());
+    }
+
+    public List<UserDTO> getUsersInRoom(String room) {
+        if(room.equals("All"))
+            return userRepository.findAll()
+                    .stream()
+                    .map(u -> userMapper.convertToUserDTO(u))
+                    .collect(Collectors.toList());
+        else
+            return roomRepository.getRoomByName(room)
+                .getUsers()
+                .stream()
+                .map(u -> userMapper.convertToUserDTO(u))
                 .collect(Collectors.toList());
     }
 

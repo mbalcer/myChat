@@ -43,4 +43,9 @@ public class RoomController {
     public void removeUserFromRoom(@PathVariable String nameRoom, @RequestBody UserDTO userDTO) {
         roomService.removeUserFromRoom(userDTO.getLogin(), nameRoom);
     }
+
+    @GetMapping("/users-list/{room}")
+    public List<UserDTO> getUsersList(@PathVariable String room) {
+        return this.roomService.getUsersInRoom(room);
+    }
 }
