@@ -14,4 +14,5 @@ public class UserDTO {
     private String email;
     private String color;
     private Role role;
+    private boolean active;
 }

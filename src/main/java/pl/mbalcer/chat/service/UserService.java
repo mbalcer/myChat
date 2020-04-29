@@ -85,4 +85,10 @@ public class UserService {
         user.setRole(role);
         return userRepository.save(user);
     }
+
+    public UserDTO setActiveUser(UserDTO userDTO) {
+        User user = getUserByLogin(userDTO.getLogin());
+        user.setActive(userDTO.isActive());
+        return userMapper.convertToUserDTO(user);
+    }
 }

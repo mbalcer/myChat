@@ -48,4 +48,9 @@ public class UserController {
     public ResponseEntity<UserDTO> changePassword(@PathVariable String newPassword, @RequestBody UserDTO user) {
         return userService.changePassword(user, newPassword);
     }
+
+    @PutMapping("/active")
+    public UserDTO setActive(@RequestBody UserDTO user) {
+        return userService.setActiveUser(user);
+    }
 }

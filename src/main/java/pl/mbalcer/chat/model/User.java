@@ -23,6 +23,7 @@ public class User {
     private String email;
     private String color;
     private Role role;
+    private boolean active;
 
     @ToString.Exclude
     @ManyToMany(mappedBy = "users", fetch = FetchType.EAGER)
@@ -34,13 +35,15 @@ public class User {
         this.email = email;
         this.color = color;
         this.role = Role.USER;
+        this.active = false;
     }
 
-    public User(String login, String password, String email, String color, Role role) {
+    public User(String login, String password, String email, String color, Role role, boolean active) {
         this.login = login;
         this.password = password;
         this.email = email;
         this.color = color;
         this.role = role;
+        this.active = active;
     }
 }
