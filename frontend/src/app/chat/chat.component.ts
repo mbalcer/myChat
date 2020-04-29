@@ -85,6 +85,10 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
       }
       this.banDisconnect();
     }
+    this.user.active = false;
+    this.userService.setActive(this.user).subscribe(n => {
+      this.user = n;
+    });
   }
 
   banObserver() {
@@ -188,6 +192,10 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
     this.userService.getUserByLogin(this.tokenService.getLogin()).subscribe(n => {
       this.checkBan(n);
       this.user = n;
+      this.user.active = true;
+      this.userService.setActive(this.user).subscribe(n => {
+        this.user = n;
+      });
     });
   }
 
