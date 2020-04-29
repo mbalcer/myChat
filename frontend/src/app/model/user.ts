@@ -3,5 +3,6 @@ export interface User {
   password: string,
   email: string,
   color: string,
-  role: string
+  role: string,
+  active: boolean
 }

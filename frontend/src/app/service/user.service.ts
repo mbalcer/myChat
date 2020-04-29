@@ -13,7 +13,8 @@ export class UserService {
   private GET_USER_BY_LOGIN_URL = `${this.USER_URL}/byLogin/`;
   private GET_USER_BY_EMAIL_URL = `${this.USER_URL}/byEmail/`;
   private CHANGE_COLOR_URL = `${this.USER_URL}/color`;
-  private CHNAGE_PASSWORD_URL = `${this.USER_URL}/password/`;
+  private CHANGE_PASSWORD_URL = `${this.USER_URL}/password/`;
+  private SET_ACTIVE_USER_URL = `${this.USER_URL}/active`;
 
   constructor(private http: HttpClient) {
   }
@@ -35,6 +36,10 @@ export class UserService {
   }
 
   changePassword(user: User, password: string) {
-    return this.http.put<User>(this.CHNAGE_PASSWORD_URL + password, user);
+    return this.http.put<User>(this.CHANGE_PASSWORD_URL + password, user);
+  }
+
+  setActive(user: User): Observable<User> {
+    return this.http.put<User>(this.SET_ACTIVE_USER_URL, user);
   }
 }

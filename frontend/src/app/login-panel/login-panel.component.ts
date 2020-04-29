@@ -56,7 +56,8 @@ export class LoginPanelComponent implements OnInit {
       password: null,
       email: null,
       color: null,
-      role: 'GUEST'
+      role: 'GUEST',
+      active: false
     };
     this.navigate(guestUser, "/chat");
   }
@@ -112,7 +113,8 @@ export class LoginPanelComponent implements OnInit {
                 password: this.userToRegister.password,
                 email: this.userToRegister.email,
                 color: this.getRandomColor(),
-                role: null
+                role: null,
+                active: false
               };
 
               this.saveUser(saveUser);

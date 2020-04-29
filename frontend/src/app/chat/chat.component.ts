@@ -46,7 +46,8 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
         password: null,
         email: null,
         color: "#000000",
-        role: null
+        role: null,
+        active: false
       };
     } else {
       this.getUser();
