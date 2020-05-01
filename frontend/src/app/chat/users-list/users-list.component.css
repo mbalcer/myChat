@@ -24,3 +24,12 @@
   border-radius: 50px;
   margin-right: 10px;
 }
+
+.users-list-group-title {
+  display: block;
+  color: #aaaaaa;
+  width: 100%;
+  text-align: center;
+  font-size: 14px;
+  text-transform: capitalize;
+}

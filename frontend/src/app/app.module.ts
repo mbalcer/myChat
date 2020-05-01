@@ -20,7 +20,8 @@ import {InfoPanelComponent} from './chat/info-panel/info-panel.component';
 import {NeedAuthGuard} from "./service/need-auth-guard";
 import {UserProfileComponent} from './user-profile/user-profile.component';
 import {BanComponent} from './ban/ban.component';
-import { UsersListComponent } from './chat/users-list/users-list.component';
+import {UsersListComponent} from './chat/users-list/users-list.component';
+import {ActiveUsersPipe} from './pipes/active-users.pipe';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { UsersListComponent } from './chat/users-list/users-list.component';
     InfoPanelComponent,
     UserProfileComponent,
     BanComponent,
-    UsersListComponent
+    UsersListComponent,
+    ActiveUsersPipe
   ],
   imports: [
     BrowserModule,

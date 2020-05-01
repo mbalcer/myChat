@@ -12,6 +12,7 @@ export class UsersListComponent implements OnChanges {
   users: User[] = [];
 
   @Input() room: string;
+  offline: any;
 
   constructor(private roomService: RoomsService) { }
 

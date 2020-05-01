@@ -1,9 +1,15 @@
 <div class="list-panel">
   <div class="list-title">Users List</div>
   <div class="users-list">
-    <span *ngFor="let user of users" class="simple-user">
+    <span class="users-list-group-title">ONLINE</span>
+    <span *ngFor="let user of users | activeUsers:true" class="simple-user">
       <span class="color-ellipse" [ngStyle]="{'background-color': user.color}"></span>
-      <span>{{user.login}} <span *ngIf="user.active"> is active</span></span>
+      <span>{{user.login}}</span>
+    </span>
+    <span class="users-list-group-title" *ngIf="(users | activeUsers:false).length != 0">OFFLINE</span>
+    <span *ngFor="let user of users | activeUsers:false" class="simple-user">
+      <span class="color-ellipse" [ngStyle]="{'background-color': user.color}"></span>
+      <span>{{user.login}}</span>
     </span>
   </div>
 </div>
