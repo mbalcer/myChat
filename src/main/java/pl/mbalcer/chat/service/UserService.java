@@ -3,10 +3,12 @@ package pl.mbalcer.chat.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import pl.mbalcer.chat.dto.UserDTO;
 import pl.mbalcer.chat.mapper.UserMapper;
 import pl.mbalcer.chat.model.Role;
+import pl.mbalcer.chat.model.Room;
 import pl.mbalcer.chat.model.User;
 import pl.mbalcer.chat.repository.UserRepository;
 
@@ -19,11 +21,13 @@ public class UserService {
 
     private UserRepository userRepository;
     private UserMapper userMapper;
+    private SimpMessagingTemplate simpMessagingTemplate;
 
     @Autowired
-    public UserService(UserRepository userRepository, UserMapper userMapper) {
+    public UserService(UserRepository userRepository, UserMapper userMapper, SimpMessagingTemplate simpMessagingTemplate) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
+        this.simpMessagingTemplate = simpMessagingTemplate;
     }
 
     public User getUserByLogin(String login) {
@@ -90,6 +94,11 @@ public class UserService {
         User user = getUserByLogin(userDTO.getLogin());
         user.setActive(userDTO.isActive());
         user = userRepository.save(user);
+        List<String> rooms = user.getRooms().stream().map(Room::getName).collect(Collectors.toList());
+        rooms.add("All");
+        rooms.stream().forEach(r -> {
+            simpMessagingTemplate.convertAndSend("/users-list/" + r, true);
+        });
         return userMapper.convertToUserDTO(user);
     }
 }
