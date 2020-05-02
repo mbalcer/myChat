@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
+import {AfterViewInit, Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {User} from "../../model/user";
 import {RoomsService} from "../../service/rooms.service";
 
@@ -7,14 +7,17 @@ import {RoomsService} from "../../service/rooms.service";
   templateUrl: './users-list.component.html',
   styleUrls: ['./users-list.component.css']
 })
-export class UsersListComponent implements OnChanges {
+export class UsersListComponent implements AfterViewInit, OnChanges {
 
   users: User[] = [];
 
   @Input() room: string;
-  offline: any;
 
   constructor(private roomService: RoomsService) { }
+
+  ngAfterViewInit(): void {
+    this.getUsersList();
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     this.getUsersList();
