@@ -7,8 +7,6 @@ The myChat application is used to communicate with other people
 - Login and registration system
 - Ability to mute/ban user (for admin) 
 - Commands system
-
-To-do list
 - Emoji support
 - List of active user in room
 
