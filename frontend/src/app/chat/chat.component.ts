@@ -60,7 +60,7 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    if (this.openAllRooms == false) {
+    if (this.openAllRooms == false && !this.tokenService.getLogin().includes("guest")) {
       this.roomService.getRoomsByUser(this.user.login).subscribe(
         n => {
           this.rooms = this.rooms.concat(n);
@@ -75,20 +75,26 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       );
       this.getAllMessages();
+    } else if(this.tokenService.getLogin().includes("guest")) {
+      this.webSocketConnect(this.room);
     }
   }
 
   ngOnDestroy() {
-    if (this.openAllRooms) {
-      for (let room of this.rooms) {
-        this.webSocketDisconnect(room);
+    if(!this.tokenService.getLogin().includes("guest")) {
+      if (this.openAllRooms) {
+        for (let room of this.rooms) {
+          this.webSocketDisconnect(room);
+        }
+        this.banDisconnect();
       }
-      this.banDisconnect();
+      this.user.active = false;
+      this.userService.setActive(this.user).subscribe(n => {
+        this.user = n;
+      });
+    } else {
+      this.webSocketDisconnect(this.room);
     }
-    this.user.active = false;
-    this.userService.setActive(this.user).subscribe(n => {
-      this.user = n;
-    });
   }
 
   banObserver() {

@@ -32,17 +32,21 @@ public class ChatService {
 
     public Message processMessage(Message message, String room) {
         message.setDateTime(LocalDateTime.now());
-        message = this.commandService.checkMessage(message);
-        if (message.getType().equals(MessageType.ALERT)) {
-            List<String> allRooms = roomService.getAllRooms();
-            allRooms.add("All");
-            for (String nameRoom : allRooms) {
-                if (!nameRoom.equals(room)) {
-                    Message copyMessage = new Message(message.getUser(), nameRoom, message.getDateTime(), message.getType(), message.getMessage());
-                    simpMessagingTemplate.convertAndSend("/topic/" + nameRoom, copyMessage);
-                    addToHistory(copyMessage);
+        if(!message.getUser().getLogin().contains("guest")) {
+            message = this.commandService.checkMessage(message);
+            if (message.getType().equals(MessageType.ALERT)) {
+                List<String> allRooms = roomService.getAllRooms();
+                allRooms.add("All");
+                for (String nameRoom : allRooms) {
+                    if (!nameRoom.equals(room)) {
+                        Message copyMessage = new Message(message.getUser(), nameRoom, message.getDateTime(), message.getType(), message.getMessage());
+                        simpMessagingTemplate.convertAndSend("/topic/" + nameRoom, copyMessage);
+                        addToHistory(copyMessage);
+                    }
                 }
             }
+        } else {
+            message.setType(MessageType.MESSAGE);
         }
         addToHistory(message);
         return message;
