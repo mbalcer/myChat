@@ -5,6 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
+import pl.mbalcer.chat.dto.SignInUserDTO;
+import pl.mbalcer.chat.dto.SignUpUserDTO;
 import pl.mbalcer.chat.dto.UserDTO;
 import pl.mbalcer.chat.mapper.UserMapper;
 import pl.mbalcer.chat.model.Role;
@@ -31,7 +33,7 @@ public class UserService {
     }
 
     public User getUserByLogin(String login) {
-        Optional<User> user = Optional.ofNullable(userRepository.findByLogin(login));
+        Optional<User> user = userRepository.findByLogin(login);
         if (user.isPresent())
             return user.get();
         else
@@ -39,7 +41,7 @@ public class UserService {
     }
 
     public UserDTO getUserDTOByLogin(String login) {
-        Optional<User> user = Optional.ofNullable(userRepository.findByLogin(login));
+        Optional<User> user = userRepository.findByLogin(login);
         if (user.isPresent())
             return userMapper.convertToUserDTO(user.get());
         else
@@ -47,7 +49,7 @@ public class UserService {
     }
 
     public UserDTO getUserByEmail(String email) {
-        Optional<User> user = Optional.ofNullable(userRepository.findByEmail(email));
+        Optional<User> user = userRepository.findByEmail(email);
         if (user.isPresent())
             return userMapper.convertToUserDTO(user.get());
         else
@@ -101,4 +103,26 @@ public class UserService {
         });
         return userMapper.convertToUserDTO(user);
     }
+
+    public ResponseEntity<UserDTO> signUp(SignUpUserDTO userDTO) {
+        if (userRepository.findByLogin(userDTO.getLogin()).isPresent() || userRepository.findByEmail(userDTO.getEmail()).isPresent()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        User newUser = new User(userDTO.getLogin(), userDTO.getPassword(), userDTO.getEmail(), userDTO.getColor(), Role.USER, false);
+        newUser = userRepository.save(newUser);
+        return new ResponseEntity<>(userMapper.convertToUserDTO(newUser), HttpStatus.OK);
+    }
+
+    public ResponseEntity<UserDTO> signIn(SignInUserDTO userDTO) {
+        Optional<User> userByLogin = userRepository.findByLogin(userDTO.getLogin());
+        if (!userByLogin.isPresent())
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if (!userByLogin.get().getPassword().equals(userDTO.getPassword()))
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+
+        UserDTO user = userMapper.convertToUserDTO(userByLogin.get());
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
 }

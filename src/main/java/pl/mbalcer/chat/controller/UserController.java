@@ -3,6 +3,8 @@ package pl.mbalcer.chat.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pl.mbalcer.chat.dto.SignInUserDTO;
+import pl.mbalcer.chat.dto.SignUpUserDTO;
 import pl.mbalcer.chat.dto.UserDTO;
 import pl.mbalcer.chat.service.UserService;
 
@@ -34,9 +36,19 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-    @PostMapping
+    @PostMapping()
     public UserDTO saveUser(@RequestBody UserDTO user) {
         return userService.saveUser(user);
+    }
+
+    @PostMapping("/signUp")
+    public ResponseEntity<UserDTO> signUp(@RequestBody SignUpUserDTO userDTO) {
+        return userService.signUp(userDTO);
+    }
+
+    @GetMapping("/signIn")
+    public ResponseEntity<UserDTO> signIn(@RequestBody SignInUserDTO userDTO) {
+        return userService.signIn(userDTO);
     }
 
     @PutMapping("/color")

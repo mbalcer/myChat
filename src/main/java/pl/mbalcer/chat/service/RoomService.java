@@ -43,7 +43,7 @@ public class RoomService {
         Room saveRoom = roomMapper.convertToRoomEntity(roomDTO);
         List<User> users = saveRoom.getUsers()
                 .stream()
-                .map(u -> userRepository.findByLogin(u.getLogin()))
+                .map(u -> userRepository.findByLogin(u.getLogin()).get()) // TODO optional
                 .collect(Collectors.toList());
         saveRoom.setUsers(users);
         Room room = roomRepository.save(saveRoom);
@@ -90,7 +90,7 @@ public class RoomService {
     public void addUserToRoom(String login, String nameRoom) {
         if (getRoomByUser(login).stream().noneMatch(r -> r.equals(nameRoom))) {
             System.out.println("true");
-            User user = userRepository.findByLogin(login);
+            User user = userRepository.findByLogin(login).get(); // TODO optional
             Room room = roomRepository.getRoomByName(nameRoom);
 
             room.addUser(user);
@@ -99,7 +99,7 @@ public class RoomService {
     }
 
     public void removeUserFromRoom(String login, String nameRoom) {
-        User user = userRepository.findByLogin(login);
+        User user = userRepository.findByLogin(login).get(); // TODO optional
         Room room = roomRepository.getRoomByName(nameRoom);
 
         if (room.getUsers().size() == 1) {
