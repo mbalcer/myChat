@@ -21,7 +21,8 @@ export class LoginPanelComponent implements OnInit {
     login: '',
     password: '',
     confirmPassword: '',
-    email: ''
+    email: '',
+    color: ''
   };
 
   constructor(private userService: UserService, private tokenService: TokenService, private router: Router, private banService: BanService) {
@@ -103,44 +104,13 @@ export class LoginPanelComponent implements OnInit {
   }
 
   signUp() {
-    this.userService.getUserByLogin(this.userToRegister.login).subscribe(
-      l => {
-        this.userService.getUserByEmail(this.userToRegister.email).subscribe(
-          e => {
-            if (l == null && e == null) {
-              let saveUser: User = {
-                login: this.userToRegister.login,
-                password: this.userToRegister.password,
-                email: this.userToRegister.email,
-                color: this.getRandomColor(),
-                role: null,
-                active: false
-              };
-
-              this.saveUser(saveUser);
-            } else
-              $('#errorRegister').removeClass("success").addClass("error").html("The user with this login or email already exists");
-          }, error => {
-            alert("An error has occurred");
-          }
-        )
-      },
-      error => {
-        alert("An error has occurred");
-      }
-    );
-  }
-
-  saveUser(user) {
-    this.userService.postUser(user).subscribe(
-      n => {
-        $('#errorRegister').removeClass("error").addClass("success").html("You have been successfully registered");
-        $('.register-form input').val('');
-      },
-      error => {
-        alert("An error has occurred");
-      }
-    )
+    this.userToRegister.color = this.getRandomColor();
+    this.userService.signUp(this.userToRegister).subscribe(n => {
+      $('#errorRegister').removeClass("error").addClass("success").html("You have been successfully registered");
+      $('.register-form input').val('');
+    }, error => {
+      $('#errorRegister').removeClass("success").addClass("error").html("The user with this login or email already exists");
+    });
   }
 }
 
@@ -154,4 +124,5 @@ export interface UserRegisterViewModel {
   password: string;
   confirmPassword: string;
   email: string;
+  color: string;
 }

@@ -24,7 +24,7 @@ public class InitService {
 
     @PostConstruct
     public void init() {
-        if(userRepository.findById(1l).isPresent()) {
+        if(!userRepository.findById(1l).isPresent()) {
             User u1 = new User("Admin", "admin123", "admin@mychat.pl", "#00FFFF");
             u1.setRole(Role.ADMIN);
             User u2 = new User("Mateusz", "mati123", "mateusz75319@gmail.com", "#0000FF");
