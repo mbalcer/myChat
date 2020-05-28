@@ -58,7 +58,7 @@
     </form>
 
     <form class="login-form" (ngSubmit)="signIn()">
-      <input type="text" placeholder="username" name="login-username" [(ngModel)]="userToLogin.username"/>
+      <input type="text" placeholder="username" name="login-username" [(ngModel)]="userToLogin.login"/>
       <input type="password" placeholder="password" name="login-password" [(ngModel)]="userToLogin.password"/>
       <button>login</button>
       <p class="message error" id="errorLogin"></p>

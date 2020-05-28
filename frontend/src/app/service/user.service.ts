@@ -3,7 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {User} from "../model/user";
 import {Observable} from "rxjs";
 import {environment} from "../../environments/environment";
-import {UserRegisterViewModel} from "../login-panel/login-panel.component";
+import {UserLoginViewModel, UserRegisterViewModel} from "../login-panel/login-panel.component";
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +17,7 @@ export class UserService {
   private CHANGE_PASSWORD_URL = `${this.USER_URL}/password/`;
   private SET_ACTIVE_USER_URL = `${this.USER_URL}/active`;
   private SIGN_UP_URL = `${this.USER_URL}/signUp`;
+  private SIGN_IN_URL = `${this.USER_URL}/signIn`;
 
   constructor(private http: HttpClient) {
   }
@@ -47,5 +48,9 @@ export class UserService {
 
   signUp(user: UserRegisterViewModel): Observable<User> {
     return this.http.post<User>(this.SIGN_UP_URL, user);
+  }
+
+  signIn(user: UserLoginViewModel): Observable<User> {
+    return this.http.post<User>(this.SIGN_IN_URL, user);
   }
 }

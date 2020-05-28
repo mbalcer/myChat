@@ -46,7 +46,7 @@ public class UserController {
         return userService.signUp(userDTO);
     }
 
-    @GetMapping("/signIn")
+    @PostMapping("/signIn")
     public ResponseEntity<UserDTO> signIn(@RequestBody SignInUserDTO userDTO) {
         return userService.signIn(userDTO);
     }

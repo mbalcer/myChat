@@ -14,7 +14,7 @@ import {BanService} from "../service/ban.service";
 export class LoginPanelComponent implements OnInit {
 
   userToLogin: UserLoginViewModel = {
-    username: '',
+    login: '',
     password: ''
   };
   userToRegister: UserRegisterViewModel = {
@@ -78,29 +78,24 @@ export class LoginPanelComponent implements OnInit {
   }
 
   signIn() {
-    if (this.userToLogin.username == "") {
+    if (this.userToLogin.login == "") {
       $('#errorLogin').html("Login is required");
       $('.login-form input').css("border", "1px solid #e74c3c");
     } else {
-      this.userService.getUserByLogin(this.userToLogin.username).subscribe(
-        n => {
-          let getUser = n;
-          if (getUser == null) {
-            $('#errorLogin').html("The user with the given username does not exist");
-            $('.login-form input').css("border", "1px solid #e74c3c");
-          } else if (getUser.login === this.userToLogin.username && getUser.password === this.userToLogin.password)
-            this.checkBan(getUser);
-          else {
-            $('#errorLogin').html("Wrong password");
-            $('.login-form input').css("border", "1px solid #e74c3c");
-          }
-        },
-        error => {
-          alert("An error has occurred");
+      this.userService.signIn(this.userToLogin).subscribe(n => {
+        this.checkBan(n);
+      }, error => {
+        if (error.status == 404) {
+          $('#errorLogin').html("The user with the given username does not exist");
+          $('.login-form input').css("border", "1px solid #e74c3c");
+        } else if (error.status == 401) {
+          $('#errorLogin').html("Wrong password");
+          $('.login-form input').css("border", "1px solid #e74c3c");
+        } else {
+          console.log(error);
         }
-      );
+      });
     }
-
   }
 
   signUp() {
@@ -115,7 +110,7 @@ export class LoginPanelComponent implements OnInit {
 }
 
 export interface UserLoginViewModel {
-  username: string;
+  login: string;
   password: string;
 }
 
