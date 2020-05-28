@@ -48,24 +48,11 @@ public class UserService {
             return null;
     }
 
-    public UserDTO getUserByEmail(String email) {
-        Optional<User> user = userRepository.findByEmail(email);
-        if (user.isPresent())
-            return userMapper.convertToUserDTO(user.get());
-        else
-            return null;
-    }
-
     public List<UserDTO> getAllUsers() {
         List<User> users = userRepository.findAll();
         return users.stream()
                 .map(u -> userMapper.convertToUserDTO(u))
                 .collect(Collectors.toList());
-    }
-
-    public UserDTO saveUser(UserDTO userDTO) {
-        User user = userMapper.convertToUser(userDTO);
-        return userMapper.convertToUserDTO(userRepository.save(user));
     }
 
     public UserDTO changeColor(UserDTO userDTO) {

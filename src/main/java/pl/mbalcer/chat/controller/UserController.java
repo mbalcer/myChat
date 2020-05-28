@@ -26,19 +26,9 @@ public class UserController {
         return userService.getUserDTOByLogin(login);
     }
 
-    @GetMapping("/byEmail/{email}")
-    public UserDTO getUserByEmail(@PathVariable String email) {
-        return userService.getUserByEmail(email);
-    }
-
     @GetMapping("/all")
     public List<UserDTO> findAll() {
         return userService.getAllUsers();
-    }
-
-    @PostMapping()
-    public UserDTO saveUser(@RequestBody UserDTO user) {
-        return userService.saveUser(user);
     }
 
     @PostMapping("/signUp")

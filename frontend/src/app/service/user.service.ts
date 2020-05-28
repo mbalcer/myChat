@@ -10,9 +10,7 @@ import {UserLoginViewModel, UserRegisterViewModel} from "../login-panel/login-pa
 })
 export class UserService {
   private USER_URL = environment.mainURL + "/users";
-  private POST_USER_URL = `${this.USER_URL}`;
   private GET_USER_BY_LOGIN_URL = `${this.USER_URL}/byLogin/`;
-  private GET_USER_BY_EMAIL_URL = `${this.USER_URL}/byEmail/`;
   private CHANGE_COLOR_URL = `${this.USER_URL}/color`;
   private CHANGE_PASSWORD_URL = `${this.USER_URL}/password/`;
   private SET_ACTIVE_USER_URL = `${this.USER_URL}/active`;
@@ -22,16 +20,8 @@ export class UserService {
   constructor(private http: HttpClient) {
   }
 
-  postUser(user: User): Observable<User> {
-    return this.http.post<User>(this.POST_USER_URL, user);
-  }
-
   getUserByLogin(login: string): Observable<User> {
     return this.http.get<User>(this.GET_USER_BY_LOGIN_URL + login);
-  }
-
-  getUserByEmail(email: string): Observable<User> {
-    return this.http.get<User>(this.GET_USER_BY_EMAIL_URL + email);
   }
 
   changeColor(user: User): Observable<User> {
