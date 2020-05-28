@@ -54,7 +54,6 @@ export class LoginPanelComponent implements OnInit {
 
     let guestUser : User = {
       login: login,
-      password: null,
       email: null,
       color: null,
       role: 'GUEST',

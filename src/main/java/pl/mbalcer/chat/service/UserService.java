@@ -77,14 +77,11 @@ public class UserService {
 
     public ResponseEntity<UserDTO> changePassword(UserDTO userDTO, String newPassword) {
         User user = getUserByLogin(userDTO.getLogin());
-        if (user.getPassword().equals(userDTO.getPassword())) {
-            user.setPassword(newPassword);
-            userRepository.save(user);
-            return new ResponseEntity<>(
-                    userMapper.convertToUserDTO(user),
-                    HttpStatus.OK);
-        } else
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        user.setPassword(newPassword);
+        userRepository.save(user);
+        return new ResponseEntity<>(
+                userMapper.convertToUserDTO(user),
+                HttpStatus.OK);
     }
 
     public User changeRole(User user, Role role) {

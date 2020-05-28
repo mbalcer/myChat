@@ -41,7 +41,6 @@ export class UserProfileComponent implements OnInit {
   }
 
   savePassword() {
-    this.user.password = this.changePassword.oldPassword;
     this.userService.changePassword(this.user, this.changePassword.newPassword).subscribe(n => {
       this.user = n;
       $('#changePasswordMessage').html('The password has been changed correctly');

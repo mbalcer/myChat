@@ -43,7 +43,6 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
     if(this.tokenService.getLogin().includes("guest")) {
       this.user = {
         login: this.tokenService.getLogin(),
-        password: null,
         email: null,
         color: "#000000",
         role: null,

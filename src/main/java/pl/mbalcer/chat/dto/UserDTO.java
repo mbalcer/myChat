@@ -10,7 +10,6 @@ import pl.mbalcer.chat.model.Role;
 @AllArgsConstructor
 public class UserDTO {
     private String login;
-    private String password;
     private String email;
     private String color;
     private Role role;
