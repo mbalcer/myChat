@@ -85,7 +85,7 @@ public class CommandService {
 
     private void changeColorCmd() {
         String color = message.getMessage().split(" ")[1];
-        UserDTO user = userMapper.convertToUserDTO(message.getUser());
+        UserDTO user = message.getUser();
         user.setColor(color);
         userService.changeColor(user);
 
