@@ -13,6 +13,7 @@ import {environment} from "../../../environments/environment";
 export class UsersListComponent implements AfterViewInit, OnChanges, OnDestroy {
   private serverUrl = environment.mainURL + "/chat";
   private stompClient;
+  isListObserver: boolean = false;
 
   users: User[] = [];
 
@@ -47,6 +48,7 @@ export class UsersListComponent implements AfterViewInit, OnChanges, OnDestroy {
     let client = this.stompClient;
     let that = this;
     client.connect({}, function (frame) {
+      that.isListObserver = true;
       client.subscribe("/users-list/" + that.room, function (message) {
         that.getUsersList();
       });
@@ -54,6 +56,9 @@ export class UsersListComponent implements AfterViewInit, OnChanges, OnDestroy {
   }
 
   listDisconnect() {
-    this.stompClient.disconnect("/users-list/" + this.room);
+    if (this.isListObserver) {
+      this.stompClient.disconnect("/users-list/" + this.room);
+      this.isListObserver = false;
+    }
   }
 }

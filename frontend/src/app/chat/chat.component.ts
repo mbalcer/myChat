@@ -28,7 +28,13 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
   private stompClient;
 
   messages: Message[] = [];
-  user: User;
+  user: User = {
+    login: "NONE",
+    email: "",
+    color: "",
+    active: false,
+    role: ""
+  };
   yourMessage: string = "";
   rooms: string[] = ['All'];
   room: string;
@@ -58,7 +64,7 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit() {
   }
 
-  ngAfterViewInit() {
+  initRooms() {
     if (this.openAllRooms == false && !this.tokenService.getLogin().includes("guest")) {
       this.roomService.getRoomsByUser(this.user.login).subscribe(
         n => {
@@ -73,10 +79,13 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
           alert("An error has occurred");
         }
       );
-      this.getAllMessages();
     } else if(this.tokenService.getLogin().includes("guest")) {
       this.webSocketConnect(this.room);
     }
+  }
+
+  ngAfterViewInit() {
+    this.initRooms();
   }
 
   ngOnDestroy() {
@@ -201,6 +210,7 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
       this.userService.setActive(this.user).subscribe(n => {
         this.user = n;
       });
+      this.getAllMessages();
     });
   }
 
