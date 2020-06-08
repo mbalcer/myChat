@@ -11,7 +11,13 @@ import {AuthenticateService} from "../service/authenticate.service";
 })
 export class UserProfileComponent implements OnInit {
 
-  user: User;
+  user: User = {
+    login: "",
+    email: "",
+    color: "",
+    active: false,
+    role: ""
+  };
 
   changePassword: ChangePasswordModel = {
     oldPassword: "",
