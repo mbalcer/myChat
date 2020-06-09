@@ -1,13 +1,13 @@
 <div class="container-chat col-lg-12 col-md-12 col-sm-12">
   <app-info-panel [user]="user"></app-info-panel>
-  <div class="chat">
+  <div class="chat row">
     <app-rooms [user]="user"
                [notificationRoom]="notificationRoom"
                (room)="updateRoom($event)"
                (openRoom)="openRoom($event)"
                (closeRoom)="closeRoom($event)"
-               class="rooms"></app-rooms>
-    <div class="chat-right">
+               class="rooms col-lg-3 col-md-4 col-sm-12 col-12"></app-rooms>
+    <div class="chat-right col-lg-6 col-md-8 col-sm-12 col-12">
       <div class="chat-title">
         {{room}}
         <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Room menu" *ngIf="room != 'All'"
@@ -56,6 +56,6 @@
         <emoji-mart title="Pick your emoji…" emoji="point_up" (emojiSelect)="addEmoji($event)" *ngIf="toggleEmojiPicker" class="emoji-picker"></emoji-mart>
       </div>
     </div>
-    <app-users-list class="users-list" [room]="room"></app-users-list>
+    <app-users-list class="users-list col-lg-3 col-md-12 col-sm-12 col-12" [room]="room"></app-users-list>
   </div>
 </div>
