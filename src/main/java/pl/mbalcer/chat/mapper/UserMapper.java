@@ -3,10 +3,9 @@ package pl.mbalcer.chat.mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pl.mbalcer.chat.dto.UserDTO;
+import pl.mbalcer.chat.exception.UserNotFoundException;
 import pl.mbalcer.chat.model.User;
 import pl.mbalcer.chat.repository.UserRepository;
-
-import java.util.Optional;
 
 @Component
 public class UserMapper {
@@ -19,10 +18,6 @@ public class UserMapper {
     }
 
     public User convertToUser(UserDTO userDTO) {
-        Optional<User> userOptional = userRepository.findByLogin(userDTO.getLogin());
-        if(userOptional.isPresent())
-            return userOptional.get();
-        else
-            throw new RuntimeException("Could not found user");
+        return userRepository.findByLogin(userDTO.getLogin()).orElseThrow(UserNotFoundException::new);
     }
 }

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.mbalcer.chat.dto.RoomDTO;
 import pl.mbalcer.chat.dto.UserDTO;
+import pl.mbalcer.chat.exception.UserNotFoundException;
 import pl.mbalcer.chat.mapper.RoomMapper;
 import pl.mbalcer.chat.mapper.UserMapper;
 import pl.mbalcer.chat.model.Room;
@@ -89,7 +90,7 @@ public class RoomService {
 
     public void addUserToRoom(String login, String nameRoom) {
         if (getRoomByUser(login).stream().noneMatch(r -> r.equals(nameRoom))) {
-            User user = userRepository.findByLogin(login).orElseThrow(() -> new RuntimeException("Could not found user"));
+            User user = userRepository.findByLogin(login).orElseThrow(UserNotFoundException::new);
             Room room = roomRepository.getRoomByName(nameRoom);
 
             room.addUser(user);
@@ -98,7 +99,7 @@ public class RoomService {
     }
 
     public void removeUserFromRoom(String login, String nameRoom) {
-        User user = userRepository.findByLogin(login).orElseThrow(() -> new RuntimeException("Could not found user"));
+        User user = userRepository.findByLogin(login).orElseThrow(UserNotFoundException::new);
         Room room = roomRepository.getRoomByName(nameRoom);
 
         if (room.getUsers().size() == 1) {
