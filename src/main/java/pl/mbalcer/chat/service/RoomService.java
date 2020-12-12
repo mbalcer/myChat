@@ -89,8 +89,7 @@ public class RoomService {
 
     public void addUserToRoom(String login, String nameRoom) {
         if (getRoomByUser(login).stream().noneMatch(r -> r.equals(nameRoom))) {
-            System.out.println("true");
-            User user = userRepository.findByLogin(login).get(); // TODO optional
+            User user = userRepository.findByLogin(login).orElseThrow(() -> new RuntimeException("Could not found user"));
             Room room = roomRepository.getRoomByName(nameRoom);
 
             room.addUser(user);
@@ -99,7 +98,7 @@ public class RoomService {
     }
 
     public void removeUserFromRoom(String login, String nameRoom) {
-        User user = userRepository.findByLogin(login).get(); // TODO optional
+        User user = userRepository.findByLogin(login).orElseThrow(() -> new RuntimeException("Could not found user"));
         Room room = roomRepository.getRoomByName(nameRoom);
 
         if (room.getUsers().size() == 1) {

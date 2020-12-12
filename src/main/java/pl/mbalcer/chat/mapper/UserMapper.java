@@ -6,6 +6,8 @@ import pl.mbalcer.chat.dto.UserDTO;
 import pl.mbalcer.chat.model.User;
 import pl.mbalcer.chat.repository.UserRepository;
 
+import java.util.Optional;
+
 @Component
 public class UserMapper {
 
@@ -17,6 +19,10 @@ public class UserMapper {
     }
 
     public User convertToUser(UserDTO userDTO) {
-        return userRepository.findByLogin(userDTO.getLogin()).get();
+        Optional<User> userOptional = userRepository.findByLogin(userDTO.getLogin());
+        if(userOptional.isPresent())
+            return userOptional.get();
+        else
+            throw new RuntimeException("Could not found user");
     }
 }
