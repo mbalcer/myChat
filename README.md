@@ -43,12 +43,6 @@ $ ng build
 $ ng serve
 ```
 
-## Demo
-The application is available here: https://mychat-dev.herokuapp.com/
-
-## Status
-The project is in progress.
-
 ---
 
 Created by <a href="https://github.com/mbalcer"> @mbalcer </a>
